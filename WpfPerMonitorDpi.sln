@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfPerMonitorDpi", "WpfPerMonitorDpi\WpfPerMonitorDpi.csproj", "{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerMonitorDpi", "PerMonitorDpi\PerMonitorDpi.csproj", "{E216CB47-4CD6-4F68-8378-67D53423277B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E216CB47-4CD6-4F68-8378-67D53423277B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E216CB47-4CD6-4F68-8378-67D53423277B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E216CB47-4CD6-4F68-8378-67D53423277B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E216CB47-4CD6-4F68-8378-67D53423277B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
