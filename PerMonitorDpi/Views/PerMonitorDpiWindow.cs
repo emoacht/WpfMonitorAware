@@ -77,15 +77,27 @@ namespace PerMonitorDpi.Views
 			DependencyProperty.Register("SystemDpi", typeof(Dpi), typeof(PerMonitorDpiWindow), new FrameworkPropertyMetadata(Dpi.Default));
 
 		/// <summary>
-		/// Current Per-Monitor DPI
+		/// Per-Monitor DPI of current monitor
 		/// </summary>
-		public Dpi CurrentDpi
+		public Dpi MonitorDpi
 		{
-			get { return (Dpi)GetValue(CurrentDpiProperty); }
-			set { SetValue(CurrentDpiProperty, value); }
+			get { return (Dpi)GetValue(MonitorDpiProperty); }
+			set { SetValue(MonitorDpiProperty, value); }
 		}
-		public static readonly DependencyProperty CurrentDpiProperty =
-			DependencyProperty.Register("CurrentDpi", typeof(Dpi), typeof(PerMonitorDpiWindow), new FrameworkPropertyMetadata(Dpi.Default));
+		public static readonly DependencyProperty MonitorDpiProperty =
+			DependencyProperty.Register("MonitorDpi", typeof(Dpi), typeof(PerMonitorDpiWindow), new FrameworkPropertyMetadata(Dpi.Default));
+
+		/// <summary>
+		/// Per-Monitor DPI of current Window
+		/// </summary>
+		/// <remarks>There will be a time lag to conform DPI of current Window to that of current monitor.</remarks>
+		public Dpi WindowDpi
+		{
+			get { return (Dpi)GetValue(WindowDpiProperty); }
+			set { SetValue(WindowDpiProperty, value); }
+		}
+		public static readonly DependencyProperty WindowDpiProperty =
+			DependencyProperty.Register("WindowDpi", typeof(Dpi), typeof(PerMonitorDpiWindow), new FrameworkPropertyMetadata(Dpi.Default));
 
 		#endregion
 
@@ -120,19 +132,20 @@ namespace PerMonitorDpi.Views
 
 			if (!OsVersion.IsEightOneOrNewer)
 			{
-				CurrentDpi = SystemDpi;
+				MonitorDpi = SystemDpi;
+				WindowDpi = SystemDpi;
 				return;
 			}
 
-			CurrentDpi = DpiChecker.GetDpiFromVisual(this);
+			MonitorDpi = DpiChecker.GetDpiFromVisual(this);
 
-			if (!SystemDpi.Equals(CurrentDpi))
+			if (!SystemDpi.Equals(MonitorDpi))
 			{
 				var newInfo = new WindowInfo()
 				{
-					Dpi = CurrentDpi,
-					Width = this.Width * CurrentDpi.X / SystemDpi.X,
-					Height = this.Height * CurrentDpi.Y / SystemDpi.Y,
+					Dpi = MonitorDpi,
+					Width = this.Width * MonitorDpi.X / SystemDpi.X,
+					Height = this.Height * MonitorDpi.Y / SystemDpi.Y,
 				};
 
 				Interlocked.Exchange<WindowInfo>(ref dueInfo, newInfo);
@@ -188,19 +201,19 @@ namespace PerMonitorDpi.Views
 			switch (msg)
 			{
 				case (int)WindowMessage.WM_DPICHANGED:
-					var oldDpi = CurrentDpi;
-					CurrentDpi = new Dpi(
+					var oldDpi = MonitorDpi;
+					MonitorDpi = new Dpi(
 						NativeMacro.GetLoWord((uint)wParam),
 						NativeMacro.GetHiWord((uint)wParam));
 
-					Debug.WriteLine(String.Format("DPICHANGED {0} -> {1}", oldDpi.X, CurrentDpi.X));
+					Debug.WriteLine(String.Format("DPICHANGED {0} -> {1}", oldDpi.X, MonitorDpi.X));
 
-					if (CurrentDpi.Equals(oldDpi))
+					if (MonitorDpi.Equals(oldDpi))
 						break;
 
 					isDpiChanged = true;
 
-					var newInfo = new WindowInfo() { Dpi = CurrentDpi };
+					var newInfo = new WindowInfo() { Dpi = MonitorDpi };
 
 					switch (currentStatus)
 					{
@@ -216,8 +229,8 @@ namespace PerMonitorDpi.Views
 								baseSize = new Size(this.Width, this.Height);
 
 							baseSize = new Size(
-								baseSize.Width * (double)CurrentDpi.X / oldDpi.X,
-								baseSize.Height * (double)CurrentDpi.Y / oldDpi.Y);
+								baseSize.Width * (double)MonitorDpi.X / oldDpi.X,
+								baseSize.Height * (double)MonitorDpi.Y / oldDpi.Y);
 
 							newInfo.Size = baseSize;
 							break;
@@ -268,7 +281,7 @@ namespace PerMonitorDpi.Views
 					{
 						var lastInfo = new WindowInfo()
 						{
-							Dpi = CurrentDpi,
+							Dpi = MonitorDpi,
 							Size = baseSize,
 						};
 
@@ -364,14 +377,16 @@ namespace PerMonitorDpi.Views
 								break;
 						}
 
+						WindowDpi = testInfo.Dpi;
+
 						var content = this.Content as FrameworkElement;
 						if (content != null)
 						{
 							content.LayoutTransform = (testInfo.Dpi.Equals(SystemDpi))
 								? Transform.Identity
 								: new ScaleTransform(
-									(double)testInfo.Dpi.X / SystemDpi.X,
-									(double)testInfo.Dpi.Y / SystemDpi.Y);
+									(double)WindowDpi.X / SystemDpi.X,
+									(double)WindowDpi.Y / SystemDpi.Y);
 						}
 
 						var handler = DpiChanged;

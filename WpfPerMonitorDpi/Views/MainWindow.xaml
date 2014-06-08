@@ -22,6 +22,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -33,10 +34,17 @@
 
             <Label Grid.Row="1"
                    VerticalAlignment="Center"
-                   Content="Per-Monitor DPI"/>
+                   Content="Per-Monitor DPI (Monitor DPI)"/>
             <TextBox Grid.Column="1" Grid.Row="1"
                      Width="80" Height="22" Margin="6,4"
-                     Text="{Binding ElementName=WindowRoot, Path=CurrentDpi, Mode=OneWay}"/>
+                     Text="{Binding ElementName=WindowRoot, Path=MonitorDpi, Mode=OneWay}"/>
+
+            <Label Grid.Row="2"
+                   VerticalAlignment="Center"
+                   Content="Per-Monitor DPI (Window DPI)"/>
+            <TextBox Grid.Column="1" Grid.Row="2"
+                     Width="80" Height="22" Margin="6,4"
+                     Text="{Binding ElementName=WindowRoot, Path=WindowDpi, Mode=OneWay}"/>
         </Grid>
     </Grid>
 </pmd:PerMonitorDpiWindow>
