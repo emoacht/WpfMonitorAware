@@ -12,7 +12,7 @@ A library for WPF Per-Monitor DPI aware window
 
  - PerMonitorDpiWindow: Per-Monitor DPI aware window.
 
- - PerMonitorDpiBehavior: Behavior to make a window Per-Monitor DPI aware. This behavior is derived from System.Windows.Interactivity.Behavior<T> and so requires System.Windows.Interactivity.dll.
+ - PerMonitorDpiBehavior: Behavior to make a window Per-Monitor DPI aware. This behavior is derived from System.Windows.Interactivity.Behavior and so requires System.Windows.Interactivity.dll.
 
  - PerMonitorDpiProperty: Attached property to make a window Per-Monitor DPI aware.
 
