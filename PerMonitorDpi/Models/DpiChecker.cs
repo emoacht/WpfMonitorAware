@@ -10,12 +10,48 @@ namespace PerMonitorDpi.Models
 {
 	public static class DpiChecker
 	{
+		#region DPI Awareness
+
+		/// <summary>
+		/// Check if current process is Per-Monitor DPI aware.
+		/// </summary>
+		public static bool IsPerMonitorDpiAware()
+		{
+			var awareness = GetDpiAwareness();
+			if (!awareness.HasValue)
+				return false;
+
+			return (awareness.Value == NativeMethod.PROCESS_DPI_AWARENESS.Process_Per_Monitor_DPI_Aware);
+		}
+
+		/// <summary>
+		/// Get DPI awareness of current process.
+		/// </summary>
+		/// <returns>If succeeded, Nullable of PROCESS_DPI_AWARENESS. If failed, null.</returns>
+		public static NativeMethod.PROCESS_DPI_AWARENESS? GetDpiAwareness()
+		{
+			if (!OsVersion.IsEightOneOrNewer)
+				return null;
+
+			NativeMethod.PROCESS_DPI_AWARENESS value;
+			var result = NativeMethod.GetProcessDpiAwareness(
+				IntPtr.Zero, // Current process
+				out value);
+			if (result != 0) // 0 means S_OK.
+				return null;
+
+			return value;
+		}
+
+		#endregion
+
+
 		#region System DPI
 
 		/// <summary>
 		/// Get system DPI.
 		/// </summary>
-		/// <param name="targetVisual">Target Window</param>
+		/// <param name="targetVisual">Target Visual</param>
 		/// <returns>DPI struct</returns>
 		public static Dpi GetSystemDpi(Visual targetVisual)
 		{
@@ -26,6 +62,29 @@ namespace PerMonitorDpi.Models
 			return new Dpi(
 				(uint)(Dpi.Default.X * source.CompositionTarget.TransformToDevice.M11),
 				(uint)(Dpi.Default.Y * source.CompositionTarget.TransformToDevice.M22));
+		}
+
+		/// <summary>
+		/// Get system DPI.
+		/// </summary>
+		/// <returns>DPI struct</returns>
+		public static Dpi GetSystemDpi()
+		{
+			var screen = IntPtr.Zero;
+
+			try
+			{
+				screen = NativeMethod.GetDC(IntPtr.Zero);
+
+				return new Dpi(
+					(uint)NativeMethod.GetDeviceCaps(screen, NativeMethod.LOGPIXELSX),
+					(uint)NativeMethod.GetDeviceCaps(screen, NativeMethod.LOGPIXELSY));
+			}
+			finally
+			{
+				if (screen != IntPtr.Zero)
+					NativeMethod.ReleaseDC(IntPtr.Zero, screen);
+			}
 		}
 
 		#endregion
