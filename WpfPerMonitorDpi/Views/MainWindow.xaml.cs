@@ -1,10 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Media;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 using PerMonitorDpi.Views;
 
-namespace WpfPerMonitorDpi
+namespace WpfPerMonitorDpiWindow
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
@@ -16,18 +26,21 @@ namespace WpfPerMonitorDpi
 			InitializeComponent();
 		}
 
-		private EventHandler PlaySoundWhenDpiChanged;
+		private EventHandler OnDpiChanged;
 
-		private void WindowRoot_Loaded(object sender, RoutedEventArgs e)
+		protected override void OnSourceInitialized(EventArgs e)
 		{
-			PlaySoundWhenDpiChanged = (_sender, _e) => SystemSounds.Hand.Play();
+			base.OnSourceInitialized(e);
 
-			DpiChanged += PlaySoundWhenDpiChanged;
+			OnDpiChanged = (_sender, _e) => SystemSounds.Hand.Play();
+			WindowHandler.DpiChanged += OnDpiChanged;
 		}
 
-		private void WindowRoot_Closed(object sender, EventArgs e)
+		protected override void OnClosed(EventArgs e)
 		{
-			DpiChanged -= PlaySoundWhenDpiChanged;
+			base.OnClosed(e);
+		
+			WindowHandler.DpiChanged -= OnDpiChanged;
 		}
 	}
 }

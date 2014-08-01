@@ -6,10 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace WpfPerMonitorDpi
+namespace WpfPerMonitorDpiWindow
 {
 	/// <summary>
-	/// App.xaml の相互作用ロジック
+	/// Interaction logic for App.xaml
 	/// </summary>
 	public partial class App : Application
 	{

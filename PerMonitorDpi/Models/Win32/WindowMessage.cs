@@ -10,5 +10,9 @@ namespace PerMonitorDpi.Models.Win32
 
 		WM_MOVE = 0x0003,
 		WM_SIZE = 0x0005,
+
+		WM_ACTIVATE = 0x0006,
+
+		WM_DWMCOLORIZATIONCOLORCHANGED = 0x0320,
 	}
 }

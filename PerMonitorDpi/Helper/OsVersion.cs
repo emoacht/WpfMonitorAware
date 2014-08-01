@@ -7,6 +7,15 @@ namespace PerMonitorDpi.Helper
 		private static readonly Version ver = Environment.OSVersion.Version;
 
 		/// <summary>
+		/// Whether OS is Windows Vista or newer
+		/// </summary>
+		/// <remarks>Windows Vista = version 6.0</remarks>
+		public static bool IsVistaOrNewer
+		{
+			get { return (6 <= ver.Major); }
+		}
+
+		/// <summary>
 		/// Whether OS is Windows 8 or newer
 		/// </summary>
 		/// <remarks>Windows 8 = version 6.2</remarks>

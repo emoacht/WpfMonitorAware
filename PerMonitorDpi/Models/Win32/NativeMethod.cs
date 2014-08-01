@@ -5,6 +5,23 @@ namespace PerMonitorDpi.Models.Win32
 {
 	public static class NativeMethod
 	{
+		[DllImport("Gdi32.dll", SetLastError = true)]
+		public static extern int GetDeviceCaps(
+			IntPtr hdc,
+			int nIndex);
+
+		public const int LOGPIXELSX = 88;
+		public const int LOGPIXELSY = 90;
+
+		[DllImport("User32.dll", SetLastError = true)]
+		public static extern IntPtr GetDC(IntPtr hWnd);
+
+		[DllImport("User32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReleaseDC(
+			IntPtr hWnd,
+			IntPtr hDC);
+
 		[DllImport("User32.dll", SetLastError = true)]
 		public static extern IntPtr MonitorFromRect(
 			ref RECT lprc,
@@ -35,6 +52,15 @@ namespace PerMonitorDpi.Models.Win32
 			public RECT(System.Windows.Rect rect)
 				: this((int)rect.Left, (int)rect.Top, (int)rect.Right, (int)rect.Bottom)
 			{ }
+
+			public System.Windows.Rect ToRect()
+			{
+				return new System.Windows.Rect(
+					(double)this.left,
+					(double)this.top,
+					(double)(this.right - this.left),
+					(double)(this.bottom - this.top));
+			}
 		}
 
 		public enum MONITOR_DEFAULTTO : uint
@@ -53,6 +79,33 @@ namespace PerMonitorDpi.Models.Win32
 			/// If no display monitor intersects, returns a handle to the display monitor that is nearest to the rectangle.
 			/// </summary>
 			MONITOR_DEFAULTTONEAREST = 0x00000002,
+		}
+
+		[DllImport("Shcore.dll", SetLastError = true)]
+		public static extern int GetProcessDpiAwareness(
+			IntPtr hprocess,
+			out PROCESS_DPI_AWARENESS value);
+
+		[DllImport("Shcore.dll", SetLastError = true)]
+		public static extern int SetProcessDpiAwareness(
+			PROCESS_DPI_AWARENESS value);
+
+		public enum PROCESS_DPI_AWARENESS
+		{
+			/// <summary>
+			/// Not DPI aware
+			/// </summary>
+			Process_DPI_Unaware = 0,
+
+			/// <summary>
+			/// System DPI aware
+			/// </summary>
+			Process_System_DPI_Aware = 1,
+
+			/// <summary>
+			/// Per-Monitor DPI aware
+			/// </summary>
+			Process_Per_Monitor_DPI_Aware = 2
 		}
 
 		[DllImport("Shcore.dll", SetLastError = true)]
@@ -84,5 +137,25 @@ namespace PerMonitorDpi.Models.Win32
 			/// </summary>
 			MDT_Default = MDT_Effective_DPI
 		}
+
+
+		#region Constants for WM_ACTIVATE
+
+		public const int WA_ACTIVE = 1;
+		public const int WA_CLICKACTIVE = 2;
+		public const int WA_INACTIVE = 0;
+
+		#endregion
+
+
+		#region Constants for WM_SIZE
+
+		public const int SIZE_MAXHIDE = 4;
+		public const int SIZE_MAXIMIZED = 2;
+		public const int SIZE_MAXSHOW = 3;
+		public const int SIZE_MINIMIZED = 1;
+		public const int SIZE_RESTORED = 0;
+
+		#endregion
 	}
 }
