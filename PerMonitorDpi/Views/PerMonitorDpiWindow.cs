@@ -6,7 +6,7 @@ using PerMonitorDpi.Models;
 namespace PerMonitorDpi.Views
 {
 	/// <summary>
-	/// Per-Monitor DPI aware Window
+	/// Per-Monitor DPI aware window
 	/// </summary>
 	public class PerMonitorDpiWindow : Window
 	{
