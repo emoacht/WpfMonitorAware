@@ -423,7 +423,9 @@
 											Margin="{TemplateBinding ContentMargin}"
 											BorderThickness="{TemplateBinding ContentBorderThickness}"
 											BorderBrush="{TemplateBinding ContentBorderBrush}">
-										<ContentPresenter Content="{TemplateBinding Content}"/>
+										<AdornerDecorator>
+											<ContentPresenter Content="{TemplateBinding Content}"/>
+										</AdornerDecorator>
 									</Border>
 								</Grid>
 							</Border>

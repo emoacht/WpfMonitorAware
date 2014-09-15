@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace PerMonitorDpi.Models
 {
@@ -8,12 +10,34 @@ namespace PerMonitorDpi.Models
 	/// <remarks>
 	/// This struct is based on the same struct of https://github.com/Grabacr07/XamClaudia
 	/// </remarks>
-	public struct Dpi
+	public struct Dpi : INotifyPropertyChanged
 	{
 		public static readonly Dpi Default = new Dpi(96, 96);
 
-		public uint X { get; set; }
-		public uint Y { get; set; }
+		public uint X
+		{
+			get { return _x; }
+			set
+			{
+				_x = value;
+
+				RaisePropertyChanged();
+			}
+		}
+		private uint _x;
+
+		public uint Y
+		{
+			get { return _y; }
+			set
+			{
+				_y = value;
+
+				RaisePropertyChanged();
+			}
+		}
+		private uint _y;
+
 
 		public Dpi(uint x, uint y)
 			: this()
@@ -54,5 +78,21 @@ namespace PerMonitorDpi.Models
 		{
 			return String.Format("{0}-{1}", this.X, this.Y);
 		}
+
+
+		#region INotifyPropertyChanged member
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected virtual void RaisePropertyChanged([CallerMemberName]string propertyName = null)
+		{
+			var handler = this.PropertyChanged;
+			if (handler != null)
+			{
+				handler(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+
+		#endregion
 	}
 }
