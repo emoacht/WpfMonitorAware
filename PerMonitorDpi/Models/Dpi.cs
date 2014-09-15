@@ -84,7 +84,7 @@ namespace PerMonitorDpi.Models
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected virtual void RaisePropertyChanged([CallerMemberName]string propertyName = null)
+		private void RaisePropertyChanged([CallerMemberName]string propertyName = null)
 		{
 			var handler = this.PropertyChanged;
 			if (handler != null)
