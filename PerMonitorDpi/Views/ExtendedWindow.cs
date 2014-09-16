@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shell;
 using System.Windows.Threading;
 
 using PerMonitorDpi.Helper;
@@ -556,22 +557,6 @@ namespace PerMonitorDpi.Views
 					(d, e) => ((ExtendedWindow)d).isDueCheckBackground = true));
 
 		/// <summary>
-		/// Chrome caption height for WindowChrome.CaptionHeight (public readonly)
-		/// </summary>
-		public double ChromeCaptionHeight
-		{
-			get { return (double)GetValue(ChromeCaptionHeightProperty); }
-			private set { SetValue(ChromeCaptionHeightPropertyKey, value); }
-		}
-		private static readonly DependencyPropertyKey ChromeCaptionHeightPropertyKey =
-			DependencyProperty.RegisterReadOnly(
-				"ChromeCaptionHeight",
-				typeof(double),
-				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(SystemParameters.CaptionHeight));
-		public static readonly DependencyProperty ChromeCaptionHeightProperty = ChromeCaptionHeightPropertyKey.DependencyProperty;
-
-		/// <summary>
 		/// Title bar height when a Window is other than maximized
 		/// </summary>
 		/// <remarks>
@@ -856,7 +841,9 @@ namespace PerMonitorDpi.Views
 			// Set caption height for WindowChrome.CaptionHeight.
 			captionHeight += Math.Round((TitleBarGrid.Height + ContentBorderThickness.Top) * factorFromSystemY);
 
-			ChromeCaptionHeight = Math.Max(captionHeight - SystemParameters.WindowResizeBorderThickness.Top, 0D);
+			var windowChrome = WindowChrome.GetWindowChrome(this);
+			if (windowChrome != null)
+				windowChrome.CaptionHeight = Math.Max(captionHeight - SystemParameters.WindowResizeBorderThickness.Top, 0D);
 		}
 
 		/// <summary>

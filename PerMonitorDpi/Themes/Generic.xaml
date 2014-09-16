@@ -285,7 +285,7 @@
 		<Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:ExtendedWindow}}, Path=IsRestoreVisible, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
 		<Setter Property="Command" Value="SystemCommands.RestoreWindowCommand"/>
 	</Style>
-	
+
 	<Style x:Key="ExtendedCaptionButton.CloseStyle"
 		   TargetType="{x:Type controls:ExtendedCaptionButton}"
 		   BasedOn="{StaticResource ExtendedCaptionButton.BaseStyle}">
@@ -303,8 +303,7 @@
 	<Style TargetType="{x:Type views:ExtendedWindow}">
 		<Setter Property="WindowChrome.WindowChrome">
 			<Setter.Value>
-				<WindowChrome CaptionHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:ExtendedWindow}}, Path=ChromeCaptionHeight}"
-							  ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
+				<WindowChrome ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
 							  GlassFrameThickness="0"
 							  CornerRadius="0"/>
 			</Setter.Value>
