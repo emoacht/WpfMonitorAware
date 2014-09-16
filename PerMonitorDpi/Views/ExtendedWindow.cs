@@ -109,7 +109,7 @@ namespace PerMonitorDpi.Views
 
 		#region Resource
 
-		private static readonly Dictionary<ExtendedTheme, string> themeUriStringMap = new Dictionary<ExtendedTheme, string>() 
+		private static readonly Dictionary<ExtendedTheme, string> themeUriMap = new Dictionary<ExtendedTheme, string>() 
 		{
 			{ExtendedTheme.Default, String.Empty},
 			{ExtendedTheme.Plain, @"/PerMonitorDpi;component/Views/Themes/PlainTheme.xaml"},
@@ -131,7 +131,7 @@ namespace PerMonitorDpi.Views
 				typeof(ExtendedWindow),
 				new FrameworkPropertyMetadata(
 					ExtendedTheme.Default,
-					(d, e) => ((ExtendedWindow)d).ThemeUri = themeUriStringMap[(ExtendedTheme)e.NewValue]));
+					(d, e) => ((ExtendedWindow)d).ThemeUri = themeUriMap[(ExtendedTheme)e.NewValue]));
 
 		public string ThemeUri
 		{
@@ -559,8 +559,7 @@ namespace PerMonitorDpi.Views
 		/// <summary>
 		/// Title bar height when a Window is other than maximized
 		/// </summary>
-		/// <remarks>
-		/// This height includes neither chrome outer border thickness nor chrome inner border thickness. 
+		/// <remarks>This height includes neither chrome outer border thickness nor chrome inner border thickness. 
 		/// By OS's default, title bar height (when a window is maximized) will be sum of 
 		/// SystemParameters.WindowResizeBorderThickness.Top and SystemParameters.WindowNonClientFrameThickness.Top
 		/// which includes chrome border thickness.</remarks>

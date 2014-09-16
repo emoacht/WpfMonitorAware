@@ -8,9 +8,9 @@ namespace PerMonitorDpi.Views.Converters
 	public class DoubleSumConverter : IMultiValueConverter
 	{
 		/// <summary>
-		/// Sum array of doubles.
+		/// Sum doubles.
 		/// </summary>
-		/// <param name="values">Source array of doubles</param>
+		/// <param name="values">Source doubles</param>
 		/// <param name="targetType"></param>
 		/// <param name="parameter"></param>
 		/// <param name="culture"></param>

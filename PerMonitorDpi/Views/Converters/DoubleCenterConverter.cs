@@ -18,7 +18,7 @@ namespace PerMonitorDpi.Views.Converters
 		}
 
 		/// <summary>
-		/// Get top margin to center FrameworkElement.
+		/// Get top margin which will locate inner FrameworkElement at the center of outer FrameworkElement.
 		/// </summary>
 		/// <param name="values">Lengths of outer and inner FrameworkElements</param>
 		/// <param name="targetType"></param>
