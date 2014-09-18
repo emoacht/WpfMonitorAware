@@ -1,4 +1,4 @@
-﻿<Window x:Class="WpfPerMonitorDpiBehavior.MainWindow"
+﻿<Window x:Class="WpfPerMonitorDpiBehavior.Views.MainWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"

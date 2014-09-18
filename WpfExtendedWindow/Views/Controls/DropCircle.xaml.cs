@@ -61,14 +61,9 @@ namespace WpfExtendedWindow.Views.Controls
 
 		private void UpdateStates(bool useTransitions)
 		{
-			if (IsAnimating)
-			{
-				VisualStateManager.GoToState(this, "Animating", useTransitions);
-			}
-			else
-			{
-				VisualStateManager.GoToState(this, "Normal", useTransitions);
-			}
+			var state = IsAnimating ? "Animating" : "Normal";
+
+			VisualStateManager.GoToState(this, state, useTransitions);
 		}
 	}
 }

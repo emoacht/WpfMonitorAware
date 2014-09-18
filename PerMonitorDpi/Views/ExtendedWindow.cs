@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -193,7 +192,7 @@ namespace PerMonitorDpi.Views
 				if (sourceDictionary.Contains(key))
 				{
 					var sourceValue = sourceDictionary[key];
-					if (sourceValue.GetType() == typeof(Color))
+					if (sourceValue is Color)
 					{
 						newColor = (Color)sourceValue;
 
@@ -482,7 +481,7 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(ChromeDeactivatedBackgroundProperty); }
 			set { SetValue(ChromeDeactivatedBackgroundProperty, value); }
 		}
-		private static Brush _deactivatedBackground = new SolidColorBrush(Color.FromRgb(235, 235, 235));
+		private static readonly Brush _deactivatedBackground = new SolidColorBrush(Color.FromRgb(235, 235, 235));
 		public static readonly DependencyProperty ChromeDeactivatedBackgroundProperty =
 			DependencyProperty.Register(
 				"ChromeDeactivatedBackground",
@@ -531,7 +530,7 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(ChromeBorderBrushProperty); }
 			set { SetValue(ChromeBorderBrushProperty, value); }
 		}
-		private static Brush _chromeBorderBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
+		private static readonly Brush _chromeBorderBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
 		public static readonly DependencyProperty ChromeBorderBrushProperty =
 			DependencyProperty.Register(
 				"ChromeBorderBrush",

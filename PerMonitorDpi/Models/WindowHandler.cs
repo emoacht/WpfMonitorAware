@@ -255,7 +255,7 @@ namespace PerMonitorDpi.Models
 						NativeMacro.GetLoWord((uint)wParam),
 						NativeMacro.GetHiWord((uint)wParam));
 
-					Debug.WriteLine(String.Format("DPICHANGED {0} -> {1}", oldDpi.X, MonitorDpi.X));
+					Debug.WriteLine("DPICHANGED {0} -> {1}", oldDpi.X, MonitorDpi.X);
 
 					if (MonitorDpi.Equals(oldDpi))
 						break;
@@ -353,7 +353,7 @@ namespace PerMonitorDpi.Models
 					break;
 
 				case (int)WindowMessage.WM_SIZE:
-					Debug.WriteLine("SIZE", (uint)wParam);
+					Debug.WriteLine("SIZE");
 					
 					if ((uint)wParam == NativeMethod.SIZE_RESTORED)
 					{
@@ -410,14 +410,14 @@ namespace PerMonitorDpi.Models
 						{
 							case WindowStatus.None:
 							case WindowStatus.LocationChanged:
-								Debug.WriteLine(String.Format("Old Size: {0}-{1}", targetWindow.Width, targetWindow.Height));
+								Debug.WriteLine("Old Size: {0}-{1}", targetWindow.Width, targetWindow.Height);
 
 								targetWindow.Left = testRect.Left;
 								targetWindow.Top = testRect.Top;
 								targetWindow.Width = testRect.Width;
 								targetWindow.Height = testRect.Height;
 
-								Debug.WriteLine(String.Format("New Size: {0}-{1}", targetWindow.Width, targetWindow.Height));
+								Debug.WriteLine("New Size: {0}-{1}", targetWindow.Width, targetWindow.Height);
 								break;
 
 							case WindowStatus.SizeChanged:

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -18,7 +17,7 @@ using PerMonitorDpi.Views;
 
 using WpfExtendedWindow.Views.Controls;
 
-namespace WpfExtendedWindow
+namespace WpfExtendedWindow.Views
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
