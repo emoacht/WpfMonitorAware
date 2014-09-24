@@ -121,8 +121,8 @@ namespace PerMonitorDpi.Models
 		/// <summary>
 		/// DPI changed event
 		/// </summary>
-		/// <remarks>This event will be fired when DPI of target Window has changed. It is not necessarily 
-		/// the same timing when DPI of the monitor to which target Window belongs has changed.</remarks>
+		/// <remarks>This event will be fired when DPI of target Window is changed. It is not necessarily 
+		/// the same timing when DPI of the monitor to which target Window belongs is changed.</remarks>
 		public event EventHandler DpiChanged;
 
 		#endregion

@@ -80,7 +80,7 @@ namespace PerMonitorDpi.Models
 		}
 
 
-		#region INotifyPropertyChanged Member
+		#region INotifyPropertyChanged member
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

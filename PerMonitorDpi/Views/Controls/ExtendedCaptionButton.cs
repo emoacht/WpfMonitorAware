@@ -52,7 +52,7 @@ namespace PerMonitorDpi.Views.Controls
 					});
 			}
 		}
-
+		
 
 		#region Property
 
@@ -60,7 +60,7 @@ namespace PerMonitorDpi.Views.Controls
 		/// Whether the owner Window is about to be activated (internal)
 		/// </summary>
 		/// <remarks>This property will be changed when the Window is about to be activated or deactivated.
-		/// For binding only between code behinds.</remarks>
+		/// For binding only between code behind.</remarks>
 		internal bool IsAboutActive
 		{
 			get { return (bool)GetValue(IsAboutActiveProperty); }
@@ -82,7 +82,7 @@ namespace PerMonitorDpi.Views.Controls
 					}));
 
 		/// <summary>
-		/// Caption button background brush when the owner Window is activated
+		/// Caption button background Brush when the owner Window is activated
 		/// </summary>
 		/// <remarks>Default value (Transparent) is to make whole button area hit test visible.</remarks>
 		public Brush NormalBackground
@@ -98,7 +98,7 @@ namespace PerMonitorDpi.Views.Controls
 				new FrameworkPropertyMetadata(Brushes.Transparent));
 
 		/// <summary>
-		/// Caption button background brush when the owner Window is deactivated
+		/// Caption button background Brush when the owner Window is deactivated
 		/// </summary>
 		/// <remarks>Default value (Transparent) is to make whole button area hit test visible.</remarks>
 		public Brush DeactivatedBackground

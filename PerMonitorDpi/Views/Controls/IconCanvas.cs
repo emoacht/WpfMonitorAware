@@ -19,7 +19,7 @@ namespace PerMonitorDpi.Views.Controls
 			this.Width = 16D;
 			this.Height = 16D;
 		}
-
+		
 		protected override void OnInitialized(EventArgs e)
 		{
 			base.OnInitialized(e);
@@ -31,7 +31,7 @@ namespace PerMonitorDpi.Views.Controls
 		#region Property
 
 		/// <summary>
-		/// Icon foreground brush
+		/// Icon foreground Brush
 		/// </summary>
 		/// <remarks>Black by OS's default.</remarks>
 		public Brush Foreground
@@ -117,7 +117,7 @@ namespace PerMonitorDpi.Views.Controls
 		/// </summary>
 		/// <param name="drawingContext">DrawingContext of canvas</param>
 		/// <param name="factor">Factor from default DPI</param>
-		/// <param name="foreground">Icon foreground brush</param>
+		/// <param name="foreground">Icon foreground Brush</param>
 		private void Draw(DrawingContext drawingContext, double factor, Brush foreground)
 		{
 			var pen = new Pen(foreground, Math.Round(1D * factor) / factor); // 1 is base path thickness.

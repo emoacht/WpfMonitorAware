@@ -5,10 +5,40 @@ namespace PerMonitorDpi.Helper
 {
 	public static class WindowChromeColor
 	{
+		#region Win32
+
+		[DllImport("Dwmapi.dll", SetLastError = true)]
+		private static extern int DwmIsCompositionEnabled(
+			[MarshalAs(UnmanagedType.Bool)] out bool pfEnabled);
+
+		[DllImport("Dwmapi.dll", SetLastError = true)]
+		static extern void DwmGetColorizationColor(
+			out uint pcrColorization,
+			[MarshalAs(UnmanagedType.Bool)]out bool pfOpaqueBlend);
+
+		[DllImport("Dwmapi.dll", EntryPoint = "#127", SetLastError = true)] // Undocumented API
+		private static extern int DwmGetColorizationParameters(
+			out DWMCOLORIZATIONPARAMS parameters);
+
+		[StructLayout(LayoutKind.Sequential)]
+		private struct DWMCOLORIZATIONPARAMS
+		{
+			public uint colorizationColor;
+			public uint colorizationAfterglow;
+			public uint colorizationColorBalance;
+			public uint colorizationAfterglowBalance;
+			public uint colorizationBlurBalance;
+			public uint colorizationGlassReflectionIntensity;
+			public uint colorizationOpaqueBlend;
+		}
+
+		#endregion
+
+
 		/// <summary>
 		/// Get OS's window chrome color.
 		/// </summary>
-		/// <returns>Nullable of Color</returns>
+		/// <returns>Window chrome color</returns>
 		/// <remarks>This method is intended to get window chrome color of Windows 8 or newer.</remarks>
 		public static Color? GetChromeColor()
 		{
@@ -45,35 +75,5 @@ namespace PerMonitorDpi.Helper
 			// Blend the two colors using colorization color balance parameter.
 			return targetColor.ToBlended(baseColor, (double)(100 - parameters.colorizationColorBalance));
 		}
-
-
-		#region Win32
-
-		[DllImport("Dwmapi.dll", SetLastError = true)]
-		private static extern int DwmIsCompositionEnabled(
-			[MarshalAs(UnmanagedType.Bool)] out bool pfEnabled);
-
-		[DllImport("Dwmapi.dll", SetLastError = true)]
-		static extern void DwmGetColorizationColor(
-			out uint pcrColorization,
-			[MarshalAs(UnmanagedType.Bool)]out bool pfOpaqueBlend);
-
-		[DllImport("Dwmapi.dll", EntryPoint = "#127", SetLastError = true)] // Undocumented API
-		private static extern int DwmGetColorizationParameters(
-			out DWMCOLORIZATIONPARAMS parameters);
-
-		[StructLayout(LayoutKind.Sequential)]
-		private struct DWMCOLORIZATIONPARAMS
-		{
-			public uint colorizationColor;
-			public uint colorizationAfterglow;
-			public uint colorizationColorBalance;
-			public uint colorizationAfterglowBalance;
-			public uint colorizationBlurBalance;
-			public uint colorizationGlassReflectionIntensity;
-			public uint colorizationOpaqueBlend;
-		}
-
-		#endregion
 	}
 }

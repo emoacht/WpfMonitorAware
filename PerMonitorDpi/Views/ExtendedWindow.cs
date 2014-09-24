@@ -118,6 +118,9 @@ namespace PerMonitorDpi.Views
 
 		private const string defaultCaptionThemeUriString = @"/PerMonitorDpi;component/Views/Themes/DefaultCaptionTheme.xaml";
 
+		/// <summary>
+		/// Window theme from ExtendedTheme
+		/// </summary>
 		public ExtendedTheme Theme
 		{
 			get { return (ExtendedTheme)GetValue(ThemeProperty); }
@@ -132,6 +135,9 @@ namespace PerMonitorDpi.Views
 					ExtendedTheme.Default,
 					(d, e) => ((ExtendedWindow)d).ThemeUri = themeUriMap[(ExtendedTheme)e.NewValue]));
 
+		/// <summary>
+		/// Window theme Uri
+		/// </summary>
 		public string ThemeUri
 		{
 			get { return (string)GetValue(ThemeUriProperty); }
@@ -423,7 +429,7 @@ namespace PerMonitorDpi.Views
 					(d, e) => ((ExtendedWindow)d).isDueCheckDefaultChromeBackground = (bool)e.NewValue));
 
 		/// <summary>
-		/// OS's default chrome background brush when a Window is activated (public readonly)
+		/// OS's default chrome background Brush when a Window is activated (public readonly)
 		/// </summary>
 		/// <remarks>Default value (SystemColors.ActiveCaptionBrush) is merely for fall back.</remarks>
 		public Brush DefaultChromeBackground
@@ -440,7 +446,7 @@ namespace PerMonitorDpi.Views
 		public static readonly DependencyProperty DefaultChromeBackgroundProperty = DefaultChromeBackgroundPropertyKey.DependencyProperty;
 
 		/// <summary>
-		/// Chrome background brush when a Window is activated
+		/// Chrome background Brush when a Window is activated
 		/// </summary>
 		public Brush ChromeBackground
 		{
@@ -457,7 +463,7 @@ namespace PerMonitorDpi.Views
 					(d, e) => ((ExtendedWindow)d).isDueCheckBackground = true));
 
 		/// <summary>
-		/// Chrome foreground brush when a Window is activated
+		/// Chrome foreground Brush when a Window is activated
 		/// </summary>
 		/// <remarks>Black by OS's default.</remarks>
 		public Brush ChromeForeground
@@ -473,7 +479,7 @@ namespace PerMonitorDpi.Views
 				new FrameworkPropertyMetadata(Brushes.Black));
 
 		/// <summary>
-		/// Chrome background brush when a Window is deactivated
+		/// Chrome background Brush when a Window is deactivated
 		/// </summary>
 		/// <remarks>Default value (#FFebebeb) is for OS's default.</remarks>
 		public Brush ChromeDeactivatedBackground
@@ -490,7 +496,7 @@ namespace PerMonitorDpi.Views
 				new FrameworkPropertyMetadata(_deactivatedBackground));
 
 		/// <summary>
-		/// Chrome foreground brush when a Window is deactivated
+		/// Chrome foreground Brush when a Window is deactivated
 		/// </summary>
 		/// <remarks>Black by OS's default.</remarks>
 		public Brush ChromeDeactivatedForeground
@@ -522,7 +528,7 @@ namespace PerMonitorDpi.Views
 				new FrameworkPropertyMetadata(new Thickness(1D)));
 
 		/// <summary>
-		/// Chrome border brush
+		/// Chrome border Brush
 		/// </summary>
 		/// <remarks>Default value (#3C000000) is for reproducing OS's default.</remarks>
 		public Brush ChromeBorderBrush
@@ -539,7 +545,7 @@ namespace PerMonitorDpi.Views
 				new FrameworkPropertyMetadata(_chromeBorderBrush));
 
 		/// <summary>
-		/// Title bar background brush
+		/// Title bar background Brush
 		/// </summary>
 		public Brush TitleBarBackground
 		{
@@ -698,7 +704,7 @@ namespace PerMonitorDpi.Views
 				new FrameworkPropertyMetadata(new Thickness(1D)));
 
 		/// <summary>
-		/// Content border brush
+		/// Content border Brush
 		/// </summary>
 		/// <remarks>Default value is the same as that of ChromeBorderBrush.</remarks>
 		public Brush ContentBorderBrush
@@ -771,6 +777,9 @@ namespace PerMonitorDpi.Views
 
 		#region Method
 
+		/// <summary>
+		/// Adjust layout of Window parts.
+		/// </summary>
 		protected void AdjustLayout()
 		{
 			var factorFromDefaultX = (double)WindowHandler.WindowDpi.X / Dpi.Default.X;
@@ -861,9 +870,9 @@ namespace PerMonitorDpi.Views
 		private Brush chromeBackgroundActual = Brushes.Transparent;
 
 		/// <summary>
-		/// Caption button background brush (internal)
+		/// Caption button background Brush (internal)
 		/// </summary>
-		/// <remarks>For binding only between code behinds.</remarks>
+		/// <remarks>For binding only between code behind.</remarks>
 		internal Brush CaptionButtonBackground
 		{
 			get { return (Brush)GetValue(CaptionButtonBackgroundProperty); }
@@ -882,7 +891,7 @@ namespace PerMonitorDpi.Views
 		/// Whether a Window is about to be activated (internal)
 		/// </summary>
 		/// <remarks>This property will be changed when the Window is about to be activated or deactivated.
-		/// For binding only between code behinds.</remarks>
+		/// For binding only between code behind.</remarks>
 		internal bool IsAboutActive
 		{
 			get { return (bool)GetValue(IsAboutActiveProperty); }

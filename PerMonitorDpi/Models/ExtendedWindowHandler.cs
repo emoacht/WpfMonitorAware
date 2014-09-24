@@ -20,7 +20,7 @@ namespace PerMonitorDpi.Models
 		/// <summary>
 		/// DWM colorization color changed event
 		/// </summary>
-		/// <remarks>This event will be fired when default Window chrome color has been changed.</remarks>
+		/// <remarks>This event will be fired when default Window chrome color is changed.</remarks>
 		internal event EventHandler DwmColorizationColorChanged;
 
 		#endregion

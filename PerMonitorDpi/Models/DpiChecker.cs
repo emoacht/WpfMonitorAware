@@ -15,6 +15,7 @@ namespace PerMonitorDpi.Models
 		/// <summary>
 		/// Check if current process is Per-Monitor DPI aware.
 		/// </summary>
+		/// <returns>True if Per-Monitor DPI aware</returns>
 		public static bool IsPerMonitorDpiAware()
 		{
 			var awareness = GetDpiAwareness();
@@ -27,7 +28,7 @@ namespace PerMonitorDpi.Models
 		/// <summary>
 		/// Get DPI awareness of current process.
 		/// </summary>
-		/// <returns>If succeeded, Nullable of PROCESS_DPI_AWARENESS. If failed, null.</returns>
+		/// <returns>If succeeded, Nullable PROCESS_DPI_AWARENESS. If failed, null.</returns>
 		public static NativeMethod.PROCESS_DPI_AWARENESS? GetDpiAwareness()
 		{
 			if (!OsVersion.IsEightOneOrNewer)
@@ -51,11 +52,11 @@ namespace PerMonitorDpi.Models
 		/// <summary>
 		/// Get system DPI.
 		/// </summary>
-		/// <param name="targetVisual">Target Visual</param>
+		/// <param name="sourceVisual">Source Visual</param>
 		/// <returns>DPI struct</returns>
-		public static Dpi GetSystemDpi(Visual targetVisual)
+		public static Dpi GetSystemDpi(Visual sourceVisual)
 		{
-			var source = PresentationSource.FromVisual(targetVisual);
+			var source = PresentationSource.FromVisual(sourceVisual);
 			if ((source == null) || (source.CompositionTarget == null))
 				return Dpi.Default;
 
@@ -95,14 +96,14 @@ namespace PerMonitorDpi.Models
 		/// <summary>
 		/// Get Per-Monitor DPI of the monitor to which a specified Window belongs.
 		/// </summary>
-		/// <param name="targetVisual">Target Window</param>
+		/// <param name="sourceVisual">Source Window</param>
 		/// <returns>DPI struct</returns>
-		public static Dpi GetDpiFromVisual(Visual targetVisual)
+		public static Dpi GetDpiFromVisual(Visual sourceVisual)
 		{
 			if (!OsVersion.IsEightOneOrNewer)
 				return Dpi.Default;
 
-			var source = PresentationSource.FromVisual(targetVisual) as HwndSource;
+			var source = PresentationSource.FromVisual(sourceVisual) as HwndSource;
 			if (source == null)
 				return Dpi.Default;
 
@@ -116,15 +117,15 @@ namespace PerMonitorDpi.Models
 		/// <summary>
 		/// Get Per-Monitor DPI of the monitor to which a specified Rect belongs.
 		/// </summary>
-		/// <param name="targetRect">Target Rect</param>
+		/// <param name="sourceRect">Source Rect</param>
 		/// <returns>DPI struct</returns>
-		public static Dpi GetDpiFromRect(NativeMethod.RECT targetRect)
+		public static Dpi GetDpiFromRect(NativeMethod.RECT sourceRect)
 		{
 			if (!OsVersion.IsEightOneOrNewer)
 				return Dpi.Default;
 
 			var handleMonitor = NativeMethod.MonitorFromRect(
-				ref targetRect,
+				ref sourceRect,
 				NativeMethod.MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST);
 
 			return GetDpi(handleMonitor);

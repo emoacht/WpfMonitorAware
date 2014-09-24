@@ -5,9 +5,9 @@ namespace PerMonitorDpi.Helper
 	public static class BrushExtenstion
 	{
 		/// <summary>
-		/// Check if a brush is Transparent.
+		/// Check if a Brush is Transparent.
 		/// </summary>
-		/// <param name="source">Source brush</param>
+		/// <param name="source">Source Brush</param>
 		/// <returns>True if Transparent</returns>
 		public static bool IsTransparent(this Brush source)
 		{
