@@ -9,6 +9,7 @@ namespace PerMonitorDpi.Helper
 		/// </summary>
 		/// <param name="source">Source double</param>
 		/// <param name="factor">Factor of ScaleTransform</param>
+		/// <returns>Rounded double</returns>
 		public static double ToRounded(this double source, double factor)
 		{
 			if (factor <= 0)

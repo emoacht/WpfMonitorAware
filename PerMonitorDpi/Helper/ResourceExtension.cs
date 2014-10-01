@@ -35,7 +35,7 @@ namespace PerMonitorDpi.Helper
 			}
 			catch (IOException ex)
 			{
-				Debug.WriteLine(ex);
+				Debug.WriteLine("Failed to apply resources to Application resources. {0}", ex);
 				return;
 			}
 
@@ -68,7 +68,7 @@ namespace PerMonitorDpi.Helper
 			}
 			catch (IOException ex)
 			{
-				Debug.WriteLine(ex);
+				Debug.WriteLine("Failed to apply resources to ContentControl resources. {0}", ex);
 				return;
 			}
 

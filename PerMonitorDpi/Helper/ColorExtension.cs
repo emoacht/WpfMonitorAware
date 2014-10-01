@@ -15,7 +15,7 @@ namespace PerMonitorDpi.Helper
 			if (source.A == (byte)255)
 				return source;
 
-			var perc = (double)(255 - source.A) / 255D * 100D;
+			var perc = (double)(255 - source.A) * 100D / 255D;
 
 			return BlendColor(source, Colors.White, perc);
 		}

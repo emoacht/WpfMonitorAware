@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace WpfPerMonitorDpiBehavior
+namespace WpfPerMonitorDpiBehavior.Views
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

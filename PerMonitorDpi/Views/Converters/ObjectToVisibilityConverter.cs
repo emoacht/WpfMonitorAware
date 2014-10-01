@@ -15,7 +15,7 @@ namespace PerMonitorDpi.Views.Converters
 		/// <param name="targetType"></param>
 		/// <param name="parameter"></param>
 		/// <param name="culture"></param>
-		/// <returns>If not null, return Visibility.Visible. If null, return Visibility.Collapsed.</returns>
+		/// <returns>If not null, Visibility.Visible. If null, Visibility.Collapsed.</returns>
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			return (value != null) ? Visibility.Visible : Visibility.Collapsed;

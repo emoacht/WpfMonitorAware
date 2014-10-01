@@ -37,16 +37,16 @@ namespace WpfExtendedWindow.Views.Controls
 					false, // Default value must be false.
 					async (d, e) =>
 					{
-						if ((bool)e.NewValue)
-						{
-							var circle = (DropCircle)d;
-							circle.Opacity = 1;
+						if (!(bool) e.NewValue)
+							return;
 
-							await Task.Delay(TimeSpan.FromSeconds(1.6));
+						var circle = (DropCircle)d;
+						circle.Opacity = 1;
 
-							circle.IsAnimating = false;
-							circle.Opacity = 0;
-						}
+						await Task.Delay(TimeSpan.FromSeconds(1.6));
+
+						circle.IsAnimating = false;
+						circle.Opacity = 0;
 					}));
 
 		protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
@@ -61,14 +61,9 @@ namespace WpfExtendedWindow.Views.Controls
 
 		private void UpdateStates(bool useTransitions)
 		{
-			if (IsAnimating)
-			{
-				VisualStateManager.GoToState(this, "Animating", useTransitions);
-			}
-			else
-			{
-				VisualStateManager.GoToState(this, "Normal", useTransitions);
-			}
+			var state = IsAnimating ? "Animating" : "Normal";
+
+			VisualStateManager.GoToState(this, state, useTransitions);
 		}
 	}
 }

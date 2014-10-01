@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shell;
 using System.Windows.Threading;
 
 using PerMonitorDpi.Helper;
@@ -108,7 +108,7 @@ namespace PerMonitorDpi.Views
 
 		#region Resource
 
-		private static readonly Dictionary<ExtendedTheme, string> themeUriStringMap = new Dictionary<ExtendedTheme, string>() 
+		private static readonly Dictionary<ExtendedTheme, string> themeUriMap = new Dictionary<ExtendedTheme, string>() 
 		{
 			{ExtendedTheme.Default, String.Empty},
 			{ExtendedTheme.Plain, @"/PerMonitorDpi;component/Views/Themes/PlainTheme.xaml"},
@@ -118,6 +118,9 @@ namespace PerMonitorDpi.Views
 
 		private const string defaultCaptionThemeUriString = @"/PerMonitorDpi;component/Views/Themes/DefaultCaptionTheme.xaml";
 
+		/// <summary>
+		/// Window theme from ExtendedTheme
+		/// </summary>
 		public ExtendedTheme Theme
 		{
 			get { return (ExtendedTheme)GetValue(ThemeProperty); }
@@ -130,8 +133,11 @@ namespace PerMonitorDpi.Views
 				typeof(ExtendedWindow),
 				new FrameworkPropertyMetadata(
 					ExtendedTheme.Default,
-					(d, e) => ((ExtendedWindow)d).ThemeUri = themeUriStringMap[(ExtendedTheme)e.NewValue]));
+					(d, e) => ((ExtendedWindow)d).ThemeUri = themeUriMap[(ExtendedTheme)e.NewValue]));
 
+		/// <summary>
+		/// Window theme Uri
+		/// </summary>
 		public string ThemeUri
 		{
 			get { return (string)GetValue(ThemeUriProperty); }
@@ -192,7 +198,7 @@ namespace PerMonitorDpi.Views
 				if (sourceDictionary.Contains(key))
 				{
 					var sourceValue = sourceDictionary[key];
-					if (sourceValue.GetType() == typeof(Color))
+					if (sourceValue is Color)
 					{
 						newColor = (Color)sourceValue;
 
@@ -423,7 +429,7 @@ namespace PerMonitorDpi.Views
 					(d, e) => ((ExtendedWindow)d).isDueCheckDefaultChromeBackground = (bool)e.NewValue));
 
 		/// <summary>
-		/// OS's default chrome background brush when a Window is activated (public readonly)
+		/// OS's default chrome background Brush when a Window is activated (public readonly)
 		/// </summary>
 		/// <remarks>Default value (SystemColors.ActiveCaptionBrush) is merely for fall back.</remarks>
 		public Brush DefaultChromeBackground
@@ -440,7 +446,7 @@ namespace PerMonitorDpi.Views
 		public static readonly DependencyProperty DefaultChromeBackgroundProperty = DefaultChromeBackgroundPropertyKey.DependencyProperty;
 
 		/// <summary>
-		/// Chrome background brush when a Window is activated
+		/// Chrome background Brush when a Window is activated
 		/// </summary>
 		public Brush ChromeBackground
 		{
@@ -457,7 +463,7 @@ namespace PerMonitorDpi.Views
 					(d, e) => ((ExtendedWindow)d).isDueCheckBackground = true));
 
 		/// <summary>
-		/// Chrome foreground brush when a Window is activated
+		/// Chrome foreground Brush when a Window is activated
 		/// </summary>
 		/// <remarks>Black by OS's default.</remarks>
 		public Brush ChromeForeground
@@ -473,7 +479,7 @@ namespace PerMonitorDpi.Views
 				new FrameworkPropertyMetadata(Brushes.Black));
 
 		/// <summary>
-		/// Chrome background brush when a Window is deactivated
+		/// Chrome background Brush when a Window is deactivated
 		/// </summary>
 		/// <remarks>Default value (#FFebebeb) is for OS's default.</remarks>
 		public Brush ChromeDeactivatedBackground
@@ -481,7 +487,7 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(ChromeDeactivatedBackgroundProperty); }
 			set { SetValue(ChromeDeactivatedBackgroundProperty, value); }
 		}
-		private static Brush _deactivatedBackground = new SolidColorBrush(Color.FromRgb(235, 235, 235));
+		private static readonly Brush _deactivatedBackground = new SolidColorBrush(Color.FromRgb(235, 235, 235));
 		public static readonly DependencyProperty ChromeDeactivatedBackgroundProperty =
 			DependencyProperty.Register(
 				"ChromeDeactivatedBackground",
@@ -490,7 +496,7 @@ namespace PerMonitorDpi.Views
 				new FrameworkPropertyMetadata(_deactivatedBackground));
 
 		/// <summary>
-		/// Chrome foreground brush when a Window is deactivated
+		/// Chrome foreground Brush when a Window is deactivated
 		/// </summary>
 		/// <remarks>Black by OS's default.</remarks>
 		public Brush ChromeDeactivatedForeground
@@ -522,7 +528,7 @@ namespace PerMonitorDpi.Views
 				new FrameworkPropertyMetadata(new Thickness(1D)));
 
 		/// <summary>
-		/// Chrome border brush
+		/// Chrome border Brush
 		/// </summary>
 		/// <remarks>Default value (#3C000000) is for reproducing OS's default.</remarks>
 		public Brush ChromeBorderBrush
@@ -530,7 +536,7 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(ChromeBorderBrushProperty); }
 			set { SetValue(ChromeBorderBrushProperty, value); }
 		}
-		private static Brush _chromeBorderBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
+		private static readonly Brush _chromeBorderBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
 		public static readonly DependencyProperty ChromeBorderBrushProperty =
 			DependencyProperty.Register(
 				"ChromeBorderBrush",
@@ -539,7 +545,7 @@ namespace PerMonitorDpi.Views
 				new FrameworkPropertyMetadata(_chromeBorderBrush));
 
 		/// <summary>
-		/// Title bar background brush
+		/// Title bar background Brush
 		/// </summary>
 		public Brush TitleBarBackground
 		{
@@ -556,26 +562,9 @@ namespace PerMonitorDpi.Views
 					(d, e) => ((ExtendedWindow)d).isDueCheckBackground = true));
 
 		/// <summary>
-		/// Chrome caption height for WindowChrome.CaptionHeight (public readonly)
-		/// </summary>
-		public double ChromeCaptionHeight
-		{
-			get { return (double)GetValue(ChromeCaptionHeightProperty); }
-			private set { SetValue(ChromeCaptionHeightPropertyKey, value); }
-		}
-		private static readonly DependencyPropertyKey ChromeCaptionHeightPropertyKey =
-			DependencyProperty.RegisterReadOnly(
-				"ChromeCaptionHeight",
-				typeof(double),
-				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(SystemParameters.CaptionHeight));
-		public static readonly DependencyProperty ChromeCaptionHeightProperty = ChromeCaptionHeightPropertyKey.DependencyProperty;
-
-		/// <summary>
 		/// Title bar height when a Window is other than maximized
 		/// </summary>
-		/// <remarks>
-		/// This height includes neither chrome outer border thickness nor chrome inner border thickness. 
+		/// <remarks>This height includes neither chrome outer border thickness nor chrome inner border thickness. 
 		/// By OS's default, title bar height (when a window is maximized) will be sum of 
 		/// SystemParameters.WindowResizeBorderThickness.Top and SystemParameters.WindowNonClientFrameThickness.Top
 		/// which includes chrome border thickness.</remarks>
@@ -715,7 +704,7 @@ namespace PerMonitorDpi.Views
 				new FrameworkPropertyMetadata(new Thickness(1D)));
 
 		/// <summary>
-		/// Content border brush
+		/// Content border Brush
 		/// </summary>
 		/// <remarks>Default value is the same as that of ChromeBorderBrush.</remarks>
 		public Brush ContentBorderBrush
@@ -788,6 +777,9 @@ namespace PerMonitorDpi.Views
 
 		#region Method
 
+		/// <summary>
+		/// Adjust layout of Window parts.
+		/// </summary>
 		protected void AdjustLayout()
 		{
 			var factorFromDefaultX = (double)WindowHandler.WindowDpi.X / Dpi.Default.X;
@@ -856,7 +848,9 @@ namespace PerMonitorDpi.Views
 			// Set caption height for WindowChrome.CaptionHeight.
 			captionHeight += Math.Round((TitleBarGrid.Height + ContentBorderThickness.Top) * factorFromSystemY);
 
-			ChromeCaptionHeight = Math.Max(captionHeight - SystemParameters.WindowResizeBorderThickness.Top, 0D);
+			var windowChrome = WindowChrome.GetWindowChrome(this);
+			if (windowChrome != null)
+				windowChrome.CaptionHeight = Math.Max(captionHeight - SystemParameters.WindowResizeBorderThickness.Top, 0D);
 		}
 
 		/// <summary>
@@ -876,9 +870,9 @@ namespace PerMonitorDpi.Views
 		private Brush chromeBackgroundActual = Brushes.Transparent;
 
 		/// <summary>
-		/// Caption button background brush (internal)
+		/// Caption button background Brush (internal)
 		/// </summary>
-		/// <remarks>For binding only between code behinds.</remarks>
+		/// <remarks>For binding only between code behind.</remarks>
 		internal Brush CaptionButtonBackground
 		{
 			get { return (Brush)GetValue(CaptionButtonBackgroundProperty); }
@@ -897,7 +891,7 @@ namespace PerMonitorDpi.Views
 		/// Whether a Window is about to be activated (internal)
 		/// </summary>
 		/// <remarks>This property will be changed when the Window is about to be activated or deactivated.
-		/// For binding only between code behinds.</remarks>
+		/// For binding only between code behind.</remarks>
 		internal bool IsAboutActive
 		{
 			get { return (bool)GetValue(IsAboutActiveProperty); }

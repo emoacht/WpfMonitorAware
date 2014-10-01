@@ -12,7 +12,7 @@ namespace PerMonitorDpi.Models
 		/// Window activated changed event
 		/// </summary> 
 		/// <remarks>
-		/// Args true: Window is being activated.
+		/// Args true:  Window is being activated.
 		/// Args false: Window is being deactivated.
 		/// </remarks>
 		internal event EventHandler<bool> WindowActivatedChanged;
@@ -20,7 +20,7 @@ namespace PerMonitorDpi.Models
 		/// <summary>
 		/// DWM colorization color changed event
 		/// </summary>
-		/// <remarks>This event will be fired when default Window chrome color has been changed.</remarks>
+		/// <remarks>This event will be fired when default Window chrome color is changed.</remarks>
 		internal event EventHandler DwmColorizationColorChanged;
 
 		#endregion
@@ -31,27 +31,31 @@ namespace PerMonitorDpi.Models
 			switch (msg)
 			{
 				case (int)WindowMessage.WM_ACTIVATE:
-					var handler1 = WindowActivatedChanged;
-					if (handler1 == null)
-						break;
-
-					switch (wParam.ToInt32())
 					{
-						case NativeMethod.WA_ACTIVE:
-						case NativeMethod.WA_CLICKACTIVE:
-							handler1(this, true); // Activated.
+						var handler = WindowActivatedChanged;
+						if (handler == null)
 							break;
 
-						case NativeMethod.WA_INACTIVE:
-							handler1(this, false); // Deactivated.
-							break;
+						switch (wParam.ToInt32())
+						{
+							case NativeMethod.WA_ACTIVE:
+							case NativeMethod.WA_CLICKACTIVE:
+								handler(this, true); // Activated.
+								break;
+
+							case NativeMethod.WA_INACTIVE:
+								handler(this, false); // Deactivated.
+								break;
+						}
 					}
 					break;
 
 				case (int)WindowMessage.WM_DWMCOLORIZATIONCOLORCHANGED:
-					var handler2 = DwmColorizationColorChanged;
-					if (handler2 != null)
-						handler2(this, EventArgs.Empty);
+					{
+						var handler = DwmColorizationColorChanged;
+						if (handler != null)
+							handler(this, EventArgs.Empty);
+					}
 					break;
 			}
 

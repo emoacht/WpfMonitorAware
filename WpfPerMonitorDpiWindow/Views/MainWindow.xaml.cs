@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 
 using PerMonitorDpi.Views;
 
-namespace WpfPerMonitorDpiWindow
+namespace WpfPerMonitorDpiWindow.Views
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

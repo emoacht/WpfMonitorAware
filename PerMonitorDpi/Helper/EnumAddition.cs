@@ -12,7 +12,7 @@ namespace PerMonitorDpi.Helper
 		/// <param name="value">Source string</param>
 		/// <param name="comparisonType">StringComparison option</param>
 		/// <returns>True if exists</returns>
-		/// <remarks>This method acts as Enum.IsDefined method with StringComparison option.</remarks>
+		/// <remarks>This method acts as Enum.IsDefined method added with StringComparison option.</remarks>
 		public static bool IsDefined(Type enumType, string value, StringComparison comparisonType)
 		{
 			if ((enumType == null) || (!enumType.IsEnum))
@@ -30,8 +30,8 @@ namespace PerMonitorDpi.Helper
 		/// <param name="value">Source string</param>
 		/// <param name="comparisonType">StringComparison option</param>
 		/// <returns>Result object of Enum</returns>
-		/// <remarks>This method acts as Enum.Parse method with StringComparison option.</remarks>
-		public static Object Parse(Type enumType, string value, StringComparison comparisonType)
+		/// <remarks>This method acts as Enum.Parse method added with StringComparison option.</remarks>
+		public static object Parse(Type enumType, string value, StringComparison comparisonType)
 		{
 			if ((enumType == null) || (!enumType.IsEnum))
 				throw new ArgumentException("enumType");
@@ -53,7 +53,7 @@ namespace PerMonitorDpi.Helper
 		/// <param name="result">Result object of Enum</param>
 		/// <param name="comparisonType">StringComparison option</param>
 		/// <returns>True if converted successfully</returns>
-		/// <remarks>This method acts as Enum.TryParse method with StringComparison option.</remarks>
+		/// <remarks>This method acts as Enum.TryParse method added with StringComparison option.</remarks>
 		public static bool TryParse<TEnum>(string value, out TEnum result, StringComparison comparisonType)
 		{
 			if (!typeof(TEnum).IsEnum)
