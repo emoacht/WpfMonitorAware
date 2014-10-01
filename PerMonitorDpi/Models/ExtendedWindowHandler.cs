@@ -12,7 +12,7 @@ namespace PerMonitorDpi.Models
 		/// Window activated changed event
 		/// </summary> 
 		/// <remarks>
-		/// Args true: Window is being activated.
+		/// Args true:  Window is being activated.
 		/// Args false: Window is being deactivated.
 		/// </remarks>
 		internal event EventHandler<bool> WindowActivatedChanged;

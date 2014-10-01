@@ -227,7 +227,7 @@ namespace PerMonitorDpi.Models
 		private bool isDpiChanged = false;
 
 		/// <summary>
-		/// Whether target Window's location or size has started to be changed.
+		/// Whether target Window's location or size has started to be changed
 		/// </summary>
 		private bool isEnteredSizeMove = false;
 
@@ -370,7 +370,7 @@ namespace PerMonitorDpi.Models
 		/// Object to block entering into change DPI process
 		/// </summary>
 		/// <remarks>
-		/// Null: Don't block.
+		/// Null:   Don't block.
 		/// Object: Block.
 		/// </remarks>
 		private object blocker = null;
