@@ -126,7 +126,7 @@
 								 Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center"
 								 Focusable="False"
 								 Foreground="{DynamicResource ExtendedCaptionButton.State.Normal.Foreground}"
-								 AncestorTransform="{Binding ElementName=chromeGrid, Path=LayoutTransform}"
+								 AncestorTransform="{Binding ElementName=PART_ChromeGrid, Path=LayoutTransform}"
 								 IconDrawing="{TemplateBinding IconDrawing}"
 								 RenderOptions.EdgeMode="Aliased"
 								 SnapsToDevicePixels="True"/>
@@ -329,32 +329,32 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type views:ExtendedWindow}">
-					<Border x:Name="chromeExtraBorder">
-						<Grid x:Name="chromeGrid"
+					<Border x:Name="PART_ChromeExtraBorder">
+						<Grid x:Name="PART_ChromeGrid"
 							  Background="{TemplateBinding Background}">
-							<Grid x:Name="titleBarShadowGrid"
+							<Grid x:Name="PART_TitleBarShadowGrid"
 								  VerticalAlignment="Top"
 								  Background="{TemplateBinding TitleBarBackground}"
 								  Grid.ZIndex ="-1">
 								<Grid.Height>
 									<MultiBinding Converter="{StaticResource DoubleSumConverterKey}">
-										<Binding ElementName="chromeBorder" Path="BorderThickness.Top"/>
-										<Binding ElementName="titleBarGrid" Path="Height"/>
+										<Binding ElementName="PART_ChromeBorder" Path="BorderThickness.Top"/>
+										<Binding ElementName="PART_TitleBarGrid" Path="Height"/>
 									</MultiBinding>
 								</Grid.Height>
 							</Grid>
 
-							<Border x:Name="chromeBorder"
+							<Border x:Name="PART_ChromeBorder"
 									BorderThickness="{TemplateBinding ChromeBorderThickness}"
 									BorderBrush="{TemplateBinding ChromeBorderBrush}">
-								<Grid x:Name="chromeContentGrid">
+								<Grid x:Name="PART_ChromeContentGrid">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto"/>
 										<RowDefinition Height="*"/>
 									</Grid.RowDefinitions>
 
 									<Grid Grid.Row="0"
-										  x:Name="titleBarGrid"
+										  x:Name="PART_TitleBarGrid"
 										  Height="{x:Static SystemParameters.CaptionHeight}"
 										  Background="Transparent">
 										<Grid.ColumnDefinitions>
@@ -377,7 +377,7 @@
 											<Grid>
 												<Grid.Height>
 													<MultiBinding Converter="{StaticResource DoubleCenterConverterKey}" ConverterParameter="Ceiling">
-														<Binding ElementName="titleBarGrid" Path="Height"/>
+														<Binding ElementName="PART_TitleBarGrid" Path="Height"/>
 														<Binding ElementName="titleBarIconImage" Path="Height"/>
 													</MultiBinding>
 												</Grid.Height>
@@ -399,12 +399,12 @@
 
 										<!-- Option -->
 										<Grid Grid.Column="3"
-											  x:Name="titleBarOptionGrid"
+											  x:Name="PART_TitleBarOptionGrid"
 											  WindowChrome.IsHitTestVisibleInChrome="True"/>
 
 										<!-- Caption buttons -->
 										<StackPanel Grid.Column="4"
-													x:Name="titleBarCaptionButtonPanel"
+													x:Name="PART_TitleBarCaptionButtonPanel"
 													HorizontalAlignment="Right" VerticalAlignment="Top"
 													Orientation="Horizontal">
 											<controls:ExtendedCaptionButton Style="{StaticResource ExtendedCaptionButton.MinimizeStyle}"/>
@@ -418,7 +418,7 @@
 									</Grid>
 
 									<Border Grid.Row="1"
-											x:Name="windowContentBorder"
+											x:Name="PART_WindowContentBorder"
 											Margin="{TemplateBinding ContentMargin}"
 											BorderThickness="{TemplateBinding ContentBorderThickness}"
 											BorderBrush="{TemplateBinding ContentBorderBrush}">

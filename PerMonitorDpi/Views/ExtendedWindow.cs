@@ -17,6 +17,15 @@ namespace PerMonitorDpi.Views
 	/// <summary>
 	/// Per-Monitor DPI aware and customizable chrome Window
 	/// </summary>
+	[TemplatePart(Name = "PART_ChromeExtraBorder", Type = typeof(Border))]
+	[TemplatePart(Name = "PART_ChromeGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_ChromeBorder", Type = typeof(Border))]
+	[TemplatePart(Name = "PART_ChromeContentGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_TitleBarShadowGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_TitleBarGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_TitleBarOptionGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_TitleBarCaptionButtonPanel", Type = typeof(StackPanel))]
+	[TemplatePart(Name = "PART_WindowContentBorder", Type = typeof(Border))]
 	public class ExtendedWindow : Window
 	{
 		public ExtendedWindow()
@@ -726,49 +735,55 @@ namespace PerMonitorDpi.Views
 
 		private Border ChromeExtraBorder // For private use only.
 		{
-			get { return _chromeExtraBorder ?? (_chromeExtraBorder = this.Template.FindName("chromeExtraBorder", this) as Border); }
+			get { return _chromeExtraBorder ?? (_chromeExtraBorder = this.GetTemplateChild("PART_ChromeExtraBorder") as Border); }
 		}
 		private Border _chromeExtraBorder;
 
 		protected Grid ChromeGrid
 		{
-			get { return _chromeGrid ?? (_chromeGrid = this.Template.FindName("chromeGrid", this) as Grid); }
+			get { return _chromeGrid ?? (_chromeGrid = this.GetTemplateChild("PART_ChromeGrid") as Grid); }
 		}
 		private Grid _chromeGrid;
 
 		protected Border ChromeBorder
 		{
-			get { return _chromeBorder ?? (_chromeBorder = this.Template.FindName("chromeBorder", this) as Border); }
+			get { return _chromeBorder ?? (_chromeBorder = this.GetTemplateChild("PART_ChromeBorder") as Border); }
 		}
 		private Border _chromeBorder;
 
+		protected Grid ChromeContentGrid
+		{
+			get { return _chromeContentGrid ?? (_chromeContentGrid = this.GetTemplateChild("PART_ChromeContentGrid") as Grid); }
+		}
+		private Grid _chromeContentGrid;
+
 		protected Grid TitleBarShadowGrid
 		{
-			get { return _titleBarShadowGrid ?? (_titleBarShadowGrid = this.Template.FindName("titleBarShadowGrid", this) as Grid); }
+			get { return _titleBarShadowGrid ?? (_titleBarShadowGrid = this.GetTemplateChild("PART_TitleBarShadowGrid") as Grid); }
 		}
 		private Grid _titleBarShadowGrid;
 
 		protected Grid TitleBarGrid
 		{
-			get { return _titleBarGrid ?? (_titleBarGrid = this.Template.FindName("titleBarGrid", this) as Grid); }
+			get { return _titleBarGrid ?? (_titleBarGrid = this.GetTemplateChild("PART_TitleBarGrid") as Grid); }
 		}
 		private Grid _titleBarGrid;
 
 		protected Grid TitleBarOptionGrid
 		{
-			get { return _titleBarOptionGrid ?? (_titleBarOptionGrid = this.Template.FindName("titleBarOptionGrid", this) as Grid); }
+			get { return _titleBarOptionGrid ?? (_titleBarOptionGrid = this.GetTemplateChild("PART_TitleBarOptionGrid") as Grid); }
 		}
 		private Grid _titleBarOptionGrid;
 
 		private StackPanel TitleBarCaptionButtonPanel // For private use only.
 		{
-			get { return _titleBarCaptionButtonPanel ?? (_titleBarCaptionButtonPanel = this.Template.FindName("titleBarCaptionButtonPanel", this) as StackPanel); }
+			get { return _titleBarCaptionButtonPanel ?? (_titleBarCaptionButtonPanel = this.GetTemplateChild("PART_TitleBarCaptionButtonPanel") as StackPanel); }
 		}
 		private StackPanel _titleBarCaptionButtonPanel;
 
 		protected Border WindowContentBorder
 		{
-			get { return _windowContentBorder ?? (_windowContentBorder = this.Template.FindName("windowContentBorder", this) as Border); }
+			get { return _windowContentBorder ?? (_windowContentBorder = this.GetTemplateChild("PART_WindowContentBorder") as Border); }
 		}
 		private Border _windowContentBorder;
 
