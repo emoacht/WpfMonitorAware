@@ -48,8 +48,6 @@ namespace PerMonitorDpi.Views
 		{
 			base.OnSourceInitialized(e);
 
-			System.Diagnostics.Debug.WriteLine("OnSourceInitialized");
-
 			WindowHandler.Initialize(this, ChromeGrid);
 
 			WindowHandler.DpiChanged += OnDpiChanged;
