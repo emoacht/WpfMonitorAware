@@ -371,22 +371,24 @@
 
 										<!-- Title bar Icon -->
 										<StackPanel Grid.Column="1"
-													Visibility="{TemplateBinding Icon, Converter={StaticResource ObjectToVisibilityConverterKey}}"
 													Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IconSize.Width,
-													Converter={StaticResource DoubleMultiplyConverterKey}, ConverterParameter=1.5}">
+													Converter={StaticResource DoubleMultiplyConverterKey}, ConverterParameter=1.5}"
+													Visibility="{Binding ElementName=PART_TitleBarIcon, Path=Visibility}">
 											<Grid>
 												<Grid.Height>
 													<MultiBinding Converter="{StaticResource DoubleCenterConverterKey}" ConverterParameter="Ceiling">
 														<Binding ElementName="PART_TitleBarGrid" Path="Height"/>
-														<Binding ElementName="titleBarIconImage" Path="Height"/>
+														<Binding ElementName="PART_TitleBarIcon" Path="Height"/>
 													</MultiBinding>
 												</Grid.Height>
 											</Grid>
-											<Image x:Name="titleBarIconImage"
+											<Image x:Name="PART_TitleBarIcon"
 												   Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IconSize.Width}"
 												   Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IconSize.Height}"
 												   HorizontalAlignment="Left" VerticalAlignment="Top"
-												   Source="{TemplateBinding Icon}"/>
+												   Source="{TemplateBinding Icon}"
+												   Visibility="{TemplateBinding Icon, Converter={StaticResource ObjectToVisibilityConverterKey}}"
+												   WindowChrome.IsHitTestVisibleInChrome="True"/>
 										</StackPanel>
 
 										<!-- Title bar text -->

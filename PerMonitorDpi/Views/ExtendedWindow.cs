@@ -23,6 +23,7 @@ namespace PerMonitorDpi.Views
 	[TemplatePart(Name = "PART_ChromeContentGrid", Type = typeof(Grid))]
 	[TemplatePart(Name = "PART_TitleBarShadowGrid", Type = typeof(Grid))]
 	[TemplatePart(Name = "PART_TitleBarGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_TitleBarIcon", Type = typeof(Image))]
 	[TemplatePart(Name = "PART_TitleBarOptionGrid", Type = typeof(Grid))]
 	[TemplatePart(Name = "PART_TitleBarCaptionButtonPanel", Type = typeof(StackPanel))]
 	[TemplatePart(Name = "PART_WindowContentBorder", Type = typeof(Border))]
@@ -44,6 +45,31 @@ namespace PerMonitorDpi.Views
 		}
 		private ExtendedWindowHandler _windowHandler;
 
+		public override void OnApplyTemplate()
+		{
+			base.OnApplyTemplate();
+
+			ChromeExtraBorder = this.GetTemplateChild("PART_ChromeExtraBorder") as Border;
+			ChromeGrid = this.GetTemplateChild("PART_ChromeGrid") as Grid;
+			ChromeBorder = this.GetTemplateChild("PART_ChromeBorder") as Border;
+			ChromeContentGrid = this.GetTemplateChild("PART_ChromeContentGrid") as Grid;
+
+			TitleBarShadowGrid = this.GetTemplateChild("PART_TitleBarShadowGrid") as Grid;
+			TitleBarGrid = this.GetTemplateChild("PART_TitleBarGrid") as Grid;
+
+			var titleBarIcon = this.GetTemplateChild("PART_TitleBarIcon") as Image;
+			if ((titleBarIcon != null) && (titleBarIcon.Visibility == Visibility.Visible))
+				TitleBarIcon = titleBarIcon;
+
+			var titleBarOptionGrid = this.GetTemplateChild("PART_TitleBarOptionGrid") as Grid;
+			if (titleBarOptionGrid != null)
+				TitleBarOptionGrid = titleBarOptionGrid;
+
+			TitleBarCaptionButtonPanel = this.GetTemplateChild("PART_TitleBarCaptionButtonPanel") as StackPanel;
+
+			WindowContentBorder = this.GetTemplateChild("PART_WindowContentBorder") as Border;
+		}
+
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
@@ -53,6 +79,9 @@ namespace PerMonitorDpi.Views
 			WindowHandler.DpiChanged += OnDpiChanged;
 			WindowHandler.WindowActivatedChanged += OnWindowActivatedChanged;
 			WindowHandler.DwmColorizationColorChanged += OnDwmColorizationColorChanged;
+
+			if (TitleBarIcon != null)
+				TitleBarIcon.MouseDown += OnTitleBarIconMouseDown;
 
 			AdjustLayout();
 			ManageCommands();
@@ -85,6 +114,13 @@ namespace PerMonitorDpi.Views
 			this.DragMove();
 		}
 
+		private void OnTitleBarIconMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			e.Handled = true;
+
+			HandleTitleBarIconClick(e);
+		}
+
 		protected override void OnStateChanged(EventArgs e)
 		{
 			base.OnStateChanged(e);
@@ -111,65 +147,34 @@ namespace PerMonitorDpi.Views
 			WindowHandler.WindowActivatedChanged -= OnWindowActivatedChanged;
 			WindowHandler.DwmColorizationColorChanged -= OnDwmColorizationColorChanged;
 
+			if (TitleBarIcon != null)
+				TitleBarIcon.MouseDown -= OnTitleBarIconMouseDown;
+
 			RemoveDragHandler();
 		}
 
 
 		#region Template Part
 
-		private Border ChromeExtraBorder // For private use only
-		{
-			get { return _chromeExtraBorder ?? (_chromeExtraBorder = this.GetTemplateChild("PART_ChromeExtraBorder") as Border); }
-		}
-		private Border _chromeExtraBorder;
+		private Border ChromeExtraBorder { get; set; } // For private use only
 
-		protected Grid ChromeGrid
-		{
-			get { return _chromeGrid ?? (_chromeGrid = this.GetTemplateChild("PART_ChromeGrid") as Grid); }
-		}
-		private Grid _chromeGrid;
+		protected Grid ChromeGrid { get; private set; }
 
-		protected Border ChromeBorder
-		{
-			get { return _chromeBorder ?? (_chromeBorder = this.GetTemplateChild("PART_ChromeBorder") as Border); }
-		}
-		private Border _chromeBorder;
+		protected Border ChromeBorder { get; private set; }
 
-		protected Grid ChromeContentGrid
-		{
-			get { return _chromeContentGrid ?? (_chromeContentGrid = this.GetTemplateChild("PART_ChromeContentGrid") as Grid); }
-		}
-		private Grid _chromeContentGrid;
+		protected Grid ChromeContentGrid { get; private set; }
 
-		protected Grid TitleBarShadowGrid
-		{
-			get { return _titleBarShadowGrid ?? (_titleBarShadowGrid = this.GetTemplateChild("PART_TitleBarShadowGrid") as Grid); }
-		}
-		private Grid _titleBarShadowGrid;
+		protected Grid TitleBarShadowGrid { get; private set; }
 
-		protected Grid TitleBarGrid
-		{
-			get { return _titleBarGrid ?? (_titleBarGrid = this.GetTemplateChild("PART_TitleBarGrid") as Grid); }
-		}
-		private Grid _titleBarGrid;
+		protected Grid TitleBarGrid { get; private set; }
 
-		protected Grid TitleBarOptionGrid
-		{
-			get { return _titleBarOptionGrid ?? (_titleBarOptionGrid = this.GetTemplateChild("PART_TitleBarOptionGrid") as Grid); }
-		}
-		private Grid _titleBarOptionGrid;
+		private Image TitleBarIcon { get; set; } // For private use only
 
-		private StackPanel TitleBarCaptionButtonPanel // For private use only
-		{
-			get { return _titleBarCaptionButtonPanel ?? (_titleBarCaptionButtonPanel = this.GetTemplateChild("PART_TitleBarCaptionButtonPanel") as StackPanel); }
-		}
-		private StackPanel _titleBarCaptionButtonPanel;
+		protected Grid TitleBarOptionGrid { get; private set; }
 
-		protected Border WindowContentBorder
-		{
-			get { return _windowContentBorder ?? (_windowContentBorder = this.GetTemplateChild("PART_WindowContentBorder") as Border); }
-		}
-		private Border _windowContentBorder;
+		private StackPanel TitleBarCaptionButtonPanel { get; set; } // For private use only
+
+		protected Border WindowContentBorder { get; private set; }
 
 		#endregion
 
@@ -1013,6 +1018,19 @@ namespace PerMonitorDpi.Views
 				TitleBarGrid.MouseLeftButtonDown -= OnDrag;
 
 			this.MouseLeftButtonDown -= OnDrag;
+		}
+
+		private void HandleTitleBarIconClick(MouseButtonEventArgs e)
+		{
+			if (e.ClickCount == 1) // Single click
+			{
+				var clickPoint = this.PointToScreen(e.GetPosition(null));
+				SystemCommands.ShowSystemMenu(this, new Point(clickPoint.X + 1, clickPoint.Y + 1));
+			}
+			else if ((e.ClickCount == 2) && (e.LeftButton == MouseButtonState.Pressed)) // Double Click
+			{
+				SystemCommands.CloseWindow(this);
+			}
 		}
 
 		#endregion
