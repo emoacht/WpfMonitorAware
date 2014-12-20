@@ -329,10 +329,10 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type views:ExtendedWindow}">
-					<Border x:Name="PART_ChromeExtraBorder">
+					<Border x:Name="PART_ChromeOutmostBorder">
 						<Grid x:Name="PART_ChromeGrid"
 							  Background="{TemplateBinding Background}">
-							<Grid x:Name="PART_TitleBarShadowGrid"
+							<Grid x:Name="PART_TitleBarBackGrid"
 								  VerticalAlignment="Top"
 								  Background="{TemplateBinding TitleBarBackground}"
 								  Grid.ZIndex ="-1">
@@ -371,7 +371,7 @@
 
 										<!-- Title bar Icon -->
 										<StackPanel Grid.Column="1"
-													Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IconSize.Width,
+													Width="{Binding ElementName=PART_TitleBarIcon, Path=Width,
 													Converter={StaticResource DoubleMultiplyConverterKey}, ConverterParameter=1.5}"
 													Visibility="{Binding ElementName=PART_TitleBarIcon, Path=Visibility}">
 											<Grid>
@@ -406,7 +406,7 @@
 
 										<!-- Caption buttons -->
 										<StackPanel Grid.Column="4"
-													x:Name="PART_TitleBarCaptionButtonPanel"
+													x:Name="PART_TitleBarCaptionButtonsPanel"
 													HorizontalAlignment="Right" VerticalAlignment="Top"
 													Orientation="Horizontal">
 											<controls:ExtendedCaptionButton Style="{StaticResource ExtendedCaptionButton.MinimizeStyle}"/>
