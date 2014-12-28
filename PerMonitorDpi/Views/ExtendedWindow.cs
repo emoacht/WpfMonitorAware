@@ -17,6 +17,16 @@ namespace PerMonitorDpi.Views
 	/// <summary>
 	/// Per-Monitor DPI aware and customizable chrome Window
 	/// </summary>
+	[TemplatePart(Name = "PART_ChromeOutmostBorder", Type = typeof(Border))]
+	[TemplatePart(Name = "PART_ChromeGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_ChromeBorder", Type = typeof(Border))]
+	[TemplatePart(Name = "PART_ChromeContentGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_TitleBarBackGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_TitleBarGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_TitleBarIcon", Type = typeof(Image))]
+	[TemplatePart(Name = "PART_TitleBarOptionGrid", Type = typeof(Grid))]
+	[TemplatePart(Name = "PART_TitleBarCaptionButtonsPanel", Type = typeof(StackPanel))]
+	[TemplatePart(Name = "PART_WindowContentBorder", Type = typeof(Border))]
 	public class ExtendedWindow : Window
 	{
 		public ExtendedWindow()
@@ -35,6 +45,26 @@ namespace PerMonitorDpi.Views
 		}
 		private ExtendedWindowHandler _windowHandler;
 
+		public override void OnApplyTemplate()
+		{
+			base.OnApplyTemplate();
+
+			ChromeOutmostBorder = this.GetTemplateChild("PART_ChromeOutmostBorder") as Border;
+			ChromeGrid = this.GetTemplateChild("PART_ChromeGrid") as Grid;
+			ChromeBorder = this.GetTemplateChild("PART_ChromeBorder") as Border;
+			ChromeContentGrid = this.GetTemplateChild("PART_ChromeContentGrid") as Grid;
+			TitleBarBackGrid = this.GetTemplateChild("PART_TitleBarBackGrid") as Grid;
+			TitleBarGrid = this.GetTemplateChild("PART_TitleBarGrid") as Grid;
+
+			var icon = this.GetTemplateChild("PART_TitleBarIcon") as Image;
+			if ((icon != null) && (icon.Visibility == Visibility.Visible))
+				TitleBarIcon = icon;
+
+			TitleBarOptionGrid = this.GetTemplateChild("PART_TitleBarOptionGrid") as Grid;
+			TitleBarCaptionButtonsPanel = this.GetTemplateChild("PART_TitleBarCaptionButtonsPanel") as StackPanel;
+			WindowContentBorder = this.GetTemplateChild("PART_WindowContentBorder") as Border;
+		}
+
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
@@ -44,6 +74,9 @@ namespace PerMonitorDpi.Views
 			WindowHandler.DpiChanged += OnDpiChanged;
 			WindowHandler.WindowActivatedChanged += OnWindowActivatedChanged;
 			WindowHandler.DwmColorizationColorChanged += OnDwmColorizationColorChanged;
+
+			if (TitleBarIcon != null)
+				TitleBarIcon.MouseDown += OnTitleBarIconMouseDown;
 
 			AdjustLayout();
 			ManageCommands();
@@ -73,7 +106,14 @@ namespace PerMonitorDpi.Views
 
 		private void OnDrag(object sender, MouseButtonEventArgs e)
 		{
+			e.Handled = true;
 			this.DragMove();
+		}
+
+		private void OnTitleBarIconMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			e.Handled = true;
+			ManageTitleBarIconClick(e);
 		}
 
 		protected override void OnStateChanged(EventArgs e)
@@ -102,8 +142,66 @@ namespace PerMonitorDpi.Views
 			WindowHandler.WindowActivatedChanged -= OnWindowActivatedChanged;
 			WindowHandler.DwmColorizationColorChanged -= OnDwmColorizationColorChanged;
 
+			if (TitleBarIcon != null)
+				TitleBarIcon.MouseDown -= OnTitleBarIconMouseDown;
+
 			RemoveDragHandler();
 		}
+
+
+		#region Template Part
+
+		/// <summary>
+		/// Window chrome outmost border (private use only)
+		/// </summary>
+		private Border ChromeOutmostBorder { get; set; }
+
+		/// <summary>
+		/// Window chrome grid
+		/// </summary>
+		protected Grid ChromeGrid { get; private set; }
+
+		/// <summary>
+		/// Window chrome border
+		/// </summary>
+		protected Border ChromeBorder { get; private set; }
+
+		/// <summary>
+		/// Window chrome content grid
+		/// </summary>
+		protected Grid ChromeContentGrid { get; private set; }
+
+		/// <summary>
+		/// Title bar back grid
+		/// </summary>
+		protected Grid TitleBarBackGrid { get; private set; }
+
+		/// <summary>
+		/// Title bar grid
+		/// </summary>
+		protected Grid TitleBarGrid { get; private set; }
+
+		/// <summary>
+		/// Title bar icon (private use only)
+		/// </summary>
+		private Image TitleBarIcon { get; set; }
+
+		/// <summary>
+		/// Title bar option grid
+		/// </summary>
+		protected Grid TitleBarOptionGrid { get; private set; }
+
+		/// <summary>
+		/// Title bar caption buttons' panel (private use only)
+		/// </summary>
+		private StackPanel TitleBarCaptionButtonsPanel { get; set; }
+
+		/// <summary>
+		/// Window content border
+		/// </summary>
+		protected Border WindowContentBorder { get; private set; }
+
+		#endregion
 
 
 		#region Resource
@@ -232,12 +330,15 @@ namespace PerMonitorDpi.Views
 
 		private void RecreateCaptionButtons()
 		{
-			TitleBarCaptionButtonPanel.Children.Clear();
+			if (TitleBarCaptionButtonsPanel != null)
+			{
+				TitleBarCaptionButtonsPanel.Children.Clear();
 
-			TitleBarCaptionButtonPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.MinimizeStyle") as Style });
-			TitleBarCaptionButtonPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.MaximizeStyle") as Style });
-			TitleBarCaptionButtonPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.RestoreStyle") as Style });
-			TitleBarCaptionButtonPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.CloseStyle") as Style });
+				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.MinimizeStyle") as Style });
+				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.MaximizeStyle") as Style });
+				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.RestoreStyle") as Style });
+				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.CloseStyle") as Style });
+			}
 		}
 
 		#endregion
@@ -722,59 +823,6 @@ namespace PerMonitorDpi.Views
 		#endregion
 
 
-		#region Access to FrameworkElement
-
-		private Border ChromeExtraBorder // For private use only.
-		{
-			get { return _chromeExtraBorder ?? (_chromeExtraBorder = this.Template.FindName("chromeExtraBorder", this) as Border); }
-		}
-		private Border _chromeExtraBorder;
-
-		protected Grid ChromeGrid
-		{
-			get { return _chromeGrid ?? (_chromeGrid = this.Template.FindName("chromeGrid", this) as Grid); }
-		}
-		private Grid _chromeGrid;
-
-		protected Border ChromeBorder
-		{
-			get { return _chromeBorder ?? (_chromeBorder = this.Template.FindName("chromeBorder", this) as Border); }
-		}
-		private Border _chromeBorder;
-
-		protected Grid TitleBarShadowGrid
-		{
-			get { return _titleBarShadowGrid ?? (_titleBarShadowGrid = this.Template.FindName("titleBarShadowGrid", this) as Grid); }
-		}
-		private Grid _titleBarShadowGrid;
-
-		protected Grid TitleBarGrid
-		{
-			get { return _titleBarGrid ?? (_titleBarGrid = this.Template.FindName("titleBarGrid", this) as Grid); }
-		}
-		private Grid _titleBarGrid;
-
-		protected Grid TitleBarOptionGrid
-		{
-			get { return _titleBarOptionGrid ?? (_titleBarOptionGrid = this.Template.FindName("titleBarOptionGrid", this) as Grid); }
-		}
-		private Grid _titleBarOptionGrid;
-
-		private StackPanel TitleBarCaptionButtonPanel // For private use only.
-		{
-			get { return _titleBarCaptionButtonPanel ?? (_titleBarCaptionButtonPanel = this.Template.FindName("titleBarCaptionButtonPanel", this) as StackPanel); }
-		}
-		private StackPanel _titleBarCaptionButtonPanel;
-
-		protected Border WindowContentBorder
-		{
-			get { return _windowContentBorder ?? (_windowContentBorder = this.Template.FindName("windowContentBorder", this) as Border); }
-		}
-		private Border _windowContentBorder;
-
-		#endregion
-
-
 		#region Method
 
 		/// <summary>
@@ -792,61 +840,86 @@ namespace PerMonitorDpi.Views
 			// Manage chrome border.
 			if (this.WindowState == WindowState.Maximized)
 			{
-				ChromeExtraBorder.BorderThickness = new Thickness(
-					SystemParameters.WindowResizeBorderThickness.Left + SystemParameters.WindowNonClientFrameThickness.Left,
-					SystemParameters.WindowResizeBorderThickness.Left + SystemParameters.WindowNonClientFrameThickness.Left, // Use Left values.
-					SystemParameters.WindowResizeBorderThickness.Right + SystemParameters.WindowNonClientFrameThickness.Right,
-					SystemParameters.WindowResizeBorderThickness.Bottom + SystemParameters.WindowNonClientFrameThickness.Bottom);
+				if (ChromeOutmostBorder != null)
+				{
+					ChromeOutmostBorder.BorderThickness = new Thickness(
+						SystemParameters.WindowResizeBorderThickness.Left + SystemParameters.WindowNonClientFrameThickness.Left,
+						SystemParameters.WindowResizeBorderThickness.Left + SystemParameters.WindowNonClientFrameThickness.Left, // Use Left values.
+						SystemParameters.WindowResizeBorderThickness.Right + SystemParameters.WindowNonClientFrameThickness.Right,
+						SystemParameters.WindowResizeBorderThickness.Bottom + SystemParameters.WindowNonClientFrameThickness.Bottom);
 
-				ChromeBorder.BorderThickness = new Thickness(0D);
+					captionHeight += ChromeOutmostBorder.BorderThickness.Top;
+				}
 
-				captionHeight += ChromeExtraBorder.BorderThickness.Top;
+				if (ChromeBorder != null)
+				{
+					ChromeBorder.BorderThickness = new Thickness(0D);
+				}
 			}
 			else
 			{
-				ChromeExtraBorder.BorderThickness = new Thickness(0D);
+				if (ChromeOutmostBorder != null)
+				{
+					ChromeOutmostBorder.BorderThickness = new Thickness(0D);
 
-				ChromeBorder.BorderThickness = new Thickness(
-					ChromeBorderThickness.Left / factorFromDefaultX,
-					ChromeBorderThickness.Top / factorFromDefaultY,
-					ChromeBorderThickness.Right / factorFromDefaultX,
-					ChromeBorderThickness.Bottom / factorFromDefaultY);
+					captionHeight += ChromeBorderThickness.Top;
+				}
 
-				captionHeight += ChromeBorderThickness.Top;
+				if (ChromeBorder != null)
+				{
+					ChromeBorder.BorderThickness = new Thickness(
+						ChromeBorderThickness.Left / factorFromDefaultX,
+						ChromeBorderThickness.Top / factorFromDefaultY,
+						ChromeBorderThickness.Right / factorFromDefaultX,
+						ChromeBorderThickness.Bottom / factorFromDefaultY);
+				}
 			}
 
 			// Manage title bar and content border.						
 			if ((this.WindowState == WindowState.Maximized) && !KeepsTitleContentMargin)
 			{
-				TitleBarGrid.Height = TitleBarMaximizedHeight.ToRounded(factorFromDefaultY);
-				TitleBarPaddingLeft = 0D;
+				if (TitleBarGrid != null)
+				{
+					TitleBarGrid.Height = TitleBarMaximizedHeight.ToRounded(factorFromDefaultY);
+					TitleBarPaddingLeft = 0D;
+				}
 
-				WindowContentBorder.Margin = new Thickness(0D);
-				WindowContentBorder.BorderThickness = new Thickness(
-					0D,
-					ContentBorderThickness.Top / factorFromDefaultY,
-					0D,
-					0D);
+				if (WindowContentBorder != null)
+				{
+					WindowContentBorder.Margin = new Thickness(0D);
+					WindowContentBorder.BorderThickness = new Thickness(
+						0D,
+						ContentBorderThickness.Top / factorFromDefaultY,
+						0D,
+						0D);
+				}
 			}
 			else
 			{
-				TitleBarGrid.Height = TitleBarNormalHeight.ToRounded(factorFromDefaultY);
-				TitleBarPaddingLeft = Math.Ceiling(Math.Max(TitleBarGrid.Height - IconSize.Height, 0D) / 2).ToRounded(factorFromDefaultX);
+				if (TitleBarGrid != null)
+				{
+					TitleBarGrid.Height = TitleBarNormalHeight.ToRounded(factorFromDefaultY);
+					TitleBarPaddingLeft = Math.Ceiling(Math.Max(TitleBarGrid.Height - IconSize.Height, 0D) / 2).ToRounded(factorFromDefaultX);
+				}
 
-				WindowContentBorder.Margin = new Thickness(
-					ContentMargin.Left.ToRounded(factorFromDefaultX),
-					ContentMargin.Top.ToRounded(factorFromDefaultY),
-					ContentMargin.Right.ToRounded(factorFromDefaultX),
-					ContentMargin.Bottom.ToRounded(factorFromDefaultY));
-				WindowContentBorder.BorderThickness = new Thickness(
-					ContentBorderThickness.Left / factorFromDefaultX,
-					ContentBorderThickness.Top / factorFromDefaultY,
-					ContentBorderThickness.Right / factorFromDefaultX,
-					ContentBorderThickness.Bottom / factorFromDefaultY);
+				if (WindowContentBorder != null)
+				{
+					WindowContentBorder.Margin = new Thickness(
+						ContentMargin.Left.ToRounded(factorFromDefaultX),
+						ContentMargin.Top.ToRounded(factorFromDefaultY),
+						ContentMargin.Right.ToRounded(factorFromDefaultX),
+						ContentMargin.Bottom.ToRounded(factorFromDefaultY));
+					WindowContentBorder.BorderThickness = new Thickness(
+						ContentBorderThickness.Left / factorFromDefaultX,
+						ContentBorderThickness.Top / factorFromDefaultY,
+						ContentBorderThickness.Right / factorFromDefaultX,
+						ContentBorderThickness.Bottom / factorFromDefaultY);
+				}
 			}
 
 			// Set caption height for WindowChrome.CaptionHeight.
-			captionHeight += Math.Round((TitleBarGrid.Height + ContentBorderThickness.Top) * factorFromSystemY);
+			if (TitleBarGrid != null)
+				captionHeight += Math.Round((TitleBarGrid.Height + ContentBorderThickness.Top) * factorFromSystemY);
 
 			var windowChrome = WindowChrome.GetWindowChrome(this);
 			if (windowChrome != null)
@@ -913,7 +986,8 @@ namespace PerMonitorDpi.Views
 			this.Background = chromeBackgroundActual;
 			this.Foreground = ChromeForeground;
 
-			TitleBarShadowGrid.Background = TitleBarBackground;
+			if (TitleBarBackGrid != null)
+				TitleBarBackGrid.Background = TitleBarBackground;
 		}
 
 		private void SetDeactivated()
@@ -923,7 +997,8 @@ namespace PerMonitorDpi.Views
 			this.Background = ChromeDeactivatedBackground;
 			this.Foreground = ChromeDeactivatedForeground;
 
-			TitleBarShadowGrid.Background = ChromeDeactivatedBackground;
+			if (TitleBarBackGrid != null)
+				TitleBarBackGrid.Background = ChromeDeactivatedBackground;
 		}
 
 		private void CheckBackground()
@@ -968,6 +1043,19 @@ namespace PerMonitorDpi.Views
 				TitleBarGrid.MouseLeftButtonDown -= OnDrag;
 
 			this.MouseLeftButtonDown -= OnDrag;
+		}
+
+		private void ManageTitleBarIconClick(MouseButtonEventArgs e)
+		{
+			if (e.ClickCount == 1) // Single click
+			{
+				var clickPoint = this.PointToScreen(e.GetPosition(null));
+				SystemCommands.ShowSystemMenu(this, new Point(clickPoint.X + 1, clickPoint.Y + 1));
+			}
+			else if ((e.ClickCount == 2) && (e.LeftButton == MouseButtonState.Pressed)) // Double Click
+			{
+				SystemCommands.CloseWindow(this);
+			}
 		}
 
 		#endregion

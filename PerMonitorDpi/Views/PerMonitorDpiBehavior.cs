@@ -9,6 +9,7 @@ namespace PerMonitorDpi.Views
 	/// <summary>
 	/// Behavior to make a window Per-Monitor DPI aware
 	/// </summary>
+	[TypeConstraint(typeof(Window))]
 	public class PerMonitorDpiBehavior : Behavior<Window>
 	{
 		protected override void OnAttached()
