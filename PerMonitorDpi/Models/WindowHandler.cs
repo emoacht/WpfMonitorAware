@@ -128,6 +128,8 @@ namespace PerMonitorDpi.Models
 		#endregion
 
 
+		#region Constructor
+
 		public WindowHandler()
 		{
 		}
@@ -137,6 +139,8 @@ namespace PerMonitorDpi.Models
 		{
 			Initialize(window, element);
 		}
+
+		#endregion
 
 
 		/// <summary>
@@ -160,6 +164,7 @@ namespace PerMonitorDpi.Models
 		{
 			if (window == null)
 				throw new ArgumentNullException("window");
+
 			if (!window.IsInitialized)
 				throw new InvalidOperationException("Target Window has not been initialized.");
 
@@ -222,7 +227,7 @@ namespace PerMonitorDpi.Models
 		private Size baseSize = Size.Empty;
 
 		/// <summary>
-		/// Whether DPI has changed after target Window's location is started to be changed
+		/// Whether DPI has changed after target Window's location has started to be changed
 		/// </summary>
 		private bool isDpiChanged = false;
 
@@ -232,12 +237,12 @@ namespace PerMonitorDpi.Models
 		private bool isEnteredSizeMove = false;
 
 		/// <summary>
-		/// Number of counts of WM_MOVE message
+		/// Count of WM_MOVE message
 		/// </summary>
 		private int countLocationChanged = 0;
 
 		/// <summary>
-		/// Number of counts of WM_SIZE message
+		/// Count of WM_SIZE message
 		/// </summary>
 		private int countSizeChanged = 0;
 

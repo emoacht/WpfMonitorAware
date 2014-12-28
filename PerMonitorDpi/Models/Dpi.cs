@@ -20,7 +20,6 @@ namespace PerMonitorDpi.Models
 			set
 			{
 				_x = value;
-
 				RaisePropertyChanged();
 			}
 		}
@@ -32,7 +31,6 @@ namespace PerMonitorDpi.Models
 			set
 			{
 				_y = value;
-
 				RaisePropertyChanged();
 			}
 		}

@@ -15,8 +15,12 @@ namespace PerMonitorDpi.Helper
 		/// <remarks>This method acts as Enum.IsDefined method added with StringComparison option.</remarks>
 		public static bool IsDefined(Type enumType, string value, StringComparison comparisonType)
 		{
-			if ((enumType == null) || (!enumType.IsEnum))
-				throw new ArgumentException("enumType");
+			if (enumType == null)
+				throw new ArgumentNullException("enumType");
+
+			if (!enumType.IsEnum)
+				throw new ArgumentException("The type must be Enum.", "enumType");
+
 			if (String.IsNullOrWhiteSpace(value))
 				throw new ArgumentNullException("value");
 
@@ -33,14 +37,18 @@ namespace PerMonitorDpi.Helper
 		/// <remarks>This method acts as Enum.Parse method added with StringComparison option.</remarks>
 		public static object Parse(Type enumType, string value, StringComparison comparisonType)
 		{
-			if ((enumType == null) || (!enumType.IsEnum))
-				throw new ArgumentException("enumType");
+			if (enumType == null)
+				throw new ArgumentNullException("enumType");
+
+			if (!enumType.IsEnum)
+				throw new ArgumentException("The type must be Enum.", "enumType");
+
 			if (String.IsNullOrWhiteSpace(value))
 				throw new ArgumentNullException("value");
 
 			var name = Enum.GetNames(enumType).FirstOrDefault(x => String.Compare(x, value, comparisonType) == 0);
 			if (name == null)
-				throw new ArgumentException("value");
+				throw new ArgumentException("The value must be included in Enum names.", "value");
 
 			return Enum.Parse(enumType, name);
 		}
@@ -57,7 +65,8 @@ namespace PerMonitorDpi.Helper
 		public static bool TryParse<TEnum>(string value, out TEnum result, StringComparison comparisonType)
 		{
 			if (!typeof(TEnum).IsEnum)
-				throw new ArgumentException("TEnum");
+				throw new ArgumentException("The type must be Enum.", "TEnum");
+
 			if (String.IsNullOrWhiteSpace(value))
 				throw new ArgumentNullException("value");
 
