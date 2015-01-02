@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace PerMonitorDpi.Helper
 {
-	public static class WindowChromeColor
+	internal static class WindowChromeColor
 	{
 		#region Win32
 

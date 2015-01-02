@@ -7,7 +7,7 @@ using System.Windows.Controls;
 
 namespace PerMonitorDpi.Helper
 {
-	public static class ResourceExtension
+	internal static class ResourceExtension
 	{
 		/// <summary>
 		/// Add/Remove resources to/from Application resources.

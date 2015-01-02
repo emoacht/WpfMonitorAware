@@ -2,7 +2,7 @@
 
 namespace PerMonitorDpi.Helper
 {
-	public static class BrushExtenstion
+	internal static class BrushExtenstion
 	{
 		/// <summary>
 		/// Check if a Brush is Transparent.

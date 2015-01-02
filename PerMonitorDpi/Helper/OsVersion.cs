@@ -2,7 +2,7 @@
 
 namespace PerMonitorDpi.Helper
 {
-	public static class OsVersion
+	internal static class OsVersion
 	{
 		private static readonly Version ver = Environment.OSVersion.Version;
 

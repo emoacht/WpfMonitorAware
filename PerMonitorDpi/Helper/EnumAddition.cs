@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace PerMonitorDpi.Helper
 {
-	public static class EnumAddition
+	internal static class EnumAddition
 	{
 		/// <summary>
 		/// Check if a specified string exists in the names of a specified Enum.

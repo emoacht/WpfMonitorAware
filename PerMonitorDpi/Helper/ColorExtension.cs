@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace PerMonitorDpi.Helper
 {
-	public static class ColorExtension
+	internal static class ColorExtension
 	{
 		/// <summary>
 		/// Get an opaque Color from a Color using white background.
