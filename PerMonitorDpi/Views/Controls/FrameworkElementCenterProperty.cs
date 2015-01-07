@@ -8,7 +8,7 @@ using PerMonitorDpi.Helper;
 namespace PerMonitorDpi.Views.Controls
 {
     /// <summary>
-    /// Attached property to center inner FrameworkElement at the center of outer FrameworkElement.
+    /// Attached property to locate inner FrameworkElement at the center of outer FrameworkElement.
     /// </summary>
     public class FrameworkElementCenterProperty : DependencyObject
     {
@@ -120,27 +120,25 @@ namespace PerMonitorDpi.Views.Controls
             Ceiling,
         }
 
+        private RoundingType roundingValue;
+
         /// <summary>
         /// Rounding
         /// </summary>
         /// <remarks>This string must be one of RoundingType names.</remarks>
-        public string Rounding { get; set; }
-
-        private RoundingType RoundingValue
+        public string Rounding
         {
-            get
+            get { return _rounding; }
+            set
             {
-                if (!_roundingValue.HasValue)
-                {
-                    _roundingValue = (!String.IsNullOrEmpty(Rounding) && EnumAddition.IsDefined(typeof(RoundingType), Rounding, StringComparison.OrdinalIgnoreCase))
-                        ? (RoundingType)EnumAddition.Parse(typeof(RoundingType), Rounding, StringComparison.OrdinalIgnoreCase)
-                        : default(RoundingType);
-                }
+                _rounding = value;
 
-                return _roundingValue.Value;
+                roundingValue = EnumAddition.IsDefined(typeof(RoundingType), value, StringComparison.OrdinalIgnoreCase)
+                    ? (RoundingType)EnumAddition.Parse(typeof(RoundingType), value, StringComparison.OrdinalIgnoreCase)
+                    : default(RoundingType);
             }
         }
-        private RoundingType? _roundingValue;
+        private string _rounding;
 
         private void OnLayoutUpdated(object sender, EventArgs e)
         {
@@ -164,8 +162,8 @@ namespace PerMonitorDpi.Views.Controls
         private double CalculateMargin(double innerLength, double outerLength)
         {
             var buff = Math.Abs(innerLength - outerLength) / 2;
-
-            switch (RoundingValue)
+            
+            switch (roundingValue)
             {
                 case RoundingType.Floor:
                     return Math.Floor(buff);
