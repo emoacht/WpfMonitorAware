@@ -29,6 +29,9 @@ namespace PerMonitorDpi.Views
 	[TemplatePart(Name = "PART_WindowContentBorder", Type = typeof(Border))]
 	public class ExtendedWindow : Window
 	{
+		/// <summary>
+		/// Default constructor
+		/// </summary>
 		public ExtendedWindow()
 		{
 			//DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedWindow), new FrameworkPropertyMetadata(typeof(ExtendedWindow)));
@@ -39,12 +42,18 @@ namespace PerMonitorDpi.Views
 			RegisterCommands();
 		}
 
+		/// <summary>
+		/// Handler for <see cref="ExtendedWindow"/>
+		/// </summary>
 		public ExtendedWindowHandler WindowHandler
 		{
 			get { return _windowHandler ?? (_windowHandler = new ExtendedWindowHandler()); }
 		}
 		private ExtendedWindowHandler _windowHandler;
 
+		/// <summary>
+		/// OnApplyTemplate
+		/// </summary>
 		public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
@@ -65,6 +74,10 @@ namespace PerMonitorDpi.Views
 			WindowContentBorder = this.GetTemplateChild("PART_WindowContentBorder") as Border;
 		}
 
+		/// <summary>
+		/// OnSourceInitialized
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
@@ -116,6 +129,10 @@ namespace PerMonitorDpi.Views
 			ManageTitleBarIconClick(e);
 		}
 
+		/// <summary>
+		/// OnStateChanged
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnStateChanged(EventArgs e)
 		{
 			base.OnStateChanged(e);
@@ -124,6 +141,10 @@ namespace PerMonitorDpi.Views
 			ManageCommands();
 		}
 
+		/// <summary>
+		/// OnClosing
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnClosing(CancelEventArgs e)
 		{
 			// Prevent default Window chrome from being shown at closing.
@@ -132,6 +153,10 @@ namespace PerMonitorDpi.Views
 			base.OnClosing(e);
 		}
 
+		/// <summary>
+		/// OnClosed
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnClosed(EventArgs e)
 		{
 			base.OnClosed(e);
@@ -217,13 +242,16 @@ namespace PerMonitorDpi.Views
 		private const string defaultCaptionThemeUriString = @"/PerMonitorDpi;component/Views/Themes/DefaultCaptionTheme.xaml";
 
 		/// <summary>
-		/// Window theme from ExtendedTheme
+		/// Window theme out of ExtendedTheme
 		/// </summary>
 		public ExtendedTheme Theme
 		{
 			get { return (ExtendedTheme)GetValue(ThemeProperty); }
 			set { SetValue(ThemeProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="Theme"/>
+		/// </summary>
 		public static readonly DependencyProperty ThemeProperty =
 			DependencyProperty.Register(
 				"Theme",
@@ -241,6 +269,9 @@ namespace PerMonitorDpi.Views
 			get { return (string)GetValue(ThemeUriProperty); }
 			set { SetValue(ThemeUriProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="ThemeUri"/>
+		/// </summary>
 		public static readonly DependencyProperty ThemeUriProperty =
 			DependencyProperty.Register(
 				"ThemeUri",
@@ -388,11 +419,17 @@ namespace PerMonitorDpi.Views
 			SystemCommands.MinimizeWindow(this);
 		}
 
+		/// <summary>
+		/// Whether minimize button is visible
+		/// </summary>
 		public bool IsMinimizeVisible
 		{
 			get { return (bool)GetValue(IsMinimizeVisibleProperty); }
 			set { SetValue(IsMinimizeVisibleProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="IsMinimizeVisible"/>
+		/// </summary>
 		public static readonly DependencyProperty IsMinimizeVisibleProperty =
 			DependencyProperty.Register(
 				"IsMinimizeVisible",
@@ -419,11 +456,17 @@ namespace PerMonitorDpi.Views
 				e.CanExecute = (this.WindowState != WindowState.Maximized);
 		}
 
+		/// <summary>
+		/// Whether maximize button is visible
+		/// </summary>
 		public bool IsMaximizeVisible
 		{
 			get { return (bool)GetValue(IsMaximizeVisibleProperty); }
 			set { SetValue(IsMaximizeVisibleProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="IsMaximizeVisible"/>
+		/// </summary>
 		public static readonly DependencyProperty IsMaximizeVisibleProperty =
 			DependencyProperty.Register(
 				"IsMaximizeVisible",
@@ -450,11 +493,17 @@ namespace PerMonitorDpi.Views
 				e.CanExecute = (this.WindowState == WindowState.Maximized);
 		}
 
+		/// <summary>
+		/// Whether restore button is visible
+		/// </summary>
 		public bool IsRestoreVisible
 		{
 			get { return (bool)GetValue(IsRestoreVisibleProperty); }
 			set { SetValue(IsRestoreVisibleProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="IsRestoreVisible"/>
+		/// </summary>
 		public static readonly DependencyProperty IsRestoreVisibleProperty =
 			DependencyProperty.Register(
 				"IsRestoreVisible",
@@ -488,6 +537,9 @@ namespace PerMonitorDpi.Views
 			get { return (bool)GetValue(KeepsTitleContentMarginProperty); }
 			set { SetValue(KeepsTitleContentMarginProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="KeepsTitleContentMargin"/>
+		/// </summary>
 		public static readonly DependencyProperty KeepsTitleContentMarginProperty =
 			DependencyProperty.Register(
 				"KeepsTitleContentMargin",
@@ -504,6 +556,9 @@ namespace PerMonitorDpi.Views
 			get { return (bool)GetValue(BlendsCaptionButtonVisualStyleProperty); }
 			set { SetValue(BlendsCaptionButtonVisualStyleProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="BlendsCaptionButtonVisualStyle"/>
+		/// </summary>
 		public static readonly DependencyProperty BlendsCaptionButtonVisualStyleProperty =
 			DependencyProperty.Register(
 				"BlendsCaptionButtonVisualStyle",
@@ -520,6 +575,9 @@ namespace PerMonitorDpi.Views
 			get { return (bool)GetValue(UsesDefaultChromeBackgroundProperty); }
 			set { SetValue(UsesDefaultChromeBackgroundProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="UsesDefaultChromeBackground"/>
+		/// </summary>
 		public static readonly DependencyProperty UsesDefaultChromeBackgroundProperty =
 			DependencyProperty.Register(
 				"UsesDefaultChromeBackground",
@@ -538,12 +596,18 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(DefaultChromeBackgroundProperty); }
 			private set { SetValue(DefaultChromeBackgroundPropertyKey, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="DefaultChromeBackground"/>
+		/// </summary>
 		private static readonly DependencyPropertyKey DefaultChromeBackgroundPropertyKey =
 			DependencyProperty.RegisterReadOnly(
 				"DefaultChromeBackground",
 				typeof(Brush),
 				typeof(ExtendedWindow),
 				new FrameworkPropertyMetadata(SystemColors.ActiveCaptionBrush));
+		/// <summary>
+		/// Dependency property for <see cref="DefaultChromeBackground"/>
+		/// </summary>
 		public static readonly DependencyProperty DefaultChromeBackgroundProperty = DefaultChromeBackgroundPropertyKey.DependencyProperty;
 
 		/// <summary>
@@ -554,6 +618,9 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(ChromeBackgroundProperty); }
 			set { SetValue(ChromeBackgroundProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="ChromeBackground"/>
+		/// </summary>
 		public static readonly DependencyProperty ChromeBackgroundProperty =
 			DependencyProperty.Register(
 				"ChromeBackground",
@@ -572,6 +639,9 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(ChromeForegroundProperty); }
 			set { SetValue(ChromeForegroundProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="ChromeForeground"/>
+		/// </summary>
 		public static readonly DependencyProperty ChromeForegroundProperty =
 			DependencyProperty.Register(
 				"ChromeForeground",
@@ -588,7 +658,14 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(ChromeDeactivatedBackgroundProperty); }
 			set { SetValue(ChromeDeactivatedBackgroundProperty, value); }
 		}
+		/// <summary>
+		/// Default value of <see cref="ChromeDeactivatedBackground"/>
+		/// </summary>
+		/// <remarks>This value seems to have to be defined before dependency property.</remarks>
 		private static readonly Brush _deactivatedBackground = new SolidColorBrush(Color.FromRgb(235, 235, 235));
+		/// <summary>
+		/// Dependency property for <see cref="ChromeDeactivatedBackground"/>
+		/// </summary>
 		public static readonly DependencyProperty ChromeDeactivatedBackgroundProperty =
 			DependencyProperty.Register(
 				"ChromeDeactivatedBackground",
@@ -605,6 +682,9 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(ChromeDeactivatedForegroundProperty); }
 			set { SetValue(ChromeDeactivatedForegroundProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="ChromeDeactivatedForeground"/>
+		/// </summary>
 		public static readonly DependencyProperty ChromeDeactivatedForegroundProperty =
 			DependencyProperty.Register(
 				"ChromeDeactivatedForeground",
@@ -621,6 +701,9 @@ namespace PerMonitorDpi.Views
 			get { return (Thickness)GetValue(ChromeBorderThicknessProperty); }
 			set { SetValue(ChromeBorderThicknessProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="ChromeBorderThickness"/>
+		/// </summary>
 		public static readonly DependencyProperty ChromeBorderThicknessProperty =
 			DependencyProperty.Register(
 				"ChromeBorderThickness",
@@ -637,7 +720,14 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(ChromeBorderBrushProperty); }
 			set { SetValue(ChromeBorderBrushProperty, value); }
 		}
+		/// <summary>
+		/// Default value of <see cref="ChromeBorderBrush"/>
+		/// </summary>
+		/// <remarks>This value seems to have to be defined before dependency property.</remarks>
 		private static readonly Brush _chromeBorderBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
+		/// <summary>
+		/// Dependency property for <see cref="ChromeBorderBrush"/>
+		/// </summary>
 		public static readonly DependencyProperty ChromeBorderBrushProperty =
 			DependencyProperty.Register(
 				"ChromeBorderBrush",
@@ -653,6 +743,9 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(TitleBarBackgroundProperty); }
 			set { SetValue(TitleBarBackgroundProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="TitleBarBackground"/>
+		/// </summary>
 		public static readonly DependencyProperty TitleBarBackgroundProperty =
 			DependencyProperty.Register(
 				"TitleBarBackground",
@@ -674,6 +767,9 @@ namespace PerMonitorDpi.Views
 			get { return (double)GetValue(TitleBarNormalHeightProperty); }
 			set { SetValue(TitleBarNormalHeightProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="TitleBarNormalHeight"/>
+		/// </summary>
 		public static readonly DependencyProperty TitleBarNormalHeightProperty =
 			DependencyProperty.Register(
 				"TitleBarNormalHeight",
@@ -689,6 +785,9 @@ namespace PerMonitorDpi.Views
 			get { return (double)GetValue(TitleBarMaximizedHeightProperty); }
 			set { SetValue(TitleBarMaximizedHeightProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="TitleBarMaximizedHeight"/>
+		/// </summary>
 		public static readonly DependencyProperty TitleBarMaximizedHeightProperty =
 			DependencyProperty.Register(
 				"TitleBarMaximizedHeight",
@@ -704,6 +803,9 @@ namespace PerMonitorDpi.Views
 			get { return (double)GetValue(TitleBarPaddingLeftProperty); }
 			set { SetValue(TitleBarPaddingLeftProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="TitleBarPaddingLeft"/>
+		/// </summary>
 		public static readonly DependencyProperty TitleBarPaddingLeftProperty =
 			DependencyProperty.Register(
 				"TitleBarPaddingLeft",
@@ -719,6 +821,9 @@ namespace PerMonitorDpi.Views
 			get { return (double)GetValue(TitleBarPaddingRightProperty); }
 			set { SetValue(TitleBarPaddingRightProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="TitleBarPaddingRight"/>
+		/// </summary>
 		public static readonly DependencyProperty TitleBarPaddingRightProperty =
 			DependencyProperty.Register(
 				"TitleBarPaddingRight",
@@ -734,6 +839,9 @@ namespace PerMonitorDpi.Views
 			get { return (Size)GetValue(IconSizeProperty); }
 			set { SetValue(IconSizeProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="IconSize"/>
+		/// </summary>
 		public static readonly DependencyProperty IconSizeProperty =
 			DependencyProperty.Register(
 				"IconSize",
@@ -749,6 +857,9 @@ namespace PerMonitorDpi.Views
 			get { return (HorizontalAlignment)GetValue(TitleAlignmentProperty); }
 			set { SetValue(TitleAlignmentProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="TitleAlignment"/>
+		/// </summary>
 		public static readonly DependencyProperty TitleAlignmentProperty =
 			DependencyProperty.Register(
 				"TitleAlignment",
@@ -765,6 +876,9 @@ namespace PerMonitorDpi.Views
 			get { return (double)GetValue(TitleFontSizeProperty); }
 			set { SetValue(TitleFontSizeProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="TitleFontSize"/>
+		/// </summary>
 		public static readonly DependencyProperty TitleFontSizeProperty =
 			DependencyProperty.Register(
 				"TitleFontSize",
@@ -781,6 +895,9 @@ namespace PerMonitorDpi.Views
 			get { return (Thickness)GetValue(ContentMarginProperty); }
 			set { SetValue(ContentMarginProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="ContentMargin"/>
+		/// </summary>
 		public static readonly DependencyProperty ContentMarginProperty =
 			DependencyProperty.Register(
 				"ContentMargin",
@@ -797,6 +914,9 @@ namespace PerMonitorDpi.Views
 			get { return (Thickness)GetValue(ContentBorderThicknessProperty); }
 			set { SetValue(ContentBorderThicknessProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="ContentBorderThickness"/>
+		/// </summary>
 		public static readonly DependencyProperty ContentBorderThicknessProperty =
 			DependencyProperty.Register(
 				"ContentBorderThickness",
@@ -813,6 +933,9 @@ namespace PerMonitorDpi.Views
 			get { return (Brush)GetValue(ContentBorderBrushProperty); }
 			set { SetValue(ContentBorderBrushProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="ContentBorderBrush"/>
+		/// </summary>
 		public static readonly DependencyProperty ContentBorderBrushProperty =
 			DependencyProperty.Register(
 				"ContentBorderBrush",
@@ -963,8 +1086,10 @@ namespace PerMonitorDpi.Views
 		/// <summary>
 		/// Whether a Window is about to be activated (internal)
 		/// </summary>
-		/// <remarks>This property will be changed when the Window is about to be activated or deactivated.
-		/// For binding only between code behind.</remarks>
+		/// <remarks>
+		/// <para>This property will be changed when the Window is about to be activated or deactivated.</para>
+		/// <para>For binding only between code behind.</para>
+		/// </remarks>
 		internal bool IsAboutActive
 		{
 			get { return (bool)GetValue(IsAboutActiveProperty); }

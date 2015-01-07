@@ -14,14 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using PerMonitorDpi.Views;
-
 using WpfExtendedWindow.Views.Controls;
 
 namespace WpfExtendedWindow.Views
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
 	public partial class MainWindow : ExtendedWindow
 	{
 		public MainWindow()

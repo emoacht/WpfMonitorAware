@@ -1,7 +1,7 @@
 ﻿
 namespace PerMonitorDpi.Models.Win32
 {
-	public enum WindowMessage
+	internal enum WindowMessage
 	{
 		WM_DPICHANGED = 0x02E0,
 

@@ -16,9 +16,6 @@ using PerMonitorDpi.Views;
 
 namespace WpfPerMonitorDpiWindow.Views
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
 	public partial class MainWindow : PerMonitorDpiWindow
 	{
 		public MainWindow()

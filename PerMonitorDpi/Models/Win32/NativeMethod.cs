@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace PerMonitorDpi.Models.Win32
 {
-	public static class NativeMethod
+	internal static class NativeMethod
 	{
 		[DllImport("Gdi32.dll", SetLastError = true)]
 		public static extern int GetDeviceCaps(

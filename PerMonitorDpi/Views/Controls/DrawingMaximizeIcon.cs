@@ -4,6 +4,9 @@ using System.Windows.Media;
 
 namespace PerMonitorDpi.Views.Controls
 {
+	/// <summary>
+	/// Drawing maximize icon
+	/// </summary>
 	public class DrawingMaximizeIcon : IDrawingIcon
 	{
 		/// <summary>

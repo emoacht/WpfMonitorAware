@@ -8,18 +8,25 @@ using PerMonitorDpi.Models;
 namespace PerMonitorDpi.Views.Controls
 {
 	/// <summary>
-	/// Draw icon in canvas.
+	/// Canvas for drawing icon
 	/// </summary>
 	/// <remarks>Purpose of this canvas is to control icon shape regardless of DPI.</remarks>
 	public class IconCanvas : Canvas
 	{
+		/// <summary>
+		/// Default constructor
+		/// </summary>
 		public IconCanvas()
 		{
 			// Drawing assumes that canvas size is 16x16 by default.
 			this.Width = 16D;
 			this.Height = 16D;
 		}
-		
+
+		/// <summary>
+		/// OnInitialized
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnInitialized(EventArgs e)
 		{
 			base.OnInitialized(e);
@@ -39,6 +46,9 @@ namespace PerMonitorDpi.Views.Controls
 			get { return (Brush)GetValue(ForegroundProperty); }
 			set { SetValue(ForegroundProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="Foreground"/>
+		/// </summary>
 		public static readonly DependencyProperty ForegroundProperty =
 			DependencyProperty.Register(
 				"Foreground",
@@ -49,16 +59,19 @@ namespace PerMonitorDpi.Views.Controls
 					(d, e) => ((IconCanvas)d).InvalidateVisual()));
 
 		/// <summary>
-		/// Drawing for icon
+		/// Drawing icon
 		/// </summary>
-		public IDrawingIcon IconDrawing
+		public IDrawingIcon DrawingIcon
 		{
-			get { return (IDrawingIcon)GetValue(IconDrawingProperty); }
-			set { SetValue(IconDrawingProperty, value); }
+			get { return (IDrawingIcon)GetValue(DrawingIconProperty); }
+			set { SetValue(DrawingIconProperty, value); }
 		}
-		public static readonly DependencyProperty IconDrawingProperty =
+		/// <summary>
+		/// Dependency property for <see cref="DrawingIcon"/>
+		/// </summary>
+		public static readonly DependencyProperty DrawingIconProperty =
 			DependencyProperty.Register(
-				"IconDrawing",
+				"DrawingIcon",
 				typeof(IDrawingIcon),
 				typeof(IconCanvas),
 				new FrameworkPropertyMetadata(null));
@@ -71,6 +84,9 @@ namespace PerMonitorDpi.Views.Controls
 			get { return (Transform)GetValue(AncestorTransformProperty); }
 			set { SetValue(AncestorTransformProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="AncestorTransform"/>
+		/// </summary>
 		public static readonly DependencyProperty AncestorTransformProperty =
 			DependencyProperty.Register(
 				"AncestorTransform",
@@ -101,11 +117,15 @@ namespace PerMonitorDpi.Views.Controls
 			drawingFactor = factorX;
 		}
 
+		/// <summary>
+		/// OnRender
+		/// </summary>
+		/// <param name="drawingContext"></param>
 		protected override void OnRender(DrawingContext drawingContext)
 		{
-			if (IconDrawing != null)
+			if (DrawingIcon != null)
 			{
-				IconDrawing.Draw(drawingContext, drawingFactor, Foreground);
+				DrawingIcon.Draw(drawingContext, drawingFactor, Foreground);
 				return;
 			}
 
@@ -113,7 +133,7 @@ namespace PerMonitorDpi.Views.Controls
 		}
 
 		/// <summary>
-		/// Draw fall back icon.
+		/// Draw fallback icon.
 		/// </summary>
 		/// <param name="drawingContext">DrawingContext of canvas</param>
 		/// <param name="factor">Factor from default DPI</param>

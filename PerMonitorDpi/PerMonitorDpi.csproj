@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\PerMonitorDpi.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -67,7 +68,7 @@
     <Compile Include="Views\Controls\ExtendedCaptionButton.cs" />
     <Compile Include="Views\Controls\IconCanvas.cs" />
     <Compile Include="Views\Controls\IDrawingIcon.cs" />
-    <Compile Include="Views\Converters\DoubleCenterConverter.cs" />
+    <Compile Include="Views\Controls\FrameworkElementCenterProperty.cs" />
     <Compile Include="Views\Converters\DoubleMultiplyConverter.cs" />
     <Compile Include="Views\Converters\DoubleSumConverter.cs" />
     <Compile Include="Views\Converters\ObjectToVisibilityConverter.cs" />
