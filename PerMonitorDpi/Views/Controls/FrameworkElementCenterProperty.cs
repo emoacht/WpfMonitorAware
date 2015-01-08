@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 
@@ -73,45 +72,15 @@ namespace PerMonitorDpi.Views.Controls
 
         private FrameworkElement OuterElement { get; set; }
 
-
         /// <summary>
         /// Whether inner FrameworkElement to be horizontally centered
         /// </summary>
-        /// <remarks>This property cannot have binding from this property because this is merely DependencyObject.</remarks>
-        public bool IsHorizontalCentered
-        {
-            get { return (bool)GetValue(IsHorizontalCenteredProperty); }
-            set { SetValue(IsHorizontalCenteredProperty, value); }
-        }
-        /// <summary>
-        /// Dependency property for <see cref="IsHorizontalCentered"/>
-        /// </summary>
-        public static readonly DependencyProperty IsHorizontalCenteredProperty =
-            DependencyProperty.Register(
-                "IsHorizontalCentered",
-                typeof(bool),
-                typeof(FrameworkElementCenterProperty),
-                new FrameworkPropertyMetadata(false));
+        public bool IsHorizontalAlignmentCenter { get; set; }
 
         /// <summary>
         /// Whether inner FrameworkElement to be vertically centered
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        public bool IsVerticalCentered
-        {
-            get { return (bool)GetValue(IsVerticalCenteredProperty); }
-            set { SetValue(IsVerticalCenteredProperty, value); }
-        }
-        /// <summary>
-        /// Dependency property for <see cref="IsVerticalCentered"/>
-        /// </summary>
-        public static readonly DependencyProperty IsVerticalCenteredProperty =
-            DependencyProperty.Register(
-                "IsVerticalCentered",
-                typeof(bool),
-                typeof(FrameworkElementCenterProperty),
-                new FrameworkPropertyMetadata(false));
+        public bool IsVerticalAlignmentCenter { get; set; }
 
         private enum RoundingType
         {
@@ -143,14 +112,14 @@ namespace PerMonitorDpi.Views.Controls
         private void OnLayoutUpdated(object sender, EventArgs e)
         {
             double leftMargin = 0D;
-            if (IsHorizontalCentered)
+            if (IsHorizontalAlignmentCenter)
             {
                 leftMargin = CalculateMargin(InnerElement.ActualWidth, OuterElement.ActualWidth);
                 InnerElement.HorizontalAlignment = HorizontalAlignment.Left;
             }
 
             double topMargin = 0D;
-            if (IsVerticalCentered)
+            if (IsVerticalAlignmentCenter)
             {
                 topMargin = CalculateMargin(InnerElement.ActualHeight, OuterElement.ActualHeight);
                 InnerElement.VerticalAlignment = VerticalAlignment.Top;
@@ -162,7 +131,7 @@ namespace PerMonitorDpi.Views.Controls
         private double CalculateMargin(double innerLength, double outerLength)
         {
             var buff = Math.Abs(innerLength - outerLength) / 2;
-            
+
             switch (roundingValue)
             {
                 case RoundingType.Floor:

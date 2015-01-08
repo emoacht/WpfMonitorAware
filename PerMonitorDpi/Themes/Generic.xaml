@@ -382,7 +382,7 @@
 												   Visibility="{TemplateBinding Icon, Converter={StaticResource ObjectToVisibilityConverterKey}}"
 												   WindowChrome.IsHitTestVisibleInChrome="True">
 												<controls:FrameworkElementCenterProperty.AttachedProperty>
-													<controls:FrameworkElementCenterProperty IsVerticalCentered="True"
+													<controls:FrameworkElementCenterProperty IsVerticalAlignmentCenter="True"
 																							 Rounding="Ceiling"/>
 												</controls:FrameworkElementCenterProperty.AttachedProperty>
 											</Image>
