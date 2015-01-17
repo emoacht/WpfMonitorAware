@@ -11,6 +11,8 @@ namespace PerMonitorDpi.Views.Controls
     /// </summary>
     public class FrameworkElementCenterProperty : Freezable
     {
+        #region Freezable member
+
         /// <summary>
         /// Implement <see cref="Freezable.CreateInstanceCore">Freezable.CreateInstanceCore</see>.
         /// </summary>
@@ -19,6 +21,9 @@ namespace PerMonitorDpi.Views.Controls
         {
             return new FrameworkElementCenterProperty();
         }
+
+        #endregion
+
 
         /// <summary>
         /// Get AttachedProperty.

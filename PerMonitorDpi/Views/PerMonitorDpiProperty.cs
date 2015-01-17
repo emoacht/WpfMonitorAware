@@ -10,6 +10,8 @@ namespace PerMonitorDpi.Views
     /// </summary>
     public class PerMonitorDpiProperty : Freezable
     {
+        #region Freezable member
+
         /// <summary>
         /// Implement <see cref="Freezable.CreateInstanceCore">Freezable.CreateInstanceCore</see>.
         /// </summary>
@@ -18,6 +20,9 @@ namespace PerMonitorDpi.Views
         {
             return new PerMonitorDpiProperty();
         }
+
+        #endregion
+
 
         /// <summary>
         /// Get AttachedProperty.

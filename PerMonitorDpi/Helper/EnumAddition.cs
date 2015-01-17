@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace PerMonitorDpi.Helper
 {
+    /// <summary>
+    /// Additional method for <see cref="Enum"/>
+    /// </summary>
     internal static class EnumAddition
     {
         /// <summary>

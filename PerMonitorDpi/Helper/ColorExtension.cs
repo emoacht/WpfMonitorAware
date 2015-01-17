@@ -3,10 +3,13 @@ using System.Windows.Media;
 
 namespace PerMonitorDpi.Helper
 {
+	/// <summary>
+	/// Extension method for <see cref="System.Windows.Media.Color"/>
+	/// </summary>
 	internal static class ColorExtension
 	{
 		/// <summary>
-		/// Get an opaque Color from a Color using white background.
+		/// Convert a Color to an opaque Color using white background.
 		/// </summary>
 		/// <param name="source">Source Color</param>
 		/// <returns>Opaque Color</returns>
@@ -21,7 +24,7 @@ namespace PerMonitorDpi.Helper
 		}
 
 		/// <summary>
-		/// Get a blended Color from two Colors.
+		/// Convert two Colors to a blended Color ignoring alpha channel.
 		/// </summary>
 		/// <param name="source">Source Color</param>
 		/// <param name="target">Target Color</param>
