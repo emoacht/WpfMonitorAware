@@ -7,27 +7,36 @@ using PerMonitorDpi.Helper;
 namespace PerMonitorDpi.Views.Controls
 {
     /// <summary>
-    /// Attached property to locate inner FrameworkElement at the center of outer FrameworkElement.
+    /// Attached property to locate inner <see cref="FrameworkElement"/> at the center of outer <see cref="FrameworkElement"/>
     /// </summary>
-    public class FrameworkElementCenterProperty : DependencyObject
+    public class FrameworkElementCenterProperty : Freezable
     {
+        /// <summary>
+        /// Implement <see cref="Freezable.CreateInstanceCore">Freezable.CreateInstanceCore</see>.
+        /// </summary>
+        /// <returns>New Freezable</returns>
+        protected override Freezable CreateInstanceCore()
+        {
+            return new FrameworkElementCenterProperty();
+        }
+
         /// <summary>
         /// Get AttachedProperty.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static FrameworkElementCenterProperty GetAttachedProperty(DependencyObject obj)
+        /// <param name="element">Owner <see cref="FrameworkElement"/></param>
+        /// <returns>AttachedProperty</returns>
+        public static FrameworkElementCenterProperty GetAttachedProperty(FrameworkElement element)
         {
-            return (FrameworkElementCenterProperty)obj.GetValue(AttachedPropertyProperty);
+            return (FrameworkElementCenterProperty)element.GetValue(AttachedPropertyProperty);
         }
         /// <summary>
         /// Set AttachedProperty.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="value"></param>
-        public static void SetAttachedProperty(DependencyObject obj, FrameworkElementCenterProperty value)
+        /// <param name="element">Owner <see cref="FrameworkElement"/></param>
+        /// <param name="attachedProperty">AttachedProperty</param>
+        public static void SetAttachedProperty(FrameworkElement element, FrameworkElementCenterProperty attachedProperty)
         {
-            obj.SetValue(AttachedPropertyProperty, value);
+            element.SetValue(AttachedPropertyProperty, attachedProperty);
         }
         /// <summary>
         /// Attached property for AttachedProperty
@@ -73,12 +82,12 @@ namespace PerMonitorDpi.Views.Controls
         private FrameworkElement OuterElement { get; set; }
 
         /// <summary>
-        /// Whether inner FrameworkElement to be horizontally centered
+        /// Whether inner <see cref="FrameworkElement"/> to be horizontally centered
         /// </summary>
         public bool IsHorizontalAlignmentCenter { get; set; }
 
         /// <summary>
-        /// Whether inner FrameworkElement to be vertically centered
+        /// Whether inner <see cref="FrameworkElement"/> to be vertically centered
         /// </summary>
         public bool IsVerticalAlignmentCenter { get; set; }
 
@@ -130,18 +139,18 @@ namespace PerMonitorDpi.Views.Controls
 
         private double CalculateMargin(double innerLength, double outerLength)
         {
-            var buff = Math.Abs(innerLength - outerLength) / 2;
+            var marginLength = (outerLength - innerLength) / 2;
 
             switch (roundingValue)
             {
                 case RoundingType.Floor:
-                    return Math.Floor(buff);
+                    return Math.Floor(marginLength);
 
                 case RoundingType.Ceiling:
-                    return Math.Ceiling(buff);
+                    return Math.Ceiling(marginLength);
 
                 default:
-                    return Math.Round(buff);
+                    return Math.Round(marginLength);
             }
         }
     }

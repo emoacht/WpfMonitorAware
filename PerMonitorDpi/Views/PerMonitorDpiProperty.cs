@@ -8,25 +8,34 @@ namespace PerMonitorDpi.Views
     /// <summary>
     /// Attached property to make a <see cref="Window"/> Per-Monitor DPI aware
     /// </summary>
-    public class PerMonitorDpiProperty : DependencyObject
+    public class PerMonitorDpiProperty : Freezable
     {
+        /// <summary>
+        /// Implement <see cref="Freezable.CreateInstanceCore">Freezable.CreateInstanceCore</see>.
+        /// </summary>
+        /// <returns>New Freezable</returns>
+        protected override Freezable CreateInstanceCore()
+        {
+            return new PerMonitorDpiProperty();
+        }
+
         /// <summary>
         /// Get AttachedProperty.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static PerMonitorDpiProperty GetAttachedProperty(DependencyObject obj)
+        /// <param name="window">Owner <see cref="Window"/></param>
+        /// <returns>AttachedProperty</returns>
+        public static PerMonitorDpiProperty GetAttachedProperty(Window window)
         {
-            return (PerMonitorDpiProperty)obj.GetValue(AttachedPropertyProperty);
+            return (PerMonitorDpiProperty)window.GetValue(AttachedPropertyProperty);
         }
         /// <summary>
         /// Set AttachedProperty.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="value"></param>
-        public static void SetAttachedProperty(DependencyObject obj, PerMonitorDpiProperty value)
+        /// <param name="window">Owner <see cref="Window"/></param>
+        /// <param name="attachedProperty">AttachedProperty</param>
+        public static void SetAttachedProperty(Window window, PerMonitorDpiProperty attachedProperty)
         {
-            obj.SetValue(AttachedPropertyProperty, value);
+            window.SetValue(AttachedPropertyProperty, attachedProperty);
         }
         /// <summary>
         /// Attached property for AttachedProperty
