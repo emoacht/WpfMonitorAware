@@ -104,17 +104,17 @@ namespace PerMonitorDpi.Views.Controls
 		#endregion
 
 
-		private static readonly Dpi systemDpi = DpiChecker.GetSystemDpi();
-		private double drawingFactor = 1D;
+		private static readonly Dpi _systemDpi = DpiChecker.GetSystemDpi();
+		private double _drawingFactor = 1D;
 
 		private void SetDrawingFactor(ScaleTransform transform = null)
 		{
-			var factorX = (double)systemDpi.X / Dpi.Default.X;
+			var factorX = (double)_systemDpi.X / Dpi.Default.X;
 
 			if (transform != null)
 				factorX *= transform.ScaleX;
 
-			drawingFactor = factorX;
+			_drawingFactor = factorX;
 		}
 
 		/// <summary>
@@ -125,11 +125,11 @@ namespace PerMonitorDpi.Views.Controls
 		{
 			if (DrawingIcon != null)
 			{
-				DrawingIcon.Draw(drawingContext, drawingFactor, Foreground);
+				DrawingIcon.Draw(drawingContext, _drawingFactor, Foreground);
 				return;
 			}
 
-			Draw(drawingContext, drawingFactor, Foreground);
+			Draw(drawingContext, _drawingFactor, Foreground);
 		}
 
 		/// <summary>

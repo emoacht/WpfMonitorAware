@@ -23,21 +23,21 @@ namespace WpfPerMonitorDpiWindow.Views
 			InitializeComponent();
 		}
 
-		private EventHandler OnDpiChanged;
+		private EventHandler _onDpiChanged;
 
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
 
-			OnDpiChanged = (_sender, _e) => SystemSounds.Hand.Play();
-			WindowHandler.DpiChanged += OnDpiChanged;
+			_onDpiChanged = (_sender, _e) => SystemSounds.Hand.Play();
+			WindowHandler.DpiChanged += _onDpiChanged;
 		}
 
 		protected override void OnClosed(EventArgs e)
 		{
 			base.OnClosed(e);
 		
-			WindowHandler.DpiChanged -= OnDpiChanged;
+			WindowHandler.DpiChanged -= _onDpiChanged;
 		}
 	}
 }

@@ -25,27 +25,27 @@ namespace WpfExtendedWindow.Views
 			InitializeComponent();
 		}
 
-		private MouseButtonEventHandler OnContentMouseLeftDown;
-		private EventHandler OnDpiChanged;
+		private MouseButtonEventHandler _onContentMouseLeftDown;
+		private EventHandler _onDpiChanged;
 
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
 
-			OnContentMouseLeftDown = (_sender, _e) => _e.Handled = true;
-			ContentRoot.MouseLeftButtonDown += OnContentMouseLeftDown;
+			_onContentMouseLeftDown = (_sender, _e) => _e.Handled = true;
+			ContentRoot.MouseLeftButtonDown += _onContentMouseLeftDown;
 
-			OnDpiChanged = (_sender, _e) => SystemSounds.Hand.Play();
-			WindowHandler.DpiChanged += OnDpiChanged;
+			_onDpiChanged = (_sender, _e) => SystemSounds.Hand.Play();
+			WindowHandler.DpiChanged += _onDpiChanged;
 
 			PrepareAnimation();
 		}
 
 		protected override void OnClosing(CancelEventArgs e)
 		{
-			ContentRoot.MouseLeftButtonDown -= OnContentMouseLeftDown;
+			ContentRoot.MouseLeftButtonDown -= _onContentMouseLeftDown;
 
-			WindowHandler.DpiChanged -= OnDpiChanged;
+			WindowHandler.DpiChanged -= _onDpiChanged;
 
 			base.OnClosing(e);
 		}
@@ -114,13 +114,13 @@ namespace WpfExtendedWindow.Views
 
 		#region Animation
 
-		private Button optionButton;
-		private Canvas backgroundCanvas;
+		private Button _optionButton;
+		private Canvas _backgroundCanvas;
 
 		private void PrepareAnimation()
 		{
 			// Add the option button.
-			optionButton = new Button()
+			_optionButton = new Button()
 			{
 				Style = this.FindResource("OptionButtonStyle") as Style,
 				Width = 60,
@@ -128,24 +128,24 @@ namespace WpfExtendedWindow.Views
 				Margin = new Thickness(0, 0, 8, 0),
 				Content = "Rain",
 			};
-			optionButton.Click += async (sender, e) => await PerformAnimation();
-			this.TitleBarOptionGrid.Children.Add(optionButton);
+			_optionButton.Click += async (sender, e) => await PerformAnimation();
+			this.TitleBarOptionGrid.Children.Add(_optionButton);
 
 			// Insert the background canvas.
-			backgroundCanvas = new Canvas()
+			_backgroundCanvas = new Canvas()
 			{
 				HorizontalAlignment = HorizontalAlignment.Stretch,
 				VerticalAlignment = VerticalAlignment.Stretch,
 			};
-			Grid.SetZIndex(backgroundCanvas, 1);
-			this.ChromeGrid.Children.Add(backgroundCanvas);
+			Grid.SetZIndex(_backgroundCanvas, 1);
+			this.ChromeGrid.Children.Add(_backgroundCanvas);
 
 			Grid.SetZIndex(this.ChromeBorder, 2);
 		}
 
-		private bool isAnimating = false;
-		private const int maxNumber = 5;
-		private DateTime lastAddedTime;
+		private bool _isAnimating;
+		private const int _maxCount = 5;
+		private DateTime _lastAddedTime;
 
 		private readonly Dictionary<ExtendedTheme, Brush> themeBrushMap = new Dictionary<ExtendedTheme, Brush>()
 		{
@@ -157,19 +157,19 @@ namespace WpfExtendedWindow.Views
 
 		private async Task PerformAnimation()
 		{
-			if (!isAnimating)
+			if (!_isAnimating)
 			{
-				if (0 < backgroundCanvas.Children.Count)
+				if (0 < _backgroundCanvas.Children.Count)
 					return;
 
 				// Start animation.
-				isAnimating = true;
-				lastAddedTime = DateTime.MinValue;
+				_isAnimating = true;
+				_lastAddedTime = DateTime.MinValue;
 			}
 			else
 			{
 				// Stop animation.
-				isAnimating = false;
+				_isAnimating = false;
 				return;
 			}
 
@@ -177,42 +177,42 @@ namespace WpfExtendedWindow.Views
 
 			do
 			{
-				if ((backgroundCanvas.Children.Count < maxNumber) &&
-					(lastAddedTime.AddSeconds(1) < DateTime.Now))
+				if ((_backgroundCanvas.Children.Count < _maxCount) &&
+					(_lastAddedTime.AddSeconds(1) < DateTime.Now))
 				{
-					backgroundCanvas.Children.Add(new DropCircle());
-					lastAddedTime = DateTime.Now;
+					_backgroundCanvas.Children.Add(new DropCircle());
+					_lastAddedTime = DateTime.Now;
 				}
 
-				var circles = backgroundCanvas.Children.Cast<DropCircle>()
+				var circles = _backgroundCanvas.Children.Cast<DropCircle>()
 					.Where(x => !x.IsAnimating)
 					.ToArray();
 
 				for (int i = circles.Length - 1; i >= 0; i--)
 				{
-					if (isAnimating)
+					if (_isAnimating)
 					{
 						circles[i].Foreground = themeBrushMap[Theme];
-						Canvas.SetLeft(circles[i], (double)randomizer.Next(-80, Math.Max((int)backgroundCanvas.ActualWidth - 120, 80)));
-						Canvas.SetTop(circles[i], (double)randomizer.Next(-80, Math.Max((int)backgroundCanvas.ActualHeight - 120, 80)));
+						Canvas.SetLeft(circles[i], (double)randomizer.Next(-80, Math.Max((int)_backgroundCanvas.ActualWidth - 120, 80)));
+						Canvas.SetTop(circles[i], (double)randomizer.Next(-80, Math.Max((int)_backgroundCanvas.ActualHeight - 120, 80)));
 						circles[i].IsAnimating = true;
 					}
 					else
 					{
-						backgroundCanvas.Children.Remove(circles[i]);
+						_backgroundCanvas.Children.Remove(circles[i]);
 					}
 				}
 
 				await Task.Delay(TimeSpan.FromSeconds(0.2));
 
-			} while (0 < backgroundCanvas.Children.Count);
+			} while (0 < _backgroundCanvas.Children.Count);
 		}
 
 		protected override void OnDeactivated(EventArgs e)
 		{
 			base.OnDeactivated(e);
 
-			isAnimating = false;
+			_isAnimating = false;
 		}
 
 		#endregion

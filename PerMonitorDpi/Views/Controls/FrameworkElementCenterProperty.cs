@@ -103,7 +103,7 @@ namespace PerMonitorDpi.Views.Controls
             Ceiling,
         }
 
-        private RoundingType roundingValue;
+        private RoundingType _roundingValue;
 
         /// <summary>
         /// Rounding
@@ -116,7 +116,7 @@ namespace PerMonitorDpi.Views.Controls
             {
                 _rounding = value;
 
-                roundingValue = EnumAddition.IsDefined(typeof(RoundingType), value, StringComparison.OrdinalIgnoreCase)
+                _roundingValue = EnumAddition.IsDefined(typeof(RoundingType), value, StringComparison.OrdinalIgnoreCase)
                     ? (RoundingType)EnumAddition.Parse(typeof(RoundingType), value, StringComparison.OrdinalIgnoreCase)
                     : default(RoundingType);
             }
@@ -146,7 +146,7 @@ namespace PerMonitorDpi.Views.Controls
         {
             var marginLength = (outerLength - innerLength) / 2;
 
-            switch (roundingValue)
+            switch (_roundingValue)
             {
                 case RoundingType.Floor:
                     return Math.Floor(marginLength);

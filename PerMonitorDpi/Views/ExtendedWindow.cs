@@ -114,7 +114,7 @@ namespace PerMonitorDpi.Views
 		private void OnDwmColorizationColorChanged(object sender, EventArgs e)
 		{
 			if (UsesDefaultChromeBackground)
-				isDueCheckDefaultChromeBackground = true;
+				_isDueCheckDefaultChromeBackground = true;
 		}
 
 		private void OnDrag(object sender, MouseButtonEventArgs e)
@@ -231,7 +231,7 @@ namespace PerMonitorDpi.Views
 
 		#region Resource
 
-		private static readonly Dictionary<ExtendedTheme, string> themeUriMap = new Dictionary<ExtendedTheme, string>() 
+		private static readonly Dictionary<ExtendedTheme, string> _themeUriMap = new Dictionary<ExtendedTheme, string>() 
 		{
 			{ExtendedTheme.Default, String.Empty},
 			{ExtendedTheme.Plain, @"/PerMonitorDpi;component/Views/Themes/PlainTheme.xaml"},
@@ -239,7 +239,7 @@ namespace PerMonitorDpi.Views
 			{ExtendedTheme.Dark, @"/PerMonitorDpi;component/Views/Themes/DarkTheme.xaml"},
 		};
 
-		private const string defaultCaptionThemeUriString = @"/PerMonitorDpi;component/Views/Themes/DefaultCaptionTheme.xaml";
+		private const string _defaultCaptionThemeUriString = @"/PerMonitorDpi;component/Views/Themes/DefaultCaptionTheme.xaml";
 
 		/// <summary>
 		/// Window theme out of ExtendedTheme
@@ -259,7 +259,7 @@ namespace PerMonitorDpi.Views
 				typeof(ExtendedWindow),
 				new FrameworkPropertyMetadata(
 					ExtendedTheme.Default,
-					(d, e) => ((ExtendedWindow)d).ThemeUri = themeUriMap[(ExtendedTheme)e.NewValue]));
+					(d, e) => ((ExtendedWindow)d).ThemeUri = _themeUriMap[(ExtendedTheme)e.NewValue]));
 
 		/// <summary>
 		/// Window theme Uri
@@ -288,12 +288,12 @@ namespace PerMonitorDpi.Views
 
 						try
 						{
-							window.isChangingTheme = true;
+							window._isChangingTheme = true;
 							window.CheckBackground();
 						}
 						finally
 						{
-							window.isChangingTheme = false;
+							window._isChangingTheme = false;
 						}
 
 						if (window.IsActive)
@@ -303,11 +303,11 @@ namespace PerMonitorDpi.Views
 						}
 					}));
 
-		private bool isChangingTheme = false;
+		private bool _isChangingTheme = false;
 
 		private void ReflectCaptionTheme(Brush background)
 		{
-			if (!isChangingTheme && !BlendsCaptionButtonVisualStyle)
+			if (!_isChangingTheme && !BlendsCaptionButtonVisualStyle)
 				return;
 
 			ApplyCaptionTheme(Application.Current.Resources, this.Resources, background);
@@ -318,7 +318,7 @@ namespace PerMonitorDpi.Views
 
 		private void ApplyCaptionTheme(ResourceDictionary targetDictionary, ResourceDictionary sourceDictionary, Brush background)
 		{
-			var defaultDictionary = new ResourceDictionary() { Source = new Uri(defaultCaptionThemeUriString, UriKind.Relative) };
+			var defaultDictionary = new ResourceDictionary() { Source = new Uri(_defaultCaptionThemeUriString, UriKind.Relative) };
 
 			foreach (var key in defaultDictionary.Keys)
 			{
@@ -585,7 +585,7 @@ namespace PerMonitorDpi.Views
 				typeof(ExtendedWindow),
 				new FrameworkPropertyMetadata(
 					false,
-					(d, e) => ((ExtendedWindow)d).isDueCheckDefaultChromeBackground = (bool)e.NewValue));
+					(d, e) => ((ExtendedWindow)d)._isDueCheckDefaultChromeBackground = (bool)e.NewValue));
 
 		/// <summary>
 		/// OS's default chrome background Brush when a Window is activated (public readonly)
@@ -628,7 +628,7 @@ namespace PerMonitorDpi.Views
 				typeof(ExtendedWindow),
 				new FrameworkPropertyMetadata(
 					Brushes.Transparent,
-					(d, e) => ((ExtendedWindow)d).isDueCheckBackground = true));
+					(d, e) => ((ExtendedWindow)d)._isDueCheckBackground = true));
 
 		/// <summary>
 		/// Chrome foreground Brush when a Window is activated
@@ -753,7 +753,7 @@ namespace PerMonitorDpi.Views
 				typeof(ExtendedWindow),
 				new FrameworkPropertyMetadata(
 					Brushes.Transparent,
-					(d, e) => ((ExtendedWindow)d).isDueCheckBackground = true));
+					(d, e) => ((ExtendedWindow)d)._isDueCheckBackground = true));
 
 		/// <summary>
 		/// Title bar height when a Window is other than maximized
@@ -1053,17 +1053,17 @@ namespace PerMonitorDpi.Views
 		/// Whether checking background is due.
 		/// </summary>
 		/// <remarks>Default value must be true to execute initial check.</remarks>
-		private bool isDueCheckBackground = true;
+		private bool _isDueCheckBackground = true;
 
 		/// <summary>
 		/// Whether checking default chrome background is due.
 		/// </summary>
-		private bool isDueCheckDefaultChromeBackground = false;
+		private bool _isDueCheckDefaultChromeBackground = false;
 
 		/// <summary>
 		/// Chrome background color to be actually used
 		/// </summary>
-		private Brush chromeBackgroundActual = Brushes.Transparent;
+		private Brush _chromeBackgroundActual = Brushes.Transparent;
 
 		/// <summary>
 		/// Caption button background Brush (internal)
@@ -1108,7 +1108,7 @@ namespace PerMonitorDpi.Views
 
 			IsAboutActive = true;
 
-			this.Background = chromeBackgroundActual;
+			this.Background = _chromeBackgroundActual;
 			this.Foreground = ChromeForeground;
 
 			if (TitleBarBackGrid != null)
@@ -1128,28 +1128,28 @@ namespace PerMonitorDpi.Views
 
 		private void CheckBackground()
 		{
-			if (!isDueCheckBackground && !isDueCheckDefaultChromeBackground)
+			if (!_isDueCheckBackground && !_isDueCheckDefaultChromeBackground)
 				return;
 
-			if (isDueCheckDefaultChromeBackground)
+			if (_isDueCheckDefaultChromeBackground)
 			{
 				var color = WindowChromeColor.GetChromeColor();
 				if (color.HasValue)
 					DefaultChromeBackground = new SolidColorBrush(color.Value);
 			}
 
-			chromeBackgroundActual = (UsesDefaultChromeBackground || ChromeBackground.IsTransparent())
+			_chromeBackgroundActual = (UsesDefaultChromeBackground || ChromeBackground.IsTransparent())
 				? DefaultChromeBackground
 				: ChromeBackground;
 
 			CaptionButtonBackground = TitleBarBackground.IsTransparent()
-				? chromeBackgroundActual
+				? _chromeBackgroundActual
 				: TitleBarBackground;
 
 			AddDragHandler();
 
-			isDueCheckBackground = false;
-			isDueCheckDefaultChromeBackground = false;
+			_isDueCheckBackground = false;
+			_isDueCheckDefaultChromeBackground = false;
 		}
 
 		private void AddDragHandler()
