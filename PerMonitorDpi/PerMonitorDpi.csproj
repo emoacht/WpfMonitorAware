@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\PerMonitorDpi.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\PerMonitorDpi.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -67,7 +69,7 @@
     <Compile Include="Views\Controls\ExtendedCaptionButton.cs" />
     <Compile Include="Views\Controls\IconCanvas.cs" />
     <Compile Include="Views\Controls\IDrawingIcon.cs" />
-    <Compile Include="Views\Converters\DoubleCenterConverter.cs" />
+    <Compile Include="Views\Controls\FrameworkElementCenterProperty.cs" />
     <Compile Include="Views\Converters\DoubleMultiplyConverter.cs" />
     <Compile Include="Views\Converters\DoubleSumConverter.cs" />
     <Compile Include="Views\Converters\ObjectToVisibilityConverter.cs" />

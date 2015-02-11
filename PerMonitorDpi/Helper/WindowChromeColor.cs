@@ -3,7 +3,10 @@ using System.Windows.Media;
 
 namespace PerMonitorDpi.Helper
 {
-	public static class WindowChromeColor
+	/// <summary>
+	/// Window chrome color information
+	/// </summary>
+	internal static class WindowChromeColor
 	{
 		#region Win32
 
@@ -12,7 +15,7 @@ namespace PerMonitorDpi.Helper
 			[MarshalAs(UnmanagedType.Bool)] out bool pfEnabled);
 
 		[DllImport("Dwmapi.dll", SetLastError = true)]
-		static extern void DwmGetColorizationColor(
+		private static extern void DwmGetColorizationColor(
 			out uint pcrColorization,
 			[MarshalAs(UnmanagedType.Bool)]out bool pfOpaqueBlend);
 

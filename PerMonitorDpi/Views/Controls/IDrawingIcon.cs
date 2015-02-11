@@ -2,6 +2,9 @@
 
 namespace PerMonitorDpi.Views.Controls
 {
+	/// <summary>
+	/// Interface for drawing icon
+	/// </summary>
 	public interface IDrawingIcon
 	{
 		/// <summary>

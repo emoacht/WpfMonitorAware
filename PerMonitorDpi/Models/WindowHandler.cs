@@ -10,12 +10,15 @@ using PerMonitorDpi.Models.Win32;
 
 namespace PerMonitorDpi.Models
 {
+	/// <summary>
+	/// Handler for <see cref="Window"/>
+	/// </summary>
 	public class WindowHandler : DependencyObject
 	{
 		#region Type
 
 		/// <summary>
-		/// Status of a Window
+		/// Status of a <see cref="Window"/>
 		/// </summary>
 		private enum WindowStatus
 		{
@@ -36,7 +39,7 @@ namespace PerMonitorDpi.Models
 		}
 
 		/// <summary>
-		/// DPI and other information on a Window
+		/// DPI and other information on a <see cref="Window"/>
 		/// </summary>
 		private class WindowInfo
 		{
@@ -85,6 +88,9 @@ namespace PerMonitorDpi.Models
 			get { return (Dpi)GetValue(MonitorDpiProperty); }
 			private set { SetValue(MonitorDpiPropertyKey, value); }
 		}
+		/// <summary>
+		/// Dependency property key for <see cref="MonitorDpi"/>
+		/// </summary>
 		private static readonly DependencyPropertyKey MonitorDpiPropertyKey =
 			DependencyProperty.RegisterReadOnly(
 				"MonitorDpi",
@@ -93,6 +99,9 @@ namespace PerMonitorDpi.Models
 				new FrameworkPropertyMetadata(
 					Dpi.Default,
 					(d, e) => Debug.WriteLine("Monitor DPI: {0}", (Dpi)e.NewValue)));
+		/// <summary>
+		/// Dependency property for <see cref="MonitorDpi"/>
+		/// </summary>
 		public static readonly DependencyProperty MonitorDpiProperty = MonitorDpiPropertyKey.DependencyProperty;
 
 		/// <summary>
@@ -103,6 +112,9 @@ namespace PerMonitorDpi.Models
 			get { return (Dpi)GetValue(WindowDpiProperty); }
 			private set { SetValue(WindowDpiPropertyKey, value); }
 		}
+		/// <summary>
+		/// Dependency property key for <see cref="WindowDpi"/>
+		/// </summary>
 		private static readonly DependencyPropertyKey WindowDpiPropertyKey =
 			DependencyProperty.RegisterReadOnly(
 				"WindowDpi",
@@ -111,8 +123,11 @@ namespace PerMonitorDpi.Models
 				new FrameworkPropertyMetadata(
 					Dpi.Default,
 					(d, e) => Debug.WriteLine("Window DPI: {0}", (Dpi)e.NewValue)));
+		/// <summary>
+		/// Dependency property for <see cref="WindowDpi"/>
+		/// </summary>
 		public static readonly DependencyProperty WindowDpiProperty = WindowDpiPropertyKey.DependencyProperty;
-		
+
 		#endregion
 
 
@@ -130,10 +145,18 @@ namespace PerMonitorDpi.Models
 
 		#region Constructor
 
+		/// <summary>
+		/// Default constructor
+		/// </summary>
 		public WindowHandler()
 		{
 		}
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="window">Target Window</param>
+		/// <param name="element">Target FrameworkElement</param>
 		public WindowHandler(Window window, FrameworkElement element = null)
 			: this()
 		{
@@ -146,19 +169,18 @@ namespace PerMonitorDpi.Models
 		/// <summary>
 		/// Target Window
 		/// </summary>
-		private Window targetWindow;
+		private Window _targetWindow;
 
 		/// <summary>
 		/// Target FrameworkElement which will be transformed when DPI changed
 		/// </summary>
 		/// <remarks>If this FrameworkElement is null, Window.Content will be transformed.</remarks>
-		private FrameworkElement targetElement;
+		private FrameworkElement _targetElement;
 
 		/// <summary>
 		/// HwndSource of target Window
 		/// </summary>
-		private HwndSource targetSource;
-
+		private HwndSource _targetSource;
 
 		internal void Initialize(Window window, FrameworkElement element = null)
 		{
@@ -168,12 +190,12 @@ namespace PerMonitorDpi.Models
 			if (!window.IsInitialized)
 				throw new InvalidOperationException("Target Window has not been initialized.");
 
-			targetWindow = window;
-			targetElement = element;
+			_targetWindow = window;
+			_targetElement = element;
 
 			if (IsPerMonitorDpiAware)
 			{
-				MonitorDpi = DpiChecker.GetDpiFromVisual(targetWindow);
+				MonitorDpi = DpiChecker.GetDpiFromVisual(_targetWindow);
 
 				if (MonitorDpi.Equals(SystemDpi))
 				{
@@ -184,11 +206,11 @@ namespace PerMonitorDpi.Models
 					var newInfo = new WindowInfo()
 					{
 						Dpi = MonitorDpi,
-						Width = targetWindow.Width * (double)MonitorDpi.X / SystemDpi.X,
-						Height = targetWindow.Height * (double)MonitorDpi.Y / SystemDpi.Y,
+						Width = _targetWindow.Width * (double)MonitorDpi.X / SystemDpi.X,
+						Height = _targetWindow.Height * (double)MonitorDpi.Y / SystemDpi.Y,
 					};
 
-					Interlocked.Exchange<WindowInfo>(ref dueInfo, newInfo);
+					Interlocked.Exchange<WindowInfo>(ref _dueInfo, newInfo);
 
 					ChangeDpi();
 				}
@@ -199,54 +221,62 @@ namespace PerMonitorDpi.Models
 				WindowDpi = SystemDpi;
 			}
 
-			targetSource = PresentationSource.FromVisual(targetWindow) as HwndSource;
-			if (targetSource != null)
-				targetSource.AddHook(WndProc);
+			_targetSource = PresentationSource.FromVisual(_targetWindow) as HwndSource;
+			if (_targetSource != null)
+				_targetSource.AddHook(WndProc);
 		}
 
 		internal void Close()
 		{
-			if (targetSource != null)
-				targetSource.RemoveHook(WndProc);
+			if (_targetSource != null)
+				_targetSource.RemoveHook(WndProc);
 		}
-
 
 		/// <summary>
 		/// Information that target Window due to be
 		/// </summary>
-		private WindowInfo dueInfo;
+		private WindowInfo _dueInfo;
 
 		/// <summary>
 		/// Current status of target Window
 		/// </summary>
-		private WindowStatus currentStatus = WindowStatus.None;
+		private WindowStatus _currentStatus = WindowStatus.None;
 
 		/// <summary>
 		/// Size of target Window to be the base for calculating due size when DPI changed 
 		/// </summary>
-		private Size baseSize = Size.Empty;
+		private Size _baseSize = Size.Empty;
 
 		/// <summary>
 		/// Whether DPI has changed after target Window's location has started to be changed
 		/// </summary>
-		private bool isDpiChanged = false;
+		private bool _isDpiChanged = false;
 
 		/// <summary>
 		/// Whether target Window's location or size has started to be changed
 		/// </summary>
-		private bool isEnteredSizeMove = false;
+		private bool _isEnteredSizeMove = false;
 
 		/// <summary>
 		/// Count of WM_MOVE message
 		/// </summary>
-		private int countLocationChanged = 0;
+		private int _countLocationChanged = 0;
 
 		/// <summary>
 		/// Count of WM_SIZE message
 		/// </summary>
-		private int countSizeChanged = 0;
+		private int _countSizeChanged = 0;
 
-
+		/// <summary>
+		/// Handle window messages.
+		/// </summary>
+		/// <param name="hwnd">The window handle</param>
+		/// <param name="msg">The message ID</param>
+		/// <param name="wParam">The message's wParam value</param>
+		/// <param name="lParam">The message's lParam value</param>
+		/// <param name="handled">Whether the message was handled</param>
+		/// <returns>Return value depending on the particular message</returns>
+		/// <remarks>This is an implementation of System.Windows.Interop.HwndSourceHook.</remarks>
 		protected virtual IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
 			if (!IsPerMonitorDpiAware)
@@ -265,11 +295,11 @@ namespace PerMonitorDpi.Models
 					if (MonitorDpi.Equals(oldDpi))
 						break;
 
-					isDpiChanged = true;
+					_isDpiChanged = true;
 
 					var newInfo = new WindowInfo() { Dpi = MonitorDpi };
 
-					switch (currentStatus)
+					switch (_currentStatus)
 					{
 						case WindowStatus.None:
 							var rect = (NativeMethod.RECT)Marshal.PtrToStructure(lParam, typeof(NativeMethod.RECT));
@@ -279,14 +309,14 @@ namespace PerMonitorDpi.Models
 							break;
 
 						case WindowStatus.LocationChanged:
-							if (baseSize == Size.Empty)
-								baseSize = new Size(targetWindow.Width, targetWindow.Height);
+							if (_baseSize == Size.Empty)
+								_baseSize = new Size(_targetWindow.Width, _targetWindow.Height);
 
-							baseSize = new Size(
-								baseSize.Width * (double)MonitorDpi.X / oldDpi.X,
-								baseSize.Height * (double)MonitorDpi.Y / oldDpi.Y);
+							_baseSize = new Size(
+								_baseSize.Width * (double)MonitorDpi.X / oldDpi.X,
+								_baseSize.Height * (double)MonitorDpi.Y / oldDpi.Y);
 
-							newInfo.Size = baseSize;
+							newInfo.Size = _baseSize;
 							break;
 
 						case WindowStatus.SizeChanged:
@@ -294,9 +324,9 @@ namespace PerMonitorDpi.Models
 							break;
 					}
 
-					Interlocked.Exchange<WindowInfo>(ref dueInfo, newInfo);
+					Interlocked.Exchange<WindowInfo>(ref _dueInfo, newInfo);
 
-					switch (currentStatus)
+					switch (_currentStatus)
 					{
 						case WindowStatus.None:
 							ChangeDpi();
@@ -317,54 +347,54 @@ namespace PerMonitorDpi.Models
 				case (int)WindowMessage.WM_ENTERSIZEMOVE:
 					Debug.WriteLine("ENTERSIZEMOVE");
 
-					baseSize = new Size(targetWindow.Width, targetWindow.Height);
+					_baseSize = new Size(_targetWindow.Width, _targetWindow.Height);
 
-					isDpiChanged = false;
-					isEnteredSizeMove = true;
-					countLocationChanged = 0;
-					countSizeChanged = 0;
+					_isDpiChanged = false;
+					_isEnteredSizeMove = true;
+					_countLocationChanged = 0;
+					_countSizeChanged = 0;
 					break;
 
 				case (int)WindowMessage.WM_EXITSIZEMOVE:
 					Debug.WriteLine("EXITSIZEMOVE");
 
-					isEnteredSizeMove = false;
+					_isEnteredSizeMove = false;
 
 					// Last stand!!!
-					if (isDpiChanged && (currentStatus == WindowStatus.LocationChanged))
+					if (_isDpiChanged && (_currentStatus == WindowStatus.LocationChanged))
 					{
 						var lastInfo = new WindowInfo()
 						{
 							Dpi = MonitorDpi,
-							Size = baseSize,
+							Size = _baseSize,
 						};
 
-						Interlocked.Exchange<WindowInfo>(ref dueInfo, lastInfo);
+						Interlocked.Exchange<WindowInfo>(ref _dueInfo, lastInfo);
 
 						ChangeDpi(WindowStatus.LocationChanged);
 					}
 
-					currentStatus = WindowStatus.None;
+					_currentStatus = WindowStatus.None;
 					break;
 
 				case (int)WindowMessage.WM_MOVE:
 					Debug.WriteLine("MOVE");
 
-					countLocationChanged++;
-					if (isEnteredSizeMove && (countLocationChanged > countSizeChanged))
-						currentStatus = WindowStatus.LocationChanged;
+					_countLocationChanged++;
+					if (_isEnteredSizeMove && (_countLocationChanged > _countSizeChanged))
+						_currentStatus = WindowStatus.LocationChanged;
 
 					ChangeDpi(WindowStatus.LocationChanged);
 					break;
 
 				case (int)WindowMessage.WM_SIZE:
 					Debug.WriteLine("SIZE");
-					
+
 					if ((uint)wParam == NativeMethod.SIZE_RESTORED)
 					{
-						countSizeChanged++;
-						if (isEnteredSizeMove && (countLocationChanged < countSizeChanged))
-							currentStatus = WindowStatus.SizeChanged;
+						_countSizeChanged++;
+						if (_isEnteredSizeMove && (_countLocationChanged < _countSizeChanged))
+							_currentStatus = WindowStatus.SizeChanged;
 					}
 					break;
 			}
@@ -378,20 +408,20 @@ namespace PerMonitorDpi.Models
 		/// Null:   Don't block.
 		/// Object: Block.
 		/// </remarks>
-		private object blocker = null;
+		private object _blocker = null;
 
 		private void ChangeDpi(WindowStatus status = WindowStatus.None)
 		{
-			if (Interlocked.CompareExchange(ref blocker, new object(), null) != null)
+			if (Interlocked.CompareExchange(ref _blocker, new object(), null) != null)
 				return;
 
 			try
 			{
-				var testInfo = Interlocked.Exchange<WindowInfo>(ref dueInfo, null);
+				var testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, null);
 
 				while (testInfo != null)
 				{
-					var testRect = new Rect(new Point(targetWindow.Left, targetWindow.Top), testInfo.Size);
+					var testRect = new Rect(new Point(_targetWindow.Left, _targetWindow.Top), testInfo.Size);
 
 					bool changesNow = true;
 
@@ -415,14 +445,14 @@ namespace PerMonitorDpi.Models
 						{
 							case WindowStatus.None:
 							case WindowStatus.LocationChanged:
-								Debug.WriteLine("Old Size: {0}-{1}", targetWindow.Width, targetWindow.Height);
+								Debug.WriteLine("Old Size: {0}-{1}", _targetWindow.Width, _targetWindow.Height);
 
-								targetWindow.Left = testRect.Left;
-								targetWindow.Top = testRect.Top;
-								targetWindow.Width = testRect.Width;
-								targetWindow.Height = testRect.Height;
+								_targetWindow.Left = testRect.Left;
+								_targetWindow.Top = testRect.Top;
+								_targetWindow.Width = testRect.Width;
+								_targetWindow.Height = testRect.Height;
 
-								Debug.WriteLine("New Size: {0}-{1}", targetWindow.Width, targetWindow.Height);
+								Debug.WriteLine("New Size: {0}-{1}", _targetWindow.Width, _targetWindow.Height);
 								break;
 
 							case WindowStatus.SizeChanged:
@@ -432,7 +462,7 @@ namespace PerMonitorDpi.Models
 
 						WindowDpi = testInfo.Dpi;
 
-						var content = targetElement ?? targetWindow.Content as FrameworkElement;
+						var content = _targetElement ?? _targetWindow.Content as FrameworkElement;
 						if (content != null)
 						{
 							content.LayoutTransform = (testInfo.Dpi.Equals(SystemDpi))
@@ -446,17 +476,17 @@ namespace PerMonitorDpi.Models
 						if (handler != null)
 							handler(this, EventArgs.Empty);
 
-						testInfo = Interlocked.Exchange<WindowInfo>(ref dueInfo, null);
+						testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, null);
 					}
 					else
 					{
-						testInfo = Interlocked.Exchange<WindowInfo>(ref dueInfo, testInfo);
+						testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, testInfo);
 					}
 				}
 			}
 			finally
 			{
-				Interlocked.Exchange(ref blocker, null);
+				Interlocked.Exchange(ref _blocker, null);
 			}
 		}
 	}

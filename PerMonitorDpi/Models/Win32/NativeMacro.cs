@@ -1,7 +1,7 @@
 ﻿
 namespace PerMonitorDpi.Models.Win32
 {
-	public static class NativeMacro
+	internal static class NativeMacro
 	{
 		/// <summary>
 		/// Equivalent to LOWORD

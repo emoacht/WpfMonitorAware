@@ -5,6 +5,9 @@ using System.Windows.Data;
 
 namespace PerMonitorDpi.Views.Converters
 {
+	/// <summary>
+	/// Convert whether object is null to Visibility.
+	/// </summary>
 	[ValueConversion(typeof(object), typeof(Visibility))]
 	public class ObjectToVisibilityConverter : IValueConverter
 	{
@@ -21,6 +24,14 @@ namespace PerMonitorDpi.Views.Converters
 			return (value != null) ? Visibility.Visible : Visibility.Collapsed;
 		}
 
+		/// <summary>
+		/// Not implemented
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="targetType"></param>
+		/// <param name="parameter"></param>
+		/// <param name="culture"></param>
+		/// <returns></returns>
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			throw new NotImplementedException();

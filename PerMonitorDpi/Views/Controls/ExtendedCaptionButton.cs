@@ -8,12 +8,22 @@ using PerMonitorDpi.Helper;
 
 namespace PerMonitorDpi.Views.Controls
 {
+	/// <summary>
+	/// Caption button for <see cref="PerMonitorDpi.Views.ExtendedWindow"/>
+	/// </summary>
 	public class ExtendedCaptionButton : Button
 	{
+		/// <summary>
+		/// Default constructor
+		/// </summary>
 		public ExtendedCaptionButton()
 		{
 		}
 
+		/// <summary>
+		/// OnInitialized
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnInitialized(EventArgs e)
 		{
 			base.OnInitialized(e);
@@ -52,20 +62,25 @@ namespace PerMonitorDpi.Views.Controls
 					});
 			}
 		}
-		
+
 
 		#region Property
 
 		/// <summary>
 		/// Whether the owner Window is about to be activated (internal)
 		/// </summary>
-		/// <remarks>This property will be changed when the Window is about to be activated or deactivated.
-		/// For binding only between code behind.</remarks>
+		/// <remarks>
+		/// <para>This property will be changed when the Window is about to be activated or deactivated.</para>
+		/// <para>For binding only between code behind.</para>
+		/// </remarks>
 		internal bool IsAboutActive
 		{
 			get { return (bool)GetValue(IsAboutActiveProperty); }
 			set { SetValue(IsAboutActiveProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="IsAboutActive"/>
+		/// </summary>
 		internal static readonly DependencyProperty IsAboutActiveProperty =
 			DependencyProperty.Register(
 				"IsAboutActive",
@@ -90,6 +105,9 @@ namespace PerMonitorDpi.Views.Controls
 			get { return (Brush)GetValue(NormalBackgroundProperty); }
 			set { SetValue(NormalBackgroundProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="NormalBackground"/>
+		/// </summary>
 		public static readonly DependencyProperty NormalBackgroundProperty =
 			DependencyProperty.Register(
 				"NormalBackground",
@@ -106,6 +124,9 @@ namespace PerMonitorDpi.Views.Controls
 			get { return (Brush)GetValue(DeactivatedBackgroundProperty); }
 			set { SetValue(DeactivatedBackgroundProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="DeactivatedBackground"/>
+		/// </summary>
 		public static readonly DependencyProperty DeactivatedBackgroundProperty =
 			DependencyProperty.Register(
 				"DeactivatedBackground",
@@ -121,6 +142,9 @@ namespace PerMonitorDpi.Views.Controls
 			get { return (Geometry)GetValue(IconGeometryProperty); }
 			set { SetValue(IconGeometryProperty, value); }
 		}
+		/// <summary>
+		/// Dependency property for <see cref="IconGeometry"/>
+		/// </summary>
 		public static readonly DependencyProperty IconGeometryProperty =
 			DependencyProperty.Register(
 				"IconGeometry",
@@ -129,16 +153,19 @@ namespace PerMonitorDpi.Views.Controls
 				new FrameworkPropertyMetadata(null));
 
 		/// <summary>
-		/// Drawing for button icon to be used by IconCanvas
+		/// Drawing icon to be used by IconCanvas
 		/// </summary>
-		public IDrawingIcon IconDrawing
+		public IDrawingIcon DrawingIcon
 		{
-			get { return (IDrawingIcon)GetValue(IconDrawingProperty); }
-			set { SetValue(IconDrawingProperty, value); }
+			get { return (IDrawingIcon)GetValue(DrawingIconProperty); }
+			set { SetValue(DrawingIconProperty, value); }
 		}
-		public static readonly DependencyProperty IconDrawingProperty =
+		/// <summary>
+		/// Dependency property for <see cref="DrawingIcon"/>
+		/// </summary>
+		public static readonly DependencyProperty DrawingIconProperty =
 			DependencyProperty.Register(
-				"IconDrawing",
+				"DrawingIcon",
 				typeof(IDrawingIcon),
 				typeof(ExtendedCaptionButton),
 				new FrameworkPropertyMetadata(null));

@@ -5,10 +5,13 @@ using System.Windows.Data;
 
 namespace PerMonitorDpi.Views.Converters
 {
+	/// <summary>
+	/// Convert doubles to summed double.
+	/// </summary>
 	public class DoubleSumConverter : IMultiValueConverter
 	{
 		/// <summary>
-		/// Sum doubles.
+		/// Convert doubles to summed double.
 		/// </summary>
 		/// <param name="values">Source doubles</param>
 		/// <param name="targetType"></param>
@@ -20,6 +23,14 @@ namespace PerMonitorDpi.Views.Converters
 			return values.OfType<double>().Sum();
 		}
 
+		/// <summary>
+		/// Not implemented
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="targetTypes"></param>
+		/// <param name="parameter"></param>
+		/// <param name="culture"></param>
+		/// <returns></returns>
 		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
 		{
 			throw new NotImplementedException();

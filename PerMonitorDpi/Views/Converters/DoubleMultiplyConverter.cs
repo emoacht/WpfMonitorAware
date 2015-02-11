@@ -5,11 +5,14 @@ using System.Windows.Data;
 
 namespace PerMonitorDpi.Views.Converters
 {
+	/// <summary>
+	/// Convert double to multiplied double.
+	/// </summary>
 	[ValueConversion(typeof(double), typeof(double))]
 	public class DoubleMultiplyConverter : IValueConverter
 	{
 		/// <summary>
-		/// Multiply double.
+		/// Convert double to multiplied double.
 		/// </summary>
 		/// <param name="value">Source double</param>
 		/// <param name="targetType"></param>
@@ -30,7 +33,7 @@ namespace PerMonitorDpi.Views.Converters
 		}
 
 		/// <summary>
-		/// Divide double.
+		/// Convert double to divided double.
 		/// </summary>
 		/// <param name="value">Source double</param>
 		/// <param name="targetType"></param>

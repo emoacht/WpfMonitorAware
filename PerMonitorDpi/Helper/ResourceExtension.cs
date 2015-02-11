@@ -7,10 +7,13 @@ using System.Windows.Controls;
 
 namespace PerMonitorDpi.Helper
 {
-	public static class ResourceExtension
+	/// <summary>
+	/// Extension method for <see cref="FrameworkElement"/> to manage resources
+	/// </summary>
+	internal static class ResourceExtension
 	{
 		/// <summary>
-		/// Add/Remove resources to/from Application resources.
+		/// Add/Remove resources to/from <see cref="Application"/> resources.
 		/// </summary>
 		/// <param name="app">Target Application</param>
 		/// <param name="newUriString">Uri string of new resources to be added</param>
@@ -43,7 +46,7 @@ namespace PerMonitorDpi.Helper
 		}
 
 		/// <summary>
-		/// Add/Remove resources to/from ContentControl resources.
+		/// Add/Remove resources to/from <see cref="ContentControl"/> resources.
 		/// </summary>
 		/// <param name="control">Target ContentControl</param>
 		/// <param name="newUriString">Uri string of new resources to be added</param>

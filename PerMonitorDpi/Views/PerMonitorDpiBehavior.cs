@@ -7,11 +7,14 @@ using PerMonitorDpi.Models;
 namespace PerMonitorDpi.Views
 {
 	/// <summary>
-	/// Behavior to make a window Per-Monitor DPI aware
+	/// Behavior to make a <see cref="Window"/> Per-Monitor DPI aware
 	/// </summary>
 	[TypeConstraint(typeof(Window))]
 	public class PerMonitorDpiBehavior : Behavior<Window>
 	{
+		/// <summary>
+		/// OnAttached
+		/// </summary>
 		protected override void OnAttached()
 		{
 			base.OnAttached();
@@ -20,6 +23,9 @@ namespace PerMonitorDpi.Views
 			this.AssociatedObject.Closed += OnWindowClosed;
 		}
 
+		/// <summary>
+		/// OnDetaching
+		/// </summary>
 		protected override void OnDetaching()
 		{
 			base.OnDetaching();
@@ -31,6 +37,9 @@ namespace PerMonitorDpi.Views
 			this.AssociatedObject.Closed -= OnWindowClosed;
 		}
 
+		/// <summary>
+		/// Handler for <see cref="Window"/>
+		/// </summary>
 		public WindowHandler WindowHandler
 		{
 			get { return _windowhandler ?? (_windowhandler = new WindowHandler()); }

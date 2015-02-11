@@ -2,7 +2,10 @@
 
 namespace PerMonitorDpi.Helper
 {
-	public static class BrushExtenstion
+	/// <summary>
+	/// Extension method for <see cref="System.Windows.Media.Brush"/>
+	/// </summary>
+	internal static class BrushExtension
 	{
 		/// <summary>
 		/// Check if a Brush is Transparent.

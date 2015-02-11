@@ -13,9 +13,6 @@ using System.Windows.Media.Imaging;
 
 namespace WpfExtendedWindow.Views.Controls
 {
-	/// <summary>
-	/// Interaction logic for DropCircle.xaml
-	/// </summary>
 	public partial class DropCircle : UserControl
 	{
 		public DropCircle()
@@ -37,7 +34,7 @@ namespace WpfExtendedWindow.Views.Controls
 					false, // Default value must be false.
 					async (d, e) =>
 					{
-						if (!(bool) e.NewValue)
+						if (!(bool)e.NewValue)
 							return;
 
 						var circle = (DropCircle)d;

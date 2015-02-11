@@ -8,12 +8,18 @@ namespace PerMonitorDpi.Models
 	/// DPI information
 	/// </summary>
 	/// <remarks>
-	/// This struct is based on the same struct of https://github.com/Grabacr07/XamClaudia
+	/// This structure is based on the same structure of https://github.com/Grabacr07/XamClaudia
 	/// </remarks>
 	public struct Dpi : INotifyPropertyChanged
 	{
+		/// <summary>
+		/// Default DPI
+		/// </summary>
 		public static readonly Dpi Default = new Dpi(96, 96);
 
+		/// <summary>
+		/// X-axis value of DPI
+		/// </summary>
 		public uint X
 		{
 			get { return _x; }
@@ -25,6 +31,9 @@ namespace PerMonitorDpi.Models
 		}
 		private uint _x;
 
+		/// <summary>
+		/// Y-axis value of DPI
+		/// </summary>
 		public uint Y
 		{
 			get { return _y; }
@@ -36,7 +45,11 @@ namespace PerMonitorDpi.Models
 		}
 		private uint _y;
 
-
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="x">X-axis value</param>
+		/// <param name="y">Y-axis value</param>
 		public Dpi(uint x, uint y)
 			: this()
 		{
@@ -44,34 +57,64 @@ namespace PerMonitorDpi.Models
 			this.Y = y;
 		}
 
+		/// <summary>
+		/// == Operator
+		/// </summary>
+		/// <param name="dpi1">Instance to compare</param>
+		/// <param name="dpi2">Instance to compare</param>
+		/// <returns>True if equal</returns>
 		public static bool operator ==(Dpi dpi1, Dpi dpi2)
 		{
 			return (dpi1.X == dpi2.X) && (dpi1.Y == dpi2.Y);
 		}
 
+		/// <summary>
+		/// != Operator
+		/// </summary>
+		/// <param name="dpi1">Instance to compare</param>
+		/// <param name="dpi2">Instance to compare</param>
+		/// <returns>True if not equal</returns>
 		public static bool operator !=(Dpi dpi1, Dpi dpi2)
 		{
 			return !(dpi1 == dpi2);
 		}
 
+		/// <summary>
+		/// Equals operator
+		/// </summary>
+		/// <param name="other">Other instance to compare</param>
+		/// <returns>True if equal</returns>
 		public bool Equals(Dpi other)
 		{
-			return (this.X == other.X) && (this.Y == other.Y);
+			return (this == other);
 		}
 
+		/// <summary>
+		/// Equals operator
+		/// </summary>
+		/// <param name="other">Other instance to compare</param>
+		/// <returns>True if equal</returns>
 		public override bool Equals(object other)
 		{
 			if (ReferenceEquals(null, other))
 				return false;
 
-			return (other is Dpi) && Equals((Dpi)other);
+			return (other is Dpi) && (this == (Dpi)other);
 		}
 
+		/// <summary>
+		/// Get hash code.
+		/// </summary>
+		/// <returns>Hash code for this structure</returns>
 		public override int GetHashCode()
 		{
 			return this.X.GetHashCode() ^ this.Y.GetHashCode();
 		}
 
+		/// <summary>
+		/// Create string representation.
+		/// </summary>
+		/// <returns>String containing X and Y values of this structure</returns>
 		public override string ToString()
 		{
 			return String.Format("{0}-{1}", this.X, this.Y);
@@ -80,15 +123,16 @@ namespace PerMonitorDpi.Models
 
 		#region INotifyPropertyChanged member
 
+		/// <summary>
+		/// PropertyChanged event
+		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private void RaisePropertyChanged([CallerMemberName]string propertyName = null)
 		{
 			var handler = this.PropertyChanged;
 			if (handler != null)
-			{
 				handler(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 
 		#endregion

@@ -4,6 +4,9 @@ using System.Windows.Media;
 
 namespace PerMonitorDpi.Views.Controls
 {
+	/// <summary>
+	/// Drawing restore icon
+	/// </summary>
 	public class DrawingRestoreIcon : IDrawingIcon
 	{
 		/// <summary>

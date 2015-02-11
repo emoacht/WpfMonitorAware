@@ -1,14 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Color x:Key="ExtendedCaptionButton.State.MouseOver.ForegroundColor">White</Color>
-    <Color x:Key="ExtendedCaptionButton.State.MouseOver.BackgroundColor">#FF3665b3</Color>
-    <Color x:Key="ExtendedCaptionButton.State.Pressed.ForegroundColor">White</Color>
-    <Color x:Key="ExtendedCaptionButton.State.Pressed.BackgroundColor">#FF3d6099</Color>
+	<Color x:Key="ExtendedCaptionButton.State.MouseOver.ForegroundColor">White</Color>
+	<Color x:Key="ExtendedCaptionButton.State.MouseOver.BackgroundColor">#FF3665b3</Color>
+	<Color x:Key="ExtendedCaptionButton.State.Pressed.ForegroundColor">White</Color>
+	<Color x:Key="ExtendedCaptionButton.State.Pressed.BackgroundColor">#FF3d6099</Color>
 
-    <Color x:Key="ExtendedCaptionButton.Close.MouseOver.ForegroundColor">White</Color>
-    <Color x:Key="ExtendedCaptionButton.Close.MouseOver.BackgroundColor">#FFe04343</Color>
-    <Color x:Key="ExtendedCaptionButton.Close.Pressed.ForegroundColor">White</Color>
-    <Color x:Key="ExtendedCaptionButton.Close.Pressed.BackgroundColor">#FF993d3d</Color>
+	<Color x:Key="ExtendedCaptionButton.Close.MouseOver.ForegroundColor">White</Color>
+	<Color x:Key="ExtendedCaptionButton.Close.MouseOver.BackgroundColor">#FFe04343</Color>
+	<Color x:Key="ExtendedCaptionButton.Close.Pressed.ForegroundColor">White</Color>
+	<Color x:Key="ExtendedCaptionButton.Close.Pressed.BackgroundColor">#FF993d3d</Color>
 
 </ResourceDictionary>

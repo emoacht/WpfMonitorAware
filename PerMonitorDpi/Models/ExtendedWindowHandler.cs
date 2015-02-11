@@ -4,6 +4,9 @@ using PerMonitorDpi.Models.Win32;
 
 namespace PerMonitorDpi.Models
 {
+	/// <summary>
+	/// Handler for <see cref="PerMonitorDpi.Views.ExtendedWindow"/>
+	/// </summary>
 	public class ExtendedWindowHandler : WindowHandler
 	{
 		#region Event
@@ -26,6 +29,16 @@ namespace PerMonitorDpi.Models
 		#endregion
 
 
+		/// <summary>
+		/// Handle window messages.
+		/// </summary>
+		/// <param name="hwnd">The window handle</param>
+		/// <param name="msg">The message ID</param>
+		/// <param name="wParam">The message's wParam value</param>
+		/// <param name="lParam">The message's lParam value</param>
+		/// <param name="handled">Whether the message was handled</param>
+		/// <returns>Return value depending on the particular message</returns>
+		/// <remarks>This is an implementation of System.Windows.Interop.HwndSourceHook.</remarks>
 		protected override IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
 			switch (msg)

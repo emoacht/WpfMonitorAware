@@ -2,10 +2,13 @@
 
 namespace PerMonitorDpi.Helper
 {
-	public static class DoubleExtension
+	/// <summary>
+	/// Extension method for <see cref="Double"/>
+	/// </summary>
+	internal static class DoubleExtension
 	{
 		/// <summary>
-		/// Get a preliminarily rounded double to prevent a FrameworkElement from getting blurred by ScaleTransform.
+		/// Convert a double to a preliminarily rounded double to prevent a FrameworkElement from getting blurred by ScaleTransform.
 		/// </summary>
 		/// <param name="source">Source double</param>
 		/// <param name="factor">Factor of ScaleTransform</param>

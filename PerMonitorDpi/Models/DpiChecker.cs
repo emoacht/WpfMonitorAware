@@ -8,6 +8,9 @@ using PerMonitorDpi.Models.Win32;
 
 namespace PerMonitorDpi.Models
 {
+	/// <summary>
+	/// Check DPI.
+	/// </summary>
 	public static class DpiChecker
 	{
 		#region DPI Awareness
@@ -29,7 +32,7 @@ namespace PerMonitorDpi.Models
 		/// Get DPI awareness of current process.
 		/// </summary>
 		/// <returns>If succeeded, Nullable PROCESS_DPI_AWARENESS. If failed, null.</returns>
-		public static NativeMethod.PROCESS_DPI_AWARENESS? GetDpiAwareness()
+		internal static NativeMethod.PROCESS_DPI_AWARENESS? GetDpiAwareness()
 		{
 			if (!OsVersion.IsEightOneOrNewer)
 				return null;
@@ -119,7 +122,7 @@ namespace PerMonitorDpi.Models
 		/// </summary>
 		/// <param name="sourceRect">Source Rect</param>
 		/// <returns>DPI struct</returns>
-		public static Dpi GetDpiFromRect(NativeMethod.RECT sourceRect)
+		internal static Dpi GetDpiFromRect(NativeMethod.RECT sourceRect)
 		{
 			if (!OsVersion.IsEightOneOrNewer)
 				return Dpi.Default;

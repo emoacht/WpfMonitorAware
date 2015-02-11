@@ -36,6 +36,6 @@ The default DPI of WPF rendering system is 96. To adjust scaling of FrameworkEle
 
 This library has no function to notify OS of DPI awareness of the app. The app using this library needs to declare itself Per-Monitor DPI aware in the application manifest.
 
-##Other
+##License
 
- - License: MIT License
+ - MIT License

@@ -9,7 +9,6 @@
 	</ResourceDictionary.MergedDictionaries>
 
 	<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverterKey"/>
-	<converters:DoubleCenterConverter x:Key="DoubleCenterConverterKey"/>
 	<converters:DoubleSumConverter x:Key="DoubleSumConverterKey"/>
 	<converters:DoubleMultiplyConverter x:Key="DoubleMultiplyConverterKey"/>
 	<converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverterKey"/>
@@ -127,7 +126,7 @@
 								 Focusable="False"
 								 Foreground="{DynamicResource ExtendedCaptionButton.State.Normal.Foreground}"
 								 AncestorTransform="{Binding ElementName=PART_ChromeGrid, Path=LayoutTransform}"
-								 IconDrawing="{TemplateBinding IconDrawing}"
+								 DrawingIcon="{TemplateBinding DrawingIcon}"
 								 RenderOptions.EdgeMode="Aliased"
 								 SnapsToDevicePixels="True"/>
 
@@ -266,7 +265,7 @@
 		   TargetType="{x:Type controls:ExtendedCaptionButton}"
 		   BasedOn="{StaticResource ExtendedCaptionButton.StateStyle}">
 		<Setter Property="Template" Value="{StaticResource ExtendedCaptionButton.MaximizeTemplate}"/>
-		<Setter Property="IconDrawing" Value="{StaticResource DrawingMaximizeIconKey}"/>
+		<Setter Property="DrawingIcon" Value="{StaticResource DrawingMaximizeIconKey}"/>
 		<Setter Property="Width" Value="{DynamicResource ExtendedCaptionButton.Maximize.Width}"/>
 		<Setter Property="Height" Value="{DynamicResource ExtendedCaptionButton.Height}"/>
 		<Setter Property="Margin" Value="{DynamicResource ExtendedCaptionButton.Maximize.Margin}"/>
@@ -278,7 +277,7 @@
 		   TargetType="{x:Type controls:ExtendedCaptionButton}"
 		   BasedOn="{StaticResource ExtendedCaptionButton.StateStyle}">
 		<Setter Property="Template" Value="{StaticResource ExtendedCaptionButton.MaximizeTemplate}"/>
-		<Setter Property="IconDrawing" Value="{StaticResource DrawingRestoreIconKey}"/>
+		<Setter Property="DrawingIcon" Value="{StaticResource DrawingRestoreIconKey}"/>
 		<Setter Property="Width" Value="{DynamicResource ExtendedCaptionButton.Maximize.Width}"/>
 		<Setter Property="Height" Value="{DynamicResource ExtendedCaptionButton.Height}"/>
 		<Setter Property="Margin" Value="{DynamicResource ExtendedCaptionButton.Maximize.Margin}"/>
@@ -370,26 +369,24 @@
 											  Width="{TemplateBinding TitleBarPaddingLeft}"/>
 
 										<!-- Title bar Icon -->
-										<StackPanel Grid.Column="1"
-													Width="{Binding ElementName=PART_TitleBarIcon, Path=Width,
-													Converter={StaticResource DoubleMultiplyConverterKey}, ConverterParameter=1.5}"
-													Visibility="{Binding ElementName=PART_TitleBarIcon, Path=Visibility}">
-											<Grid>
-												<Grid.Height>
-													<MultiBinding Converter="{StaticResource DoubleCenterConverterKey}" ConverterParameter="Ceiling">
-														<Binding ElementName="PART_TitleBarGrid" Path="Height"/>
-														<Binding ElementName="PART_TitleBarIcon" Path="Height"/>
-													</MultiBinding>
-												</Grid.Height>
-											</Grid>
+										<Grid Grid.Column="1"
+											  Width="{Binding ElementName=PART_TitleBarIcon, Path=Width, Converter={StaticResource DoubleMultiplyConverterKey}, ConverterParameter=1.5}"
+											  Height="{Binding ElementName=PART_TitleBarGrid, Path=Height}"
+											  Visibility="{Binding ElementName=PART_TitleBarIcon, Path=Visibility}">
+
 											<Image x:Name="PART_TitleBarIcon"
 												   Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IconSize.Width}"
 												   Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IconSize.Height}"
 												   HorizontalAlignment="Left" VerticalAlignment="Top"
 												   Source="{TemplateBinding Icon}"
 												   Visibility="{TemplateBinding Icon, Converter={StaticResource ObjectToVisibilityConverterKey}}"
-												   WindowChrome.IsHitTestVisibleInChrome="True"/>
-										</StackPanel>
+												   WindowChrome.IsHitTestVisibleInChrome="True">
+												<controls:FrameworkElementCenterProperty.AttachedProperty>
+													<controls:FrameworkElementCenterProperty IsVerticalAlignmentCenter="True"
+																							 Rounding="Ceiling"/>
+												</controls:FrameworkElementCenterProperty.AttachedProperty>
+											</Image>
+										</Grid>
 
 										<!-- Title bar text -->
 										<TextBlock Grid.Column="2"

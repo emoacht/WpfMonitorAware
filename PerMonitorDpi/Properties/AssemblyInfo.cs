@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PerMonitorDpi")]
-[assembly: AssemblyCopyright("Copyright © 2014 EMO")]
+[assembly: AssemblyCopyright("Copyright © 2014-2015 EMO")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // すべての値を指定するか、下のように '*' を使ってビルドおよびリビジョン番号を 
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.3.2.7")]
-[assembly: AssemblyFileVersion("0.3.2.7")]
+[assembly: AssemblyVersion("0.3.2.8")]
+[assembly: AssemblyFileVersion("0.3.2.8")]

@@ -14,9 +14,6 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPerMonitorDpiProperty.Views
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
 	public partial class MainWindow : Window
 	{
 		public MainWindow()
@@ -24,21 +21,21 @@ namespace WpfPerMonitorDpiProperty.Views
 			InitializeComponent();
 		}
 
-		private EventHandler OnDpiChanged;
+		private EventHandler _onDpiChanged;
 
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
 
-			OnDpiChanged = (_sender, _e) => SystemSounds.Exclamation.Play();
-			DpiProperty.WindowHandler.DpiChanged += OnDpiChanged;
+			_onDpiChanged = (_sender, _e) => SystemSounds.Exclamation.Play();
+			DpiProperty.WindowHandler.DpiChanged += _onDpiChanged;
 		}
 
 		protected override void OnClosed(EventArgs e)
 		{
 			base.OnClosed(e);
 
-			DpiProperty.WindowHandler.DpiChanged -= OnDpiChanged;
+			DpiProperty.WindowHandler.DpiChanged -= _onDpiChanged;
 		}
 	}
 }

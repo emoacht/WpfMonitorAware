@@ -3,13 +3,16 @@ using System.Linq;
 
 namespace PerMonitorDpi.Helper
 {
-	public static class EnumAddition
+	/// <summary>
+	/// Additional method for <see cref="Enum"/>
+	/// </summary>
+	internal static class EnumAddition
 	{
 		/// <summary>
 		/// Check if a specified string exists in the names of a specified Enum.
 		/// </summary>
 		/// <param name="enumType">Enum type</param>
-		/// <param name="value">Source string</param>
+		/// <param name="value">Source String</param>
 		/// <param name="comparisonType">StringComparison option</param>
 		/// <returns>True if exists</returns>
 		/// <remarks>This method acts as Enum.IsDefined method added with StringComparison option.</remarks>
@@ -22,7 +25,7 @@ namespace PerMonitorDpi.Helper
 				throw new ArgumentException("The type must be Enum.", "enumType");
 
 			if (String.IsNullOrWhiteSpace(value))
-				throw new ArgumentNullException("value");
+				return false;
 
 			return Enum.GetNames(enumType).Any(x => String.Compare(x, value, comparisonType) == 0);
 		}
@@ -31,7 +34,7 @@ namespace PerMonitorDpi.Helper
 		/// Convert a specified string to the equivalent object of a specified Enum.
 		/// </summary>
 		/// <param name="enumType">Enum type</param>
-		/// <param name="value">Source string</param>
+		/// <param name="value">Source String</param>
 		/// <param name="comparisonType">StringComparison option</param>
 		/// <returns>Result object of Enum</returns>
 		/// <remarks>This method acts as Enum.Parse method added with StringComparison option.</remarks>
@@ -57,7 +60,7 @@ namespace PerMonitorDpi.Helper
 		/// Convert a specified string to the equivalent object of a specified Enum.
 		/// </summary>
 		/// <typeparam name="TEnum">Enum type</typeparam>
-		/// <param name="value">Source string</param>
+		/// <param name="value">Source String</param>
 		/// <param name="result">Result object of Enum</param>
 		/// <param name="comparisonType">StringComparison option</param>
 		/// <returns>True if converted successfully</returns>
@@ -68,7 +71,10 @@ namespace PerMonitorDpi.Helper
 				throw new ArgumentException("The type must be Enum.", "TEnum");
 
 			if (String.IsNullOrWhiteSpace(value))
-				throw new ArgumentNullException("value");
+			{
+				result = default(TEnum);
+				return false;
+			}
 
 			var name = Enum.GetNames(typeof(TEnum)).FirstOrDefault(x => String.Compare(x, value, comparisonType) == 0);
 			if (name == null)
