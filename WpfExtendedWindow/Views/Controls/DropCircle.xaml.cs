@@ -34,7 +34,7 @@ namespace WpfExtendedWindow.Views.Controls
 					false, // Default value must be false.
 					async (d, e) =>
 					{
-						if (!(bool) e.NewValue)
+						if (!(bool)e.NewValue)
 							return;
 
 						var circle = (DropCircle)d;
