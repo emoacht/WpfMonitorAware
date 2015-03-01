@@ -61,7 +61,7 @@ namespace PerMonitorDpi.Models
 		#endregion
 
 
-		#region Property
+		#region Property (DPI)
 
 		/// <summary>
 		/// Whether target Window is Per-Monitor DPI aware (readonly)
@@ -131,6 +131,35 @@ namespace PerMonitorDpi.Models
 		#endregion
 
 
+		#region Property (Color profile)
+
+		/// <summary>
+		/// Color profile path of target Window (public readonly)
+		/// </summary>
+		public string WindowColorProfilePath
+		{
+			get { return (string)GetValue(WindowColorProfilePathProperty); }
+			private set { SetValue(WindowColorProfilePathPropertyKey, value); }
+		}
+		/// <summary>
+		/// Dependency property key for <see cref="WindowColorProfilePath"/>
+		/// </summary>
+		private static readonly DependencyPropertyKey WindowColorProfilePathPropertyKey =
+			DependencyProperty.RegisterReadOnly(
+				"WindowColorProfilePath",
+				typeof(string),
+				typeof(WindowHandler),
+				new FrameworkPropertyMetadata(
+					String.Empty,
+					(d, e) => Debug.WriteLine("Window Color Profile Path: " + (string)e.NewValue)));
+		/// <summary>
+		/// Dependency property for <see cref="WindowColorProfilePath"/>
+		/// </summary>
+		public static readonly DependencyProperty WindowColorProfilePathProperty = WindowColorProfilePathPropertyKey.DependencyProperty;
+
+		#endregion
+
+
 		#region Event
 
 		/// <summary>
@@ -138,7 +167,14 @@ namespace PerMonitorDpi.Models
 		/// </summary>
 		/// <remarks>This event will be fired when DPI of target Window is changed. It is not necessarily 
 		/// the same timing when DPI of the monitor to which target Window belongs is changed.</remarks>
-		public event EventHandler DpiChanged;
+		public event EventHandler<DpiChangedEventArgs> DpiChanged;
+
+		/// <summary>
+		/// Color profile path changed event
+		/// </summary>
+		/// <remarks>This event will be fired when color profile path of the monitor to which target
+		/// Window belongs has changed and Window's move/resize which caused the change has exited.</remarks>
+		public event EventHandler<ColorProfileChangedEventArgs> ColorProfileChanged;
 
 		#endregion
 
@@ -203,7 +239,7 @@ namespace PerMonitorDpi.Models
 				}
 				else
 				{
-					var newInfo = new WindowInfo()
+					var newInfo = new WindowInfo
 					{
 						Dpi = MonitorDpi,
 						Width = _targetWindow.Width * (double)MonitorDpi.X / SystemDpi.X,
@@ -220,6 +256,8 @@ namespace PerMonitorDpi.Models
 				MonitorDpi = SystemDpi;
 				WindowDpi = SystemDpi;
 			}
+
+			WindowColorProfilePath = ColorProfileChecker.GetColorProfilePath(_targetWindow);
 
 			_targetSource = PresentationSource.FromVisual(_targetWindow) as HwndSource;
 			if (_targetSource != null)
@@ -297,7 +335,7 @@ namespace PerMonitorDpi.Models
 
 					_isDpiChanged = true;
 
-					var newInfo = new WindowInfo() { Dpi = MonitorDpi };
+					var newInfo = new WindowInfo { Dpi = MonitorDpi };
 
 					switch (_currentStatus)
 					{
@@ -363,7 +401,7 @@ namespace PerMonitorDpi.Models
 					// Last stand!!!
 					if (_isDpiChanged && (_currentStatus == WindowStatus.LocationChanged))
 					{
-						var lastInfo = new WindowInfo()
+						var lastInfo = new WindowInfo
 						{
 							Dpi = MonitorDpi,
 							Size = _baseSize,
@@ -375,6 +413,8 @@ namespace PerMonitorDpi.Models
 					}
 
 					_currentStatus = WindowStatus.None;
+
+					ChangeColorProfilePath();
 					break;
 
 				case (int)WindowMessage.WM_MOVE:
@@ -388,14 +428,16 @@ namespace PerMonitorDpi.Models
 					break;
 
 				case (int)WindowMessage.WM_SIZE:
+					if ((uint)wParam != NativeMethod.SIZE_RESTORED)
+						break;
+
 					Debug.WriteLine("SIZE");
 
-					if ((uint)wParam == NativeMethod.SIZE_RESTORED)
-					{
-						_countSizeChanged++;
-						if (_isEnteredSizeMove && (_countLocationChanged < _countSizeChanged))
-							_currentStatus = WindowStatus.SizeChanged;
-					}
+					_countSizeChanged++;
+					if (_isEnteredSizeMove && (_countLocationChanged < _countSizeChanged))
+						_currentStatus = WindowStatus.SizeChanged;
+
+					// DPI change by resize will be managed when WM_DPICHANGED comes.
 					break;
 			}
 			return IntPtr.Zero;
@@ -417,6 +459,7 @@ namespace PerMonitorDpi.Models
 
 			try
 			{
+				// Take information which is to be tested from _dueInfo and set null in return.
 				var testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, null);
 
 				while (testInfo != null)
@@ -460,6 +503,7 @@ namespace PerMonitorDpi.Models
 								break;
 						}
 
+						var oldDpi = WindowDpi;
 						WindowDpi = testInfo.Dpi;
 
 						var content = _targetElement ?? _targetWindow.Content as FrameworkElement;
@@ -474,12 +518,21 @@ namespace PerMonitorDpi.Models
 
 						var handler = DpiChanged;
 						if (handler != null)
-							handler(this, EventArgs.Empty);
+							handler(this, new DpiChangedEventArgs(oldDpi, WindowDpi));
 
+						// Take new information which is to be tested from _dueInfo again for the case
+						// where new information has been stored during this operation. If there is new
+						// information, repeat the operation.
 						testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, null);
 					}
 					else
 					{
+						// Store information which has been tested but determined not to be used now to
+						// _dueInfo and take new information in return. If there is new information,
+						// repeat the operation. If there is no new information, the information stored
+						// back may be overwritten by new information later but has a chance to be
+						// tested again in the case where it is the last information at this move/resize.
+						// In such case, the information may be tested at next move/resize.
 						testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, testInfo);
 					}
 				}
@@ -488,6 +541,20 @@ namespace PerMonitorDpi.Models
 			{
 				Interlocked.Exchange(ref _blocker, null);
 			}
+		}
+
+		private void ChangeColorProfilePath()
+		{
+			var colorProfilePath = ColorProfileChecker.GetColorProfilePath(_targetWindow);
+			if (WindowColorProfilePath.Equals(colorProfilePath, StringComparison.OrdinalIgnoreCase))
+				return;
+
+			var oldPath = WindowColorProfilePath;
+			WindowColorProfilePath = colorProfilePath;
+
+			var handler = ColorProfileChanged;
+			if (handler != null)
+				handler(this, new ColorProfileChangedEventArgs(oldPath, WindowColorProfilePath));
 		}
 	}
 }

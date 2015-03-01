@@ -6,7 +6,7 @@
 					x:Name="WindowRoot"
 					Title="WPF Extended Window"
 					FontFamily="Segoe UI"
-					Height="300" Width="500"
+					Height="400" Width="500"
 					Icon="/Resources/fourcolors.png">
 	<pmd:ExtendedWindow.Resources>
 		<ResourceDictionary>
@@ -31,10 +31,10 @@
 			  UseLayoutRounding ="True">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
@@ -45,7 +45,7 @@
 			<Label VerticalAlignment="Center"
 				   Content="System DPI"/>
 			<TextBox Grid.Column="1" Grid.Row="0"
-					 Width="80" Height="22" Margin="6,4"
+					 Width="80" Height="22" Margin="6,4" HorizontalAlignment="Left"
 					 IsReadOnly="True"
 					 Text="{Binding ElementName=WindowRoot, Path=WindowHandler.SystemDpi, Mode=OneWay}"/>
 
@@ -53,7 +53,7 @@
 				   VerticalAlignment="Center"
 				   Content="Per-Monitor DPI (Monitor DPI)"/>
 			<TextBox Grid.Column="1" Grid.Row="1"
-					 Width="80" Height="22" Margin="6,4"
+					 Width="80" Height="22" Margin="6,4" HorizontalAlignment="Left"
 					 IsReadOnly="True"
 					 Text="{Binding ElementName=WindowRoot, Path=WindowHandler.MonitorDpi, Mode=OneWay}"/>
 
@@ -61,7 +61,7 @@
 				   VerticalAlignment="Center"
 				   Content="Per-Monitor DPI (Window DPI)"/>
 			<TextBox Grid.Column="1" Grid.Row="2"
-					 Width="80" Height="22" Margin="6,4"
+					 Width="80" Height="22" Margin="6,4" HorizontalAlignment="Left"
 					 IsReadOnly="True"
 					 Text="{Binding ElementName=WindowRoot, Path=WindowHandler.WindowDpi, Mode=OneWay}"/>
 
@@ -69,9 +69,28 @@
 				   VerticalAlignment="Center"
 				   Content="Theme"/>
 			<ComboBox Grid.Column="1" Grid.Row="3"
-					  Width="80" Margin="6,4"
+					  Width="80" Margin="6,4" HorizontalAlignment="Left"
 					  ItemsSource="{Binding Source={StaticResource ExtendedThemeKey}}"
 					  SelectedItem="{Binding ElementName=WindowRoot, Path=MainTheme, Mode=TwoWay}"/>
+
+			<Label Grid.Column="0" Grid.Row="4"
+				   VerticalAlignment="Center"
+				   Content="Color Profile Path"/>
+			<TextBox Grid.Column="1" Grid.Row="4"
+					 Height="22" Margin="6,4"
+					 IsReadOnly="True"
+					 Text="{Binding ElementName=WindowRoot, Path=WindowHandler.WindowColorProfilePath, Mode=OneWay}"/>
+
+			<Grid Grid.ColumnSpan="2" Grid.Row="5"
+				  Background="Transparent"
+				  AllowDrop="True" Drop="OnDrop">
+				<Label VerticalAlignment="Center" HorizontalAlignment="Center"
+					   Content="Drop Image"
+					   IsHitTestVisible="False"/>
+				<Image Margin="8"
+					   Source="{Binding ElementName=WindowRoot, Path=ConvertedImage}"
+					   IsHitTestVisible="False"/>
+			</Grid>
 		</Grid>
 	</Grid>
 </pmd:ExtendedWindow>
