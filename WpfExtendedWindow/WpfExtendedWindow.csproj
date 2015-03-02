@@ -69,6 +69,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\ImageConverter.cs" />
     <Compile Include="Views\Controls\DropCircle.xaml.cs">
       <DependentUpon>DropCircle.xaml</DependentUpon>
     </Compile>

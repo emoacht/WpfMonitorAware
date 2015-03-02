@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+using PerMonitorDpi.Models;
 using PerMonitorDpi.Views;
 
 namespace WpfPerMonitorDpiWindow.Views
@@ -23,7 +24,8 @@ namespace WpfPerMonitorDpiWindow.Views
 			InitializeComponent();
 		}
 
-		private EventHandler _onDpiChanged;
+		private EventHandler<DpiChangedEventArgs> _onDpiChanged;
+		private EventHandler<ColorProfileChangedEventArgs> _onColorProfileChanged;
 
 		protected override void OnSourceInitialized(EventArgs e)
 		{
@@ -31,6 +33,9 @@ namespace WpfPerMonitorDpiWindow.Views
 
 			_onDpiChanged = (_sender, _e) => SystemSounds.Hand.Play();
 			WindowHandler.DpiChanged += _onDpiChanged;
+
+			_onColorProfileChanged = (_sender, _e) => SystemSounds.Exclamation.Play();
+			WindowHandler.ColorProfileChanged += _onColorProfileChanged;
 		}
 
 		protected override void OnClosed(EventArgs e)
@@ -38,6 +43,8 @@ namespace WpfPerMonitorDpiWindow.Views
 			base.OnClosed(e);
 
 			WindowHandler.DpiChanged -= _onDpiChanged;
+
+			WindowHandler.ColorProfileChanged -= _onColorProfileChanged;
 		}
 	}
 }

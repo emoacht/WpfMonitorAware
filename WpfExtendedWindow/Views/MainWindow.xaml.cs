@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -13,7 +14,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+using PerMonitorDpi.Models;
 using PerMonitorDpi.Views;
+using WpfExtendedWindow.Models;
 using WpfExtendedWindow.Views.Controls;
 
 namespace WpfExtendedWindow.Views
@@ -26,7 +29,8 @@ namespace WpfExtendedWindow.Views
 		}
 
 		private MouseButtonEventHandler _onContentMouseLeftDown;
-		private EventHandler _onDpiChanged;
+		private EventHandler<DpiChangedEventArgs> _onDpiChanged;
+		private EventHandler<ColorProfileChangedEventArgs> _onColorProfileChanged;
 
 		protected override void OnSourceInitialized(EventArgs e)
 		{
@@ -38,6 +42,13 @@ namespace WpfExtendedWindow.Views
 			_onDpiChanged = (_sender, _e) => SystemSounds.Hand.Play();
 			WindowHandler.DpiChanged += _onDpiChanged;
 
+			_onColorProfileChanged = (_sender, _e) =>
+			{
+				ColorProfilePath = _e.NewPath;
+				SystemSounds.Exclamation.Play();
+			};
+			WindowHandler.ColorProfileChanged += _onColorProfileChanged;
+
 			PrepareAnimation();
 		}
 
@@ -46,6 +57,8 @@ namespace WpfExtendedWindow.Views
 			ContentRoot.MouseLeftButtonDown -= _onContentMouseLeftDown;
 
 			WindowHandler.DpiChanged -= _onDpiChanged;
+
+			WindowHandler.ColorProfileChanged -= _onColorProfileChanged;
 
 			base.OnClosing(e);
 		}
@@ -213,6 +226,75 @@ namespace WpfExtendedWindow.Views
 			base.OnDeactivated(e);
 
 			_isAnimating = false;
+		}
+
+		#endregion
+
+
+		#region Image
+
+		public string ColorProfilePath
+		{
+			get { return (string)GetValue(ColorProfilePathProperty); }
+			set { SetValue(ColorProfilePathProperty, value); }
+		}
+		public static readonly DependencyProperty ColorProfilePathProperty =
+			DependencyProperty.Register(
+				"ColorProfilePath",
+				typeof(string),
+				typeof(MainWindow),
+				new PropertyMetadata(
+					null,
+					async (d, e) => await ((MainWindow)d).ConvertImageAsync()));
+
+		public BitmapSource ConvertedImage
+		{
+			get { return (BitmapSource)GetValue(ConvertedImageProperty); }
+			set { SetValue(ConvertedImageProperty, value); }
+		}
+		public static readonly DependencyProperty ConvertedImageProperty =
+			DependencyProperty.Register(
+				"ConvertedImage",
+				typeof(BitmapSource),
+				typeof(MainWindow),
+				new PropertyMetadata(null));
+
+		private byte[] SourceData { get; set; }
+
+		private async void OnDrop(object sender, DragEventArgs e)
+		{
+			var filePaths = ((DataObject)e.Data).GetFileDropList().Cast<string>();
+
+			foreach (var filePath in filePaths)
+			{
+				if (!File.Exists(filePath))
+					continue;
+
+				try
+				{
+					using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+					using (var ms = new MemoryStream())
+					{
+						await fs.CopyToAsync(ms);
+						SourceData = ms.ToArray();
+					}
+				}
+				catch
+				{
+					continue;
+				}
+
+				await ConvertImageAsync();
+				return;
+			}
+		}
+
+		private async Task ConvertImageAsync()
+		{
+			if (SourceData == null)
+				return;
+
+			ConvertedImage = await ImageConverter.ConvertImageAsync(SourceData, ColorProfilePath);
 		}
 
 		#endregion

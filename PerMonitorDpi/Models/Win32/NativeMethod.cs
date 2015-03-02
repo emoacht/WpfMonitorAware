@@ -1,26 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace PerMonitorDpi.Models.Win32
 {
 	internal static class NativeMethod
 	{
-		[DllImport("Gdi32.dll", SetLastError = true)]
-		public static extern int GetDeviceCaps(
-			IntPtr hdc,
-			int nIndex);
-
-		public const int LOGPIXELSX = 88;
-		public const int LOGPIXELSY = 90;
-
-		[DllImport("User32.dll", SetLastError = true)]
-		public static extern IntPtr GetDC(IntPtr hWnd);
-
-		[DllImport("User32.dll", SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ReleaseDC(
-			IntPtr hWnd,
-			IntPtr hDC);
+		#region Common
 
 		[DllImport("User32.dll", SetLastError = true)]
 		public static extern IntPtr MonitorFromRect(
@@ -31,6 +17,42 @@ namespace PerMonitorDpi.Models.Win32
 		public static extern IntPtr MonitorFromWindow(
 			IntPtr hwnd,
 			MONITOR_DEFAULTTO dwFlags);
+
+		public enum MONITOR_DEFAULTTO : uint
+		{
+			/// <summary>
+			/// If no display monitor intersects, returns null.
+			/// </summary>
+			MONITOR_DEFAULTTONULL = 0x00000000,
+
+			/// <summary>
+			/// If no display monitor intersects, returns a handle to the primary display monitor.
+			/// </summary>
+			MONITOR_DEFAULTTOPRIMARY = 0x00000001,
+
+			/// <summary>
+			/// If no display monitor intersects, returns a handle to the display monitor that is nearest to the rectangle.
+			/// </summary>
+			MONITOR_DEFAULTTONEAREST = 0x00000002,
+		}
+
+		[DllImport("User32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetMonitorInfo(
+			IntPtr hMonitor,
+			ref MONITORINFOEX lpmi);
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct MONITORINFOEX
+		{
+			public uint cbSize;
+			public RECT rcMonitor;
+			public RECT rcWork;
+			public uint dwFlags;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] // CCHDEVICENAME is defined to be 32.
+			public string szDevice;
+		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct RECT
@@ -63,23 +85,27 @@ namespace PerMonitorDpi.Models.Win32
 			}
 		}
 
-		public enum MONITOR_DEFAULTTO : uint
-		{
-			/// <summary>
-			/// If no display monitor intersects, returns null.
-			/// </summary>
-			MONITOR_DEFAULTTONULL = 0x00000000,
+		#endregion
 
-			/// <summary>
-			/// If no display monitor intersects, returns a handle to the primary display monitor.
-			/// </summary>
-			MONITOR_DEFAULTTOPRIMARY = 0x00000001,
 
-			/// <summary>
-			/// If no display monitor intersects, returns a handle to the display monitor that is nearest to the rectangle.
-			/// </summary>
-			MONITOR_DEFAULTTONEAREST = 0x00000002,
-		}
+		#region DPI
+
+		[DllImport("Gdi32.dll", SetLastError = true)]
+		public static extern int GetDeviceCaps(
+			IntPtr hdc,
+			int nIndex);
+
+		public const int LOGPIXELSX = 88;
+		public const int LOGPIXELSY = 90;
+
+		[DllImport("User32.dll", SetLastError = true)]
+		public static extern IntPtr GetDC(IntPtr hWnd);
+
+		[DllImport("User32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReleaseDC(
+			IntPtr hWnd,
+			IntPtr hDC);
 
 		[DllImport("Shcore.dll", SetLastError = true)]
 		public static extern int GetProcessDpiAwareness(
@@ -138,11 +164,47 @@ namespace PerMonitorDpi.Models.Win32
 			MDT_Default = MDT_Effective_DPI
 		}
 
+		#endregion
+
+
+		#region Color Profile
+
+		[DllImport("Gdi32.dll", EntryPoint = "GetICMProfileW", CharSet = CharSet.Unicode, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetICMProfile(
+			IntPtr hDC,
+			ref uint lpcbName,
+			StringBuilder lpszFilename);
+
+		[DllImport("Gdi32.dll", SetLastError = true)]
+		public static extern IntPtr CreateDC(
+			string lpszDriver,
+			string lpszDevice,
+			string lpszOutput,
+			IntPtr lpInitData);
+
+		[DllImport("Gdi32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool DeleteDC(IntPtr hdc);
+
+		#endregion
+
 
 		#region Constants for WM_ACTIVATE
 
+		/// <summary>
+		/// Activated by some method other than a mouse click.
+		/// </summary>
 		public const int WA_ACTIVE = 1;
+
+		/// <summary>
+		/// Activated by a mouse click.
+		/// </summary>
 		public const int WA_CLICKACTIVE = 2;
+
+		/// <summary>
+		/// Deactivated.
+		/// </summary>
 		public const int WA_INACTIVE = 0;
 
 		#endregion
@@ -150,10 +212,29 @@ namespace PerMonitorDpi.Models.Win32
 
 		#region Constants for WM_SIZE
 
+		/// <summary>
+		/// Some other window is maximized.
+		/// </summary>
 		public const int SIZE_MAXHIDE = 4;
+
+		/// <summary>
+		/// The window has been maximized.
+		/// </summary> 
 		public const int SIZE_MAXIMIZED = 2;
+
+		/// <summary>
+		/// Some other window has been restored to its former size.
+		/// </summary>
 		public const int SIZE_MAXSHOW = 3;
+
+		/// <summary>
+		/// The window has been minimized.
+		/// </summary>
 		public const int SIZE_MINIMIZED = 1;
+
+		/// <summary>
+		/// The window has been resized, but neither the SIZE_MINIMIZED nor SIZE_MAXIMIZED value applies.
+		/// </summary>
 		public const int SIZE_RESTORED = 0;
 
 		#endregion
