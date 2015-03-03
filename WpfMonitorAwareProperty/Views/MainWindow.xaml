@@ -1,0 +1,54 @@
+﻿<Window x:Class="WpfMonitorAwareProperty.Views.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:ma="clr-namespace:MonitorAware.Views;assembly=MonitorAware"
+		x:Name="WindowRoot"
+		Title="WPF Monitor Aware Property"
+		FontFamily="Segoe UI"
+		Height="200" Width="500">
+	<ma:MonitorAwareProperty.AttachedProperty>
+		<ma:MonitorAwareProperty x:Name="MonitorProperty"/>
+	</ma:MonitorAwareProperty.AttachedProperty>
+
+	<Grid x:Name="ContentRoot" Margin="4">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Label Grid.Row="0"
+			   VerticalAlignment="Center"
+			   Content="System DPI"/>
+		<TextBox Grid.Column="1" Grid.Row="0"
+				 Width="80" Height="22" Margin="6,4" HorizontalAlignment="Left"
+				 Text="{Binding ElementName=MonitorProperty, Path=WindowHandler.SystemDpi, Mode=OneWay}"/>
+
+		<Label Grid.Row="1"
+			   VerticalAlignment="Center"
+			   Content="Per-Monitor DPI (Monitor DPI)"/>
+		<TextBox Grid.Column="1" Grid.Row="1"
+				 Width="80" Height="22" Margin="6,4" HorizontalAlignment="Left"
+				 Text="{Binding ElementName=MonitorProperty, Path=WindowHandler.MonitorDpi, Mode=OneWay}"/>
+
+		<Label Grid.Row="2"
+			   VerticalAlignment="Center"
+			   Content="Per-Monitor DPI (Window DPI)"/>
+		<TextBox Grid.Column="1" Grid.Row="2"
+				 Width="80" Height="22" Margin="6,4" HorizontalAlignment="Left"
+				 Text="{Binding ElementName=MonitorProperty, Path=WindowHandler.WindowDpi, Mode=OneWay}"/>
+
+		<Label Grid.Row="3"
+			   VerticalAlignment="Center"
+			   Content="Color Profile Path"/>
+		<TextBox Grid.Column="1" Grid.Row="3"
+				 Height="22" Margin="6,4"
+				 Text="{Binding ElementName=MonitorProperty, Path=WindowHandler.WindowColorProfilePath, Mode=OneWay}"/>
+	</Grid>
+</Window>

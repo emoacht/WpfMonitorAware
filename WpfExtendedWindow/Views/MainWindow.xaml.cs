@@ -14,8 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using PerMonitorDpi.Models;
-using PerMonitorDpi.Views;
+using MonitorAware.Models;
+using MonitorAware.Views;
 using WpfExtendedWindow.Models;
 using WpfExtendedWindow.Views.Controls;
 
