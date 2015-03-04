@@ -136,26 +136,26 @@ namespace MonitorAware.Models
 		/// <summary>
 		/// Color profile path of target Window (public readonly)
 		/// </summary>
-		public string WindowColorProfilePath
+		public string ColorProfilePath
 		{
-			get { return (string)GetValue(WindowColorProfilePathProperty); }
-			private set { SetValue(WindowColorProfilePathPropertyKey, value); }
+			get { return (string)GetValue(ColorProfilePathProperty); }
+			private set { SetValue(ColorProfilePathPropertyKey, value); }
 		}
 		/// <summary>
-		/// Dependency property key for <see cref="WindowColorProfilePath"/>
+		/// Dependency property key for <see cref="ColorProfilePath"/>
 		/// </summary>
-		private static readonly DependencyPropertyKey WindowColorProfilePathPropertyKey =
+		private static readonly DependencyPropertyKey ColorProfilePathPropertyKey =
 			DependencyProperty.RegisterReadOnly(
-				"WindowColorProfilePath",
+				"ColorProfilePath",
 				typeof(string),
 				typeof(WindowHandler),
 				new FrameworkPropertyMetadata(
 					String.Empty,
-					(d, e) => Debug.WriteLine("Window Color Profile Path: " + (string)e.NewValue)));
+					(d, e) => Debug.WriteLine("Color Profile Path: " + (string)e.NewValue)));
 		/// <summary>
-		/// Dependency property for <see cref="WindowColorProfilePath"/>
+		/// Dependency property for <see cref="ColorProfilePath"/>
 		/// </summary>
-		public static readonly DependencyProperty WindowColorProfilePathProperty = WindowColorProfilePathPropertyKey.DependencyProperty;
+		public static readonly DependencyProperty ColorProfilePathProperty = ColorProfilePathPropertyKey.DependencyProperty;
 
 		#endregion
 
@@ -257,7 +257,7 @@ namespace MonitorAware.Models
 				WindowDpi = SystemDpi;
 			}
 
-			WindowColorProfilePath = ColorProfileChecker.GetColorProfilePath(_targetWindow);
+			ColorProfilePath = ColorProfileChecker.GetColorProfilePath(_targetWindow);
 
 			_targetSource = PresentationSource.FromVisual(_targetWindow) as HwndSource;
 			if (_targetSource != null)
@@ -296,14 +296,14 @@ namespace MonitorAware.Models
 		private bool _isEnteredSizeMove = false;
 
 		/// <summary>
-		/// Count of WM_MOVE message
+		/// Count of WM_MOVE messages
 		/// </summary>
-		private int _countLocationChanged = 0;
+		private int _countLocationChanged;
 
 		/// <summary>
-		/// Count of WM_SIZE message
+		/// Count of WM_SIZE messages
 		/// </summary>
-		private int _countSizeChanged = 0;
+		private int _countSizeChanged;
 
 		/// <summary>
 		/// Handle window messages.
@@ -545,16 +545,16 @@ namespace MonitorAware.Models
 
 		private void ChangeColorProfilePath()
 		{
-			var colorProfilePath = ColorProfileChecker.GetColorProfilePath(_targetWindow);
-			if (WindowColorProfilePath.Equals(colorProfilePath, StringComparison.OrdinalIgnoreCase))
+			var newPath = ColorProfileChecker.GetColorProfilePath(_targetWindow);
+			if (ColorProfilePath.Equals(newPath, StringComparison.OrdinalIgnoreCase))
 				return;
 
-			var oldPath = WindowColorProfilePath;
-			WindowColorProfilePath = colorProfilePath;
+			var oldPath = ColorProfilePath;
+			ColorProfilePath = newPath;
 
 			var handler = ColorProfileChanged;
 			if (handler != null)
-				handler(this, new ColorProfileChangedEventArgs(oldPath, WindowColorProfilePath));
+				handler(this, new ColorProfileChangedEventArgs(oldPath, ColorProfilePath));
 		}
 	}
 }

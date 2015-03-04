@@ -52,6 +52,6 @@
 			   Content="Color Profile Path"/>
 		<TextBox Grid.Column="1" Grid.Row="3"
 				 Height="22" Margin="6,4"
-				 Text="{Binding ElementName=MonitorBehavior, Path=WindowHandler.WindowColorProfilePath, Mode=OneWay}"/>
+				 Text="{Binding ElementName=MonitorBehavior, Path=WindowHandler.ColorProfilePath, Mode=OneWay}"/>
 	</Grid>
 </Window>
