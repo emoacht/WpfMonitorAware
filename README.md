@@ -1,7 +1,7 @@
-﻿WPF Per-Monitor DPI Aware Window
-================================
+﻿WPF Monitor Aware Window
+========================
 
-A library for WPF Per-Monitor DPI aware window
+A library for WPF Per-Monitor DPI aware and color management conscious window
 
 ##Requirements
 
@@ -10,27 +10,29 @@ A library for WPF Per-Monitor DPI aware window
 
 ##Types
 
- - PerMonitorDpiWindow: Per-Monitor DPI aware window.
-
- - PerMonitorDpiBehavior: Behavior to make a window Per-Monitor DPI aware. This behavior is derived from System.Windows.Interactivity.Behavior and so requires System.Windows.Interactivity.dll.
-
- - PerMonitorDpiProperty: Attached property to make a window Per-Monitor DPI aware.
-
- - ExtendedWindow: Per-Monitor DPI aware and customizable chrome Window. This window is completely Per-Monitor DPI aware including window chrome.
+|         Type         |                                                                                Description                                                                               |
+|:--------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| MonitorAwareWindow   | Per-Monitor DPI aware window.                                                                                                                                            |
+| MonitorAwareBehavior | Behavior to make a window Per-Monitor DPI aware. This behavior is inherited from System.Windows.Interactivity.Behavior and so requires System.Windows.Interactivity.dll. |
+| MonitorAwareProperty | Attached property to make a window Per-Monitor DPI aware.                                                                                                                |
+| ExtendedWindow       | Per-Monitor DPI aware and customizable chrome Window. This window is completely Per-Monitor DPI aware including window chrome.                                           |
 
 ##Common Properties
 
- - WindowHandler.SystemDpi: System DPI. This value is used by default to render a Window and other FrameworkElements and so will be the base to adjust scaling of FrameworkElements that are once rendered.
-
- - WindowHandler.MonitorDpi: Per-Monitor DPI of the monitor to which a Window belongs. This value will be updated when the Window receives WM_DPICHANGED message.
-
- - WindowHandler.WindowDpi: Per-Monitor DPI which is used to render a Window. This value will be conformed to Per-Monitor DPI of the monitor when the Window moves to a location where the resized Window will belong to the destination monitor but not the source monitor. There will be a time lag between the time when this conformation happens and when WM_DPICHANGED message comes depending on the location of the Window.
+|          Dependency Property         |                                                                                                                                                                                           Description                                                                                                                                                                                          |
+|:------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| WindowHandler.SystemDpi              | System DPI. This value is used by default to render a Window and other FrameworkElements and so will be the base to adjust scaling of FrameworkElements that are once rendered.                                                                                                                                                                                                                |
+| WindowHandler.MonitorDpi             | Per-Monitor DPI of the monitor to which a Window belongs. This value will be updated when the Window receives WM_DPICHANGED message.                                                                                                                                                                                                                                                           |
+| WindowHandler.WindowDpi              | Per-Monitor DPI which is used to render a Window. This value will be conformed to Per-Monitor DPI of the monitor when the Window moves to a location where the resized Window will belong to the destination monitor but not the source monitor. There will be a time lag between when this conformation happens and when WM_DPICHANGED message comes depending on the location of the Window. |
+| WindowHandler.WindowColorProfilePath | Color profile path used by the monitor to which a Window belongs.                                                                                                                                                                                                                                                                                                                              |
 
 The default DPI of WPF rendering system is 96. To adjust scaling of FrameworkElements by code, you have to carefully select the source DPI and the destination DPI.
 
 ##Common Event
 
- - WindowHandler.DpiChanged: This event will be fired when the WindowDpi is conformed to the MonitorDpi.
+ - WindowHandler.DpiChanged: Occurs when the WindowDpi is conformed to the MonitorDpi.
+
+ - WindowHandler.ColorProfileChanged: Occurs when the WindowColorProfilePath is changed.
 
 ##Note
 
