@@ -286,14 +286,14 @@ namespace MonitorAware.Models
 		private Size _baseSize = Size.Empty;
 
 		/// <summary>
-		/// Whether DPI has changed after target Window's location has started to be changed
-		/// </summary>
-		private bool _isDpiChanged = false;
-
-		/// <summary>
 		/// Whether target Window's location or size has started to be changed
 		/// </summary>
 		private bool _isEnteredSizeMove = false;
+
+		/// <summary>
+		/// Whether DPI has changed after target Window's location or size has started to be changed
+		/// </summary>
+		private bool _isDpiChanged = false;
 
 		/// <summary>
 		/// Count of WM_MOVE messages
@@ -317,9 +317,6 @@ namespace MonitorAware.Models
 		/// <remarks>This is an implementation of System.Windows.Interop.HwndSourceHook.</remarks>
 		protected virtual IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
-			if (!IsPerMonitorDpiAware)
-				return IntPtr.Zero;
-
 			switch (msg)
 			{
 				case (int)WindowMessage.WM_DPICHANGED:
@@ -385,10 +382,13 @@ namespace MonitorAware.Models
 				case (int)WindowMessage.WM_ENTERSIZEMOVE:
 					Debug.WriteLine("ENTERSIZEMOVE");
 
+					if (!IsPerMonitorDpiAware)
+						break;
+
 					_baseSize = new Size(_targetWindow.Width, _targetWindow.Height);
 
-					_isDpiChanged = false;
 					_isEnteredSizeMove = true;
+					_isDpiChanged = false;
 					_countLocationChanged = 0;
 					_countSizeChanged = 0;
 					break;
@@ -396,23 +396,26 @@ namespace MonitorAware.Models
 				case (int)WindowMessage.WM_EXITSIZEMOVE:
 					Debug.WriteLine("EXITSIZEMOVE");
 
-					_isEnteredSizeMove = false;
-
-					// Last stand!!!
-					if (_isDpiChanged && (_currentStatus == WindowStatus.LocationChanged))
+					if (_isEnteredSizeMove)
 					{
-						var lastInfo = new WindowInfo
+						_isEnteredSizeMove = false;
+
+						// Last stand!!!
+						if (_isDpiChanged && (_currentStatus == WindowStatus.LocationChanged))
 						{
-							Dpi = MonitorDpi,
-							Size = _baseSize,
-						};
+							var lastInfo = new WindowInfo
+							{
+								Dpi = MonitorDpi,
+								Size = _baseSize,
+							};
 
-						Interlocked.Exchange<WindowInfo>(ref _dueInfo, lastInfo);
+							Interlocked.Exchange<WindowInfo>(ref _dueInfo, lastInfo);
 
-						ChangeDpi(WindowStatus.LocationChanged);
+							ChangeDpi(WindowStatus.LocationChanged);
+						}
+
+						_currentStatus = WindowStatus.None;
 					}
-
-					_currentStatus = WindowStatus.None;
 
 					ChangeColorProfilePath();
 					break;
@@ -420,11 +423,14 @@ namespace MonitorAware.Models
 				case (int)WindowMessage.WM_MOVE:
 					Debug.WriteLine("MOVE");
 
-					_countLocationChanged++;
-					if (_isEnteredSizeMove && (_countLocationChanged > _countSizeChanged))
-						_currentStatus = WindowStatus.LocationChanged;
+					if (_isEnteredSizeMove)
+					{
+						_countLocationChanged++;
+						if (_countLocationChanged > _countSizeChanged)
+							_currentStatus = WindowStatus.LocationChanged;
 
-					ChangeDpi(WindowStatus.LocationChanged);
+						ChangeDpi(WindowStatus.LocationChanged);
+					}
 					break;
 
 				case (int)WindowMessage.WM_SIZE:
@@ -433,11 +439,14 @@ namespace MonitorAware.Models
 
 					Debug.WriteLine("SIZE");
 
-					_countSizeChanged++;
-					if (_isEnteredSizeMove && (_countLocationChanged < _countSizeChanged))
-						_currentStatus = WindowStatus.SizeChanged;
+					if (_isEnteredSizeMove)
+					{
+						_countSizeChanged++;
+						if (_countLocationChanged < _countSizeChanged)
+							_currentStatus = WindowStatus.SizeChanged;
 
-					// DPI change by resize will be managed when WM_DPICHANGED comes.
+						// DPI change by resize will be managed when WM_DPICHANGED comes.
+					}
 					break;
 			}
 			return IntPtr.Zero;
