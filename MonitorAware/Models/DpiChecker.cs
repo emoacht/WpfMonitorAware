@@ -19,7 +19,7 @@ namespace MonitorAware.Models
 		/// Check if current process is Per-Monitor DPI aware.
 		/// </summary>
 		/// <returns>True if Per-Monitor DPI aware</returns>
-		public static bool IsPerMonitorDpiAware()
+		internal static bool IsPerMonitorDpiAware()
 		{
 			var awareness = GetDpiAwareness();
 			if (!awareness.HasValue)
@@ -53,12 +53,21 @@ namespace MonitorAware.Models
 		#region System DPI
 
 		/// <summary>
+		/// System DPI
+		/// </summary>
+		/// <remarks>System DPI will not change during run time.</remarks>
+		internal static readonly Dpi SystemDpi = GetSystemDpi();
+
+		/// <summary>
 		/// Get system DPI.
 		/// </summary>
 		/// <param name="sourceVisual">Source Visual</param>
 		/// <returns>DPI struct</returns>
 		public static Dpi GetSystemDpi(Visual sourceVisual)
 		{
+			if (sourceVisual == null)
+				throw new ArgumentNullException("sourceVisual");
+
 			var source = PresentationSource.FromVisual(sourceVisual);
 			if ((source == null) || (source.CompositionTarget == null))
 				return Dpi.Default;
@@ -79,6 +88,8 @@ namespace MonitorAware.Models
 			try
 			{
 				screen = NativeMethod.GetDC(IntPtr.Zero);
+				if (screen == IntPtr.Zero)
+					return Dpi.Default;
 
 				return new Dpi(
 					(uint)NativeMethod.GetDeviceCaps(screen, NativeMethod.LOGPIXELSX),
@@ -99,16 +110,19 @@ namespace MonitorAware.Models
 		/// <summary>
 		/// Get Per-Monitor DPI of the monitor to which a specified Window belongs.
 		/// </summary>
-		/// <param name="sourceVisual">Source Window</param>
+		/// <param name="sourceVisual">Source Visual</param>
 		/// <returns>DPI struct</returns>
 		public static Dpi GetDpiFromVisual(Visual sourceVisual)
 		{
+			if (sourceVisual == null)
+				throw new ArgumentNullException("sourceVisual");
+
 			if (!OsVersion.IsEightOneOrNewer)
-				return Dpi.Default;
+				return SystemDpi;
 
 			var source = PresentationSource.FromVisual(sourceVisual) as HwndSource;
 			if (source == null)
-				return Dpi.Default;
+				return SystemDpi;
 
 			var handleMonitor = NativeMethod.MonitorFromWindow(
 				source.Handle,
@@ -122,13 +136,17 @@ namespace MonitorAware.Models
 		/// </summary>
 		/// <param name="sourceRect">Source Rect</param>
 		/// <returns>DPI struct</returns>
-		internal static Dpi GetDpiFromRect(NativeMethod.RECT sourceRect)
+		public static Dpi GetDpiFromRect(Rect sourceRect)
 		{
-			if (!OsVersion.IsEightOneOrNewer)
-				return Dpi.Default;
+			if (sourceRect == Rect.Empty)
+				throw new ArgumentNullException("sourceRect");
 
+			if (!OsVersion.IsEightOneOrNewer)
+				return SystemDpi;
+
+			var nativeRect = new NativeMethod.RECT(sourceRect);
 			var handleMonitor = NativeMethod.MonitorFromRect(
-				ref sourceRect,
+				ref nativeRect,
 				NativeMethod.MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST);
 
 			return GetDpi(handleMonitor);
@@ -137,16 +155,18 @@ namespace MonitorAware.Models
 		private static Dpi GetDpi(IntPtr handleMonitor)
 		{
 			if (handleMonitor == IntPtr.Zero)
-				return Dpi.Default;
+				return SystemDpi;
 
 			uint dpiX = 1;
 			uint dpiY = 1;
 
-			NativeMethod.GetDpiForMonitor(
+			var result = NativeMethod.GetDpiForMonitor(
 				handleMonitor,
 				NativeMethod.MONITOR_DPI_TYPE.MDT_Default,
 				ref dpiX,
 				ref dpiY);
+			if (result != 0) // 0 means S_OK.
+				return SystemDpi;
 
 			return new Dpi(dpiX, dpiY);
 		}

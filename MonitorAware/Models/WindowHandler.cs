@@ -76,9 +76,8 @@ namespace MonitorAware.Models
 		/// </summary>
 		public Dpi SystemDpi
 		{
-			get { return _systemDpi; }
+			get { return DpiChecker.SystemDpi; }
 		}
-		private readonly Dpi _systemDpi = DpiChecker.GetSystemDpi();
 
 		/// <summary>
 		/// Per-Monitor DPI of current monitor (public readonly)
@@ -485,7 +484,7 @@ namespace MonitorAware.Models
 							break;
 
 						case WindowStatus.LocationChanged:
-							var testDpi = DpiChecker.GetDpiFromRect(new NativeMethod.RECT(testRect));
+							var testDpi = DpiChecker.GetDpiFromRect(testRect);
 
 							changesNow = testInfo.Dpi.Equals(testDpi);
 							break;

@@ -70,7 +70,7 @@ namespace MonitorAware.Models.Win32
 				this.right = right;
 				this.bottom = bottom;
 			}
-
+			
 			public RECT(System.Windows.Rect rect)
 				: this((int)rect.Left, (int)rect.Top, (int)rect.Right, (int)rect.Bottom)
 			{ }
@@ -135,7 +135,7 @@ namespace MonitorAware.Models.Win32
 		}
 
 		[DllImport("Shcore.dll", SetLastError = true)]
-		public static extern void GetDpiForMonitor(
+		public static extern int GetDpiForMonitor(
 			IntPtr hmonitor,
 			MONITOR_DPI_TYPE dpiType,
 			ref uint dpiX,
