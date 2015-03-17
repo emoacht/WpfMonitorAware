@@ -240,7 +240,7 @@
 		<Setter Property="HorizontalContentAlignment" Value="Center"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
 		<Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
-		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
+		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
 	</Style>
 
 	<Style x:Key="ExtendedCaptionButton.StateStyle"

@@ -55,9 +55,7 @@ namespace WpfExtendedWindow.Views
 		protected override void OnClosing(CancelEventArgs e)
 		{
 			ContentRoot.MouseLeftButtonDown -= _onContentMouseLeftDown;
-
 			WindowHandler.DpiChanged -= _onDpiChanged;
-
 			WindowHandler.ColorProfileChanged -= _onColorProfileChanged;
 
 			base.OnClosing(e);
@@ -186,7 +184,7 @@ namespace WpfExtendedWindow.Views
 				return;
 			}
 
-			var randomizer = new Random();
+			var random = new Random();
 
 			do
 			{
@@ -199,26 +197,26 @@ namespace WpfExtendedWindow.Views
 
 				var circles = _backgroundCanvas.Children.Cast<DropCircle>()
 					.Where(x => !x.IsAnimating)
-					.ToArray();
+					.ToList();
 
-				for (int i = circles.Length - 1; i >= 0; i--)
+				circles.ForEach(circle =>
 				{
 					if (_isAnimating)
 					{
-						circles[i].Foreground = themeBrushMap[Theme];
-						Canvas.SetLeft(circles[i], (double)randomizer.Next(-80, Math.Max((int)_backgroundCanvas.ActualWidth - 120, 80)));
-						Canvas.SetTop(circles[i], (double)randomizer.Next(-80, Math.Max((int)_backgroundCanvas.ActualHeight - 120, 80)));
-						circles[i].IsAnimating = true;
+						circle.Foreground = themeBrushMap[Theme];
+						Canvas.SetLeft(circle, (double)random.Next(-80, Math.Max((int)_backgroundCanvas.ActualWidth - 120, 80)));
+						Canvas.SetTop(circle, (double)random.Next(-80, Math.Max((int)_backgroundCanvas.ActualHeight - 120, 80)));
+						circle.IsAnimating = true;
 					}
 					else
 					{
-						_backgroundCanvas.Children.Remove(circles[i]);
+						_backgroundCanvas.Children.Remove(circle);
 					}
-				}
+				});
 
 				await Task.Delay(TimeSpan.FromSeconds(0.2));
-
-			} while (0 < _backgroundCanvas.Children.Count);
+			}
+			while (0 < _backgroundCanvas.Children.Count);
 		}
 
 		protected override void OnDeactivated(EventArgs e)
