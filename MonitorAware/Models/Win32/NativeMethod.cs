@@ -70,7 +70,7 @@ namespace MonitorAware.Models.Win32
 				this.right = right;
 				this.bottom = bottom;
 			}
-			
+
 			public RECT(System.Windows.Rect rect)
 				: this((int)rect.Left, (int)rect.Top, (int)rect.Right, (int)rect.Bottom)
 			{ }
@@ -84,6 +84,17 @@ namespace MonitorAware.Models.Win32
 					(double)(this.bottom - this.top));
 			}
 		}
+
+		[DllImport("User32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetWindowPos(
+			IntPtr hWnd,
+			IntPtr hWndInsertAfter,
+			int x,
+			int y,
+			int cx,
+			int cy,
+			uint uFlags);
 
 		#endregion
 
