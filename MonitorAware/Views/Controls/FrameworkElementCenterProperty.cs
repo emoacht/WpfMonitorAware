@@ -9,22 +9,8 @@ namespace MonitorAware.Views.Controls
 	/// <summary>
 	/// Attached property to locate inner <see cref="FrameworkElement"/> at the center of outer <see cref="FrameworkElement"/>
 	/// </summary>
-	public class FrameworkElementCenterProperty : Freezable
+	public class FrameworkElementCenterProperty : DependencyObject
 	{
-		#region Freezable member
-
-		/// <summary>
-		/// Implement <see cref="Freezable.CreateInstanceCore">Freezable.CreateInstanceCore</see>.
-		/// </summary>
-		/// <returns>New Freezable</returns>
-		protected override Freezable CreateInstanceCore()
-		{
-			return new FrameworkElementCenterProperty();
-		}
-
-		#endregion
-
-
 		/// <summary>
 		/// Get AttachedProperty.
 		/// </summary>
