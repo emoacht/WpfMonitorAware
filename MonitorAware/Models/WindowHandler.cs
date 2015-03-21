@@ -336,14 +336,8 @@ namespace MonitorAware.Models
 					switch (_currentStatus)
 					{
 						case WindowStatus.None:
-							var rect = (NativeMethod.RECT)Marshal.PtrToStructure(lParam, typeof(NativeMethod.RECT));
-
-							newInfo.Width = rect.right - rect.left;
-							newInfo.Height = rect.bottom - rect.top;
-							break;
-
 						case WindowStatus.LocationChanged:
-							if (_baseSize == Size.Empty)
+							if ((_baseSize == Size.Empty) || (_currentStatus == WindowStatus.None))
 								_baseSize = new Size(_targetWindow.Width, _targetWindow.Height);
 
 							_baseSize = new Size(
@@ -492,6 +486,9 @@ namespace MonitorAware.Models
 
 					if (changesNow)
 					{
+						var oldDpi = WindowDpi;
+						WindowDpi = testInfo.Dpi;
+
 						switch (status)
 						{
 							case WindowStatus.None:
@@ -510,9 +507,6 @@ namespace MonitorAware.Models
 								// None.
 								break;
 						}
-
-						var oldDpi = WindowDpi;
-						WindowDpi = testInfo.Dpi;
 
 						var content = _targetElement ?? _targetWindow.Content as FrameworkElement;
 						if (content != null)
