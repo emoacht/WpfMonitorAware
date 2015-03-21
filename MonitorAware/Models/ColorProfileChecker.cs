@@ -15,7 +15,7 @@ namespace MonitorAware.Models
 	public static class ColorProfileChecker
 	{
 		/// <summary>
-		/// Get color profile file path used by the monior to which a specified Window belongs.
+		/// Get color profile file path used by the monitor to which a specified Window belongs.
 		/// </summary>
 		/// <param name="sourceVisual">Source Window</param>
 		/// <returns>Color profile file path</returns>
@@ -50,8 +50,8 @@ namespace MonitorAware.Models
 				if (deviceContext == IntPtr.Zero)
 					return null;
 
-				// The maximum file path length is 260 which is defined as MAX_PATH. It may be longer in
-				// Unicode versions of some functions while no detailed information on GetICMProfileW.
+				// The maximum file path length is 260 which is defined as MAX_PATH. It may be longer in Unicode
+				// versions of some functions while no detailed information on GetICMProfileW.
 				var lpcbName = 260U;
 				while (true)
 				{

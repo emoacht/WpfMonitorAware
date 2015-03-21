@@ -82,6 +82,7 @@ namespace MonitorAware.Models
 		/// <summary>
 		/// Per-Monitor DPI of current monitor (public readonly)
 		/// </summary>
+		/// <remarks>This property cannot become a binding target because it has no public setter.</remarks>
 		public Dpi MonitorDpi
 		{
 			get { return (Dpi)GetValue(MonitorDpiProperty); }
@@ -97,7 +98,7 @@ namespace MonitorAware.Models
 				typeof(WindowHandler),
 				new FrameworkPropertyMetadata(
 					Dpi.Default,
-					(d, e) => Debug.WriteLine("Monitor DPI: {0}", (Dpi)e.NewValue)));
+					(d, e) => Debug.WriteLine("Monitor DPI: {0} -> {1}", (Dpi)e.OldValue, (Dpi)e.NewValue)));
 		/// <summary>
 		/// Dependency property for <see cref="MonitorDpi"/>
 		/// </summary>
@@ -106,6 +107,7 @@ namespace MonitorAware.Models
 		/// <summary>
 		/// Per-Monitor DPI of target Window (public readonly)
 		/// </summary>
+		/// <remarks>This property cannot become a binding target because it has no public setter.</remarks>
 		public Dpi WindowDpi
 		{
 			get { return (Dpi)GetValue(WindowDpiProperty); }
@@ -121,7 +123,7 @@ namespace MonitorAware.Models
 				typeof(WindowHandler),
 				new FrameworkPropertyMetadata(
 					Dpi.Default,
-					(d, e) => Debug.WriteLine("Window DPI: {0}", (Dpi)e.NewValue)));
+					(d, e) => Debug.WriteLine("Window DPI: {0} -> {1}", (Dpi)e.OldValue, (Dpi)e.NewValue)));
 		/// <summary>
 		/// Dependency property for <see cref="WindowDpi"/>
 		/// </summary>
@@ -135,6 +137,7 @@ namespace MonitorAware.Models
 		/// <summary>
 		/// Color profile path of target Window (public readonly)
 		/// </summary>
+		/// <remarks>This property cannot become a binding target because it has no public setter.</remarks>
 		public string ColorProfilePath
 		{
 			get { return (string)GetValue(ColorProfilePathProperty); }
@@ -164,15 +167,15 @@ namespace MonitorAware.Models
 		/// <summary>
 		/// DPI changed event
 		/// </summary>
-		/// <remarks>This event will be fired when DPI of target Window is changed. It is not necessarily 
-		/// the same timing when DPI of the monitor to which target Window belongs is changed.</remarks>
+		/// <remarks>This event is fired when DPI of target Window is changed. It is not necessarily the same timing
+		/// when DPI of the monitor to which target Window belongs is changed.</remarks>
 		public event EventHandler<DpiChangedEventArgs> DpiChanged;
 
 		/// <summary>
 		/// Color profile path changed event
 		/// </summary>
-		/// <remarks>This event will be fired when color profile path of the monitor to which target
-		/// Window belongs has changed and Window's move/resize which caused the change has exited.</remarks>
+		/// <remarks>This event is fired when color profile path of the monitor to which target Window belongs has
+		/// changed and Window's move/resize which caused the change has exited.</remarks>
 		public event EventHandler<ColorProfileChangedEventArgs> ColorProfileChanged;
 
 		#endregion
@@ -478,6 +481,7 @@ namespace MonitorAware.Models
 							break;
 
 						case WindowStatus.LocationChanged:
+							// Determine whether to reflect information now.
 							var testDpi = DpiChecker.GetDpiFromRect(testRect);
 
 							changesNow = testInfo.Dpi.Equals(testDpi);
@@ -486,6 +490,8 @@ namespace MonitorAware.Models
 
 					if (changesNow)
 					{
+						// Update WindowDpi first so that it can provide new DPI during succeeding changes in target
+						// Window.
 						var oldDpi = WindowDpi;
 						WindowDpi = testInfo.Dpi;
 
@@ -493,6 +499,11 @@ namespace MonitorAware.Models
 						{
 							case WindowStatus.None:
 							case WindowStatus.LocationChanged:
+								// Change location and size of target Window. Setting these properties may fire
+								// LocationChanged and SizeChanged events twice in target Window. However, to use
+								// SetWindowPos function, a complicated conversion of coordinates is required.
+								// Also, it may cause a problem in applying styles if used in OnSourceInitialized
+								// method.
 								Debug.WriteLine("Old Size: {0}-{1}", _targetWindow.Width, _targetWindow.Height);
 
 								_targetWindow.Left = testRect.Left;
@@ -508,6 +519,7 @@ namespace MonitorAware.Models
 								break;
 						}
 
+						// Scale contents of target Window.
 						var content = _targetElement ?? _targetWindow.Content as FrameworkElement;
 						if (content != null)
 						{
@@ -518,23 +530,24 @@ namespace MonitorAware.Models
 									(double)WindowDpi.Y / SystemDpi.Y);
 						}
 
+						// Fire DpiChanged event last so that it can be utilized to supplement preceding changes
+						// in target Window.
 						var handler = DpiChanged;
 						if (handler != null)
 							handler(this, new DpiChangedEventArgs(oldDpi, WindowDpi));
 
-						// Take new information which is to be tested from _dueInfo again for the case
-						// where new information has been stored during this operation. If there is new
-						// information, repeat the operation.
+						// Take new information which is to be tested from _dueInfo again for the case where new
+						// information has been stored during this operation. If there is new information, repeat
+						// the operation.
 						testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, null);
 					}
 					else
 					{
-						// Store information which has been tested but determined not to be used now to
-						// _dueInfo and take new information in return. If there is new information,
-						// repeat the operation. If there is no new information, the information stored
-						// back may be overwritten by new information later but has a chance to be
-						// tested again in the case where it is the last information at this move/resize.
-						// In such case, the information may be tested at next move/resize.
+						// Store old information which has been tested but determined not to be reflected now to
+						// _dueInfo and take new information in return. If there is new information, repeat
+						// the operation. If not, old information stored back may be overwritten by new information
+						// later but has a chance to be tested again in the case where it is the last information
+						// at this move/resize. In such case, the information may be tested at next move/resize.
 						testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, testInfo);
 					}
 				}

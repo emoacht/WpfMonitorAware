@@ -23,7 +23,7 @@ namespace MonitorAware.Models
 		/// <summary>
 		/// DWM colorization color changed event
 		/// </summary>
-		/// <remarks>This event will be fired when default Window chrome color is changed.</remarks>
+		/// <remarks>This event is fired when default Window chrome color is changed.</remarks>
 		internal event EventHandler DwmColorizationColorChanged;
 
 		#endregion
