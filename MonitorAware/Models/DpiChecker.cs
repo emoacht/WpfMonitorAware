@@ -22,10 +22,7 @@ namespace MonitorAware.Models
 		internal static bool IsPerMonitorDpiAware()
 		{
 			var awareness = GetDpiAwareness();
-			if (!awareness.HasValue)
-				return false;
-
-			return (awareness.Value == NativeMethod.PROCESS_DPI_AWARENESS.Process_Per_Monitor_DPI_Aware);
+			return (awareness == NativeMethod.PROCESS_DPI_AWARENESS.Process_Per_Monitor_DPI_Aware);
 		}
 
 		/// <summary>

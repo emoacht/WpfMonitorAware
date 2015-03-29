@@ -248,7 +248,7 @@ namespace MonitorAware.Models
 						Height = _targetWindow.Height * (double)MonitorDpi.Y / SystemDpi.Y,
 					};
 
-					Interlocked.Exchange<WindowInfo>(ref _dueInfo, newInfo);
+					Interlocked.Exchange(ref _dueInfo, newInfo);
 
 					ChangeDpi();
 				}
@@ -290,12 +290,12 @@ namespace MonitorAware.Models
 		/// <summary>
 		/// Whether target Window's location or size has started to be changed
 		/// </summary>
-		private bool _isEnteredSizeMove = false;
+		private bool _isEnteredSizeMove;
 
 		/// <summary>
 		/// Whether DPI has changed after target Window's location or size has started to be changed
 		/// </summary>
-		private bool _isDpiChanged = false;
+		private bool _isDpiChanged;
 
 		/// <summary>
 		/// Count of WM_MOVE messages
@@ -355,7 +355,7 @@ namespace MonitorAware.Models
 							break;
 					}
 
-					Interlocked.Exchange<WindowInfo>(ref _dueInfo, newInfo);
+					Interlocked.Exchange(ref _dueInfo, newInfo);
 
 					switch (_currentStatus)
 					{
@@ -405,7 +405,7 @@ namespace MonitorAware.Models
 								Size = _baseSize,
 							};
 
-							Interlocked.Exchange<WindowInfo>(ref _dueInfo, lastInfo);
+							Interlocked.Exchange(ref _dueInfo, lastInfo);
 
 							ChangeDpi(WindowStatus.LocationChanged);
 						}
@@ -465,7 +465,7 @@ namespace MonitorAware.Models
 			try
 			{
 				// Take information which is to be tested from _dueInfo and set null in return.
-				var testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, null);
+				var testInfo = Interlocked.Exchange(ref _dueInfo, null);
 
 				while (testInfo != null)
 				{
@@ -539,7 +539,7 @@ namespace MonitorAware.Models
 						// Take new information which is to be tested from _dueInfo again for the case where new
 						// information has been stored during this operation. If there is new information, repeat
 						// the operation.
-						testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, null);
+						testInfo = Interlocked.Exchange(ref _dueInfo, null);
 					}
 					else
 					{
@@ -548,7 +548,7 @@ namespace MonitorAware.Models
 						// the operation. If not, old information stored back may be overwritten by new information
 						// later but has a chance to be tested again in the case where it is the last information
 						// at this move/resize. In such case, the information may be tested at next move/resize.
-						testInfo = Interlocked.Exchange<WindowInfo>(ref _dueInfo, testInfo);
+						testInfo = Interlocked.Exchange(ref _dueInfo, testInfo);
 					}
 				}
 			}

@@ -131,7 +131,7 @@ namespace WpfExtendedWindow.Views
 		private void PrepareAnimation()
 		{
 			// Add the option button.
-			_optionButton = new Button()
+			_optionButton = new Button
 			{
 				Style = this.FindResource("OptionButtonStyle") as Style,
 				Width = 60,
@@ -143,7 +143,7 @@ namespace WpfExtendedWindow.Views
 			this.TitleBarOptionGrid.Children.Add(_optionButton);
 
 			// Insert the background canvas.
-			_backgroundCanvas = new Canvas()
+			_backgroundCanvas = new Canvas
 			{
 				HorizontalAlignment = HorizontalAlignment.Stretch,
 				VerticalAlignment = VerticalAlignment.Stretch,

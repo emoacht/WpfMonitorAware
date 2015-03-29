@@ -50,7 +50,7 @@ namespace WpfExtendedWindow.Views.Controls
 		{
 			base.OnPropertyChanged(e);
 
-			if (e.Property == DropCircle.IsAnimatingProperty)
+			if (e.Property == IsAnimatingProperty)
 			{
 				UpdateStates(true);
 			}

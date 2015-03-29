@@ -90,8 +90,8 @@ namespace MonitorAware.Models.Win32
 		public static extern bool SetWindowPos(
 			IntPtr hWnd,
 			IntPtr hWndInsertAfter,
-			int x,
-			int y,
+			int X,
+			int Y,
 			int cx,
 			int cy,
 			uint uFlags);

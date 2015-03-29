@@ -303,7 +303,7 @@ namespace MonitorAware.Views
 						}
 					}));
 
-		private bool _isChangingTheme = false;
+		private bool _isChangingTheme;
 
 		private void ReflectCaptionTheme(Brush background)
 		{
@@ -342,9 +342,7 @@ namespace MonitorAware.Views
 					}
 				}
 
-				object newValue = (newColor.HasValue)
-					? newColor.Value
-					: defaultDictionary[key];
+				object newValue = newColor ?? defaultDictionary[key];
 
 				if (!targetDictionary.Contains(key))
 				{
