@@ -12,7 +12,7 @@ namespace MonitorAware.Helper
 		/// Check if a specified string exists in the names of a specified Enum.
 		/// </summary>
 		/// <param name="enumType">Enum type</param>
-		/// <param name="value">Source String</param>
+		/// <param name="value">Source string</param>
 		/// <param name="comparisonType">StringComparison option</param>
 		/// <returns>True if exists</returns>
 		/// <remarks>This method acts as Enum.IsDefined method added with StringComparison option.</remarks>
@@ -34,7 +34,7 @@ namespace MonitorAware.Helper
 		/// Convert a specified string to the equivalent object of a specified Enum.
 		/// </summary>
 		/// <param name="enumType">Enum type</param>
-		/// <param name="value">Source String</param>
+		/// <param name="value">Source string</param>
 		/// <param name="comparisonType">StringComparison option</param>
 		/// <returns>Result object of Enum</returns>
 		/// <remarks>This method acts as Enum.Parse method added with StringComparison option.</remarks>
@@ -60,7 +60,7 @@ namespace MonitorAware.Helper
 		/// Convert a specified string to the equivalent object of a specified Enum.
 		/// </summary>
 		/// <typeparam name="TEnum">Enum type</typeparam>
-		/// <param name="value">Source String</param>
+		/// <param name="value">Source string</param>
 		/// <param name="result">Result object of Enum</param>
 		/// <param name="comparisonType">StringComparison option</param>
 		/// <returns>True if converted successfully</returns>
