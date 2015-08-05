@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -50,6 +51,8 @@ namespace WpfExtendedWindow.Views
 			WindowHandler.ColorProfileChanged += _onColorProfileChanged;
 
 			PrepareAnimation();
+
+			Debug.WriteLine($"Notification Area DPI: {DpiChecker.GetNotificationAreaDpi()}");
 		}
 
 		protected override void OnClosing(CancelEventArgs e)
@@ -60,7 +63,6 @@ namespace WpfExtendedWindow.Views
 
 			base.OnClosing(e);
 		}
-
 
 		#region Theme
 
@@ -121,7 +123,6 @@ namespace WpfExtendedWindow.Views
 		}
 
 		#endregion
-
 
 		#region Animation
 
@@ -227,7 +228,6 @@ namespace WpfExtendedWindow.Views
 		}
 
 		#endregion
-
 
 		#region Image
 

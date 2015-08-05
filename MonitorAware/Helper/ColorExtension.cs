@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Media;
+using static System.Math;
 
 namespace MonitorAware.Helper
 {
@@ -36,7 +37,6 @@ namespace MonitorAware.Helper
 			return BlendColor(source, target, targetPerc);
 		}
 
-
 		#region Helper
 
 		/// <summary>
@@ -50,7 +50,7 @@ namespace MonitorAware.Helper
 		private static Color BlendColor(Color color1, Color color2, double color2Perc)
 		{
 			if ((color2Perc < 0) || (100 < color2Perc))
-				throw new ArgumentOutOfRangeException("color2Perc");
+				throw new ArgumentOutOfRangeException(nameof(color2Perc));
 
 			return Color.FromRgb(
 				BlendColorChannel(color1.R, color2.R, color2Perc),
@@ -61,7 +61,7 @@ namespace MonitorAware.Helper
 		private static byte BlendColorChannel(double channel1, double channel2, double channel2Perc)
 		{
 			var buff = channel1 + (channel2 - channel1) * channel2Perc / 100D;
-			return Math.Min((byte)Math.Round(buff), (byte)255); // Casting to byte does Math.Floor.
+			return Min((byte)Round(buff), (byte)255); // Casting to byte does Math.Floor.
 		}
 
 		#endregion

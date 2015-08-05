@@ -60,24 +60,17 @@ namespace MonitorAware.Models
 
 		#endregion
 
-
 		#region Property (DPI)
 
 		/// <summary>
 		/// Whether target Window is Per-Monitor DPI aware (readonly)
 		/// </summary>
-		public bool IsPerMonitorDpiAware
-		{
-			get { return DpiChecker.IsPerMonitorDpiAware(); }
-		}
+		public bool IsPerMonitorDpiAware => DpiChecker.IsPerMonitorDpiAware();
 
 		/// <summary>
 		/// System DPI (readonly)
 		/// </summary>
-		public Dpi SystemDpi
-		{
-			get { return DpiChecker.SystemDpi; }
-		}
+		public Dpi SystemDpi => DpiChecker.SystemDpi;
 
 		/// <summary>
 		/// Per-Monitor DPI of current monitor (public readonly)
@@ -98,7 +91,7 @@ namespace MonitorAware.Models
 				typeof(WindowHandler),
 				new FrameworkPropertyMetadata(
 					Dpi.Default,
-					(d, e) => Debug.WriteLine("Monitor DPI: {0} -> {1}", (Dpi)e.OldValue, (Dpi)e.NewValue)));
+					(d, e) => Debug.WriteLine($"Monitor DPI: {(Dpi)e.OldValue} -> {(Dpi)e.NewValue}")));
 		/// <summary>
 		/// Dependency property for <see cref="MonitorDpi"/>
 		/// </summary>
@@ -123,14 +116,13 @@ namespace MonitorAware.Models
 				typeof(WindowHandler),
 				new FrameworkPropertyMetadata(
 					Dpi.Default,
-					(d, e) => Debug.WriteLine("Window DPI: {0} -> {1}", (Dpi)e.OldValue, (Dpi)e.NewValue)));
+					(d, e) => Debug.WriteLine($"Window DPI: {(Dpi)e.OldValue} -> {(Dpi)e.NewValue}")));
 		/// <summary>
 		/// Dependency property for <see cref="WindowDpi"/>
 		/// </summary>
 		public static readonly DependencyProperty WindowDpiProperty = WindowDpiPropertyKey.DependencyProperty;
 
 		#endregion
-
 
 		#region Property (Color profile)
 
@@ -152,15 +144,14 @@ namespace MonitorAware.Models
 				typeof(string),
 				typeof(WindowHandler),
 				new FrameworkPropertyMetadata(
-					String.Empty,
-					(d, e) => Debug.WriteLine("Color Profile Path: " + (string)e.NewValue)));
+					string.Empty,
+					(d, e) => Debug.WriteLine($"Color Profile Path: {(string)e.NewValue}")));
 		/// <summary>
 		/// Dependency property for <see cref="ColorProfilePath"/>
 		/// </summary>
 		public static readonly DependencyProperty ColorProfilePathProperty = ColorProfilePathPropertyKey.DependencyProperty;
 
 		#endregion
-
 
 		#region Event
 
@@ -179,7 +170,6 @@ namespace MonitorAware.Models
 		public event EventHandler<ColorProfileChangedEventArgs> ColorProfileChanged;
 
 		#endregion
-
 
 		#region Constructor
 
@@ -203,7 +193,6 @@ namespace MonitorAware.Models
 
 		#endregion
 
-
 		/// <summary>
 		/// Target Window
 		/// </summary>
@@ -223,7 +212,7 @@ namespace MonitorAware.Models
 		internal void Initialize(Window window, FrameworkElement element = null)
 		{
 			if (window == null)
-				throw new ArgumentNullException("window");
+				throw new ArgumentNullException(nameof(window));
 
 			if (!window.IsInitialized)
 				throw new InvalidOperationException("Target Window has not been initialized.");
@@ -262,14 +251,12 @@ namespace MonitorAware.Models
 			ColorProfilePath = ColorProfileChecker.GetColorProfilePath(_targetWindow);
 
 			_targetSource = PresentationSource.FromVisual(_targetWindow) as HwndSource;
-			if (_targetSource != null)
-				_targetSource.AddHook(WndProc);
+			_targetSource?.AddHook(WndProc);
 		}
 
 		internal void Close()
 		{
-			if (_targetSource != null)
-				_targetSource.RemoveHook(WndProc);
+			_targetSource?.RemoveHook(WndProc);
 		}
 
 		/// <summary>
@@ -327,7 +314,7 @@ namespace MonitorAware.Models
 						NativeMacro.GetLoWord((uint)wParam),
 						NativeMacro.GetHiWord((uint)wParam));
 
-					Debug.WriteLine("DPICHANGED {0} -> {1}", oldDpi.X, MonitorDpi.X);
+					Debug.WriteLine($"DPICHANGED: {oldDpi.X} -> {MonitorDpi.X}");
 
 					if (MonitorDpi.Equals(oldDpi))
 						break;
@@ -504,14 +491,14 @@ namespace MonitorAware.Models
 								// SetWindowPos function, a complicated conversion of coordinates is required.
 								// Also, it may cause a problem in applying styles if used in OnSourceInitialized
 								// method.
-								Debug.WriteLine("Old Size: {0}-{1}", _targetWindow.Width, _targetWindow.Height);
+								Debug.WriteLine($"Old Size: {_targetWindow.Width}-{_targetWindow.Height}");
 
 								_targetWindow.Left = testRect.Left;
 								_targetWindow.Top = testRect.Top;
 								_targetWindow.Width = testRect.Width;
 								_targetWindow.Height = testRect.Height;
 
-								Debug.WriteLine("New Size: {0}-{1}", _targetWindow.Width, _targetWindow.Height);
+								Debug.WriteLine($"New Size: {_targetWindow.Width}-{_targetWindow.Height}");
 								break;
 
 							case WindowStatus.SizeChanged:
@@ -532,9 +519,7 @@ namespace MonitorAware.Models
 
 						// Fire DpiChanged event last so that it can be utilized to supplement preceding changes
 						// in target Window.
-						var handler = DpiChanged;
-						if (handler != null)
-							handler(this, new DpiChangedEventArgs(oldDpi, WindowDpi));
+						DpiChanged?.Invoke(this, new DpiChangedEventArgs(oldDpi, WindowDpi));
 
 						// Take new information which is to be tested from _dueInfo again for the case where new
 						// information has been stored during this operation. If there is new information, repeat
@@ -567,9 +552,7 @@ namespace MonitorAware.Models
 			var oldPath = ColorProfilePath;
 			ColorProfilePath = newPath;
 
-			var handler = ColorProfileChanged;
-			if (handler != null)
-				handler(this, new ColorProfileChangedEventArgs(oldPath, ColorProfilePath));
+			ColorProfileChanged?.Invoke(this, new ColorProfileChangedEventArgs(oldPath, ColorProfilePath));
 		}
 	}
 }

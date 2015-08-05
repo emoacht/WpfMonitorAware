@@ -46,7 +46,6 @@ namespace MonitorAware.Models
 
 		#endregion
 
-
 		#region System DPI
 
 		/// <summary>
@@ -63,10 +62,10 @@ namespace MonitorAware.Models
 		public static Dpi GetSystemDpi(Visual sourceVisual)
 		{
 			if (sourceVisual == null)
-				throw new ArgumentNullException("sourceVisual");
+				throw new ArgumentNullException(nameof(sourceVisual));
 
 			var source = PresentationSource.FromVisual(sourceVisual);
-			if ((source == null) || (source.CompositionTarget == null))
+			if (source?.CompositionTarget == null)
 				return Dpi.Default;
 
 			return new Dpi(
@@ -101,7 +100,6 @@ namespace MonitorAware.Models
 
 		#endregion
 
-
 		#region Per-Monitor DPI
 
 		/// <summary>
@@ -112,7 +110,7 @@ namespace MonitorAware.Models
 		public static Dpi GetDpiFromVisual(Visual sourceVisual)
 		{
 			if (sourceVisual == null)
-				throw new ArgumentNullException("sourceVisual");
+				throw new ArgumentNullException(nameof(sourceVisual));
 
 			if (!OsVersion.IsEightOneOrNewer)
 				return SystemDpi;
@@ -136,7 +134,7 @@ namespace MonitorAware.Models
 		public static Dpi GetDpiFromRect(Rect sourceRect)
 		{
 			if (sourceRect == Rect.Empty)
-				throw new ArgumentNullException("sourceRect");
+				throw new ArgumentNullException(nameof(sourceRect));
 
 			if (!OsVersion.IsEightOneOrNewer)
 				return SystemDpi;
@@ -170,7 +168,6 @@ namespace MonitorAware.Models
 
 		#endregion
 
-
 		#region Notification Area DPI
 
 		/// <summary>
@@ -186,7 +183,7 @@ namespace MonitorAware.Models
 				IntPtr.Zero,
 				IntPtr.Zero,
 				"Shell_TrayWnd",
-				String.Empty);
+				string.Empty);
 			if (handleTaskBar == IntPtr.Zero)
 				return SystemDpi;
 
@@ -194,7 +191,7 @@ namespace MonitorAware.Models
 				handleTaskBar,
 				IntPtr.Zero,
 				"TrayNotifyWnd",
-				String.Empty);
+				string.Empty);
 			if (handleNotificationArea == IntPtr.Zero)
 				return SystemDpi;
 

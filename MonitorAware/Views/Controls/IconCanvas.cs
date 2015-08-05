@@ -34,7 +34,6 @@ namespace MonitorAware.Views.Controls
 			SetDrawingFactor();
 		}
 
-
 		#region Property
 
 		/// <summary>
@@ -102,7 +101,6 @@ namespace MonitorAware.Views.Controls
 					}));
 
 		#endregion
-
 
 		private static readonly Dpi _systemDpi = DpiChecker.GetSystemDpi();
 		private double _drawingFactor = 1D;

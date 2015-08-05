@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.Math;
 
 namespace MonitorAware.Helper
 {
@@ -16,9 +17,9 @@ namespace MonitorAware.Helper
 		public static double ToRounded(this double source, double factor)
 		{
 			if (factor <= 0)
-				throw new ArgumentOutOfRangeException("factor");
+				throw new ArgumentOutOfRangeException(nameof(factor));
 
-			return Math.Round(source * factor) / factor;
+			return Round(source * factor) / factor;
 		}
 	}
 }

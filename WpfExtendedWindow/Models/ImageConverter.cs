@@ -14,7 +14,7 @@ namespace WpfExtendedWindow.Models
 		/// </summary>
 		/// <param name="sourceData">Byte array of source image</param>
 		/// <param name="colorProfilePath">Color profile file path used by a monitor</param>
-		/// <returns></returns>
+		/// <returns>BitmapSource</returns>
 		public static async Task<BitmapSource> ConvertImageAsync(byte[] sourceData, string colorProfilePath)
 		{
 			using (var ms = new MemoryStream())
@@ -31,11 +31,11 @@ namespace WpfExtendedWindow.Models
 				ccb.BeginInit();
 				ccb.Source = frame;
 
-				ccb.SourceColorContext = ((frame.ColorContexts != null) && frame.ColorContexts.Any())
+				ccb.SourceColorContext = (frame.ColorContexts?.Any() == true)
 					? frame.ColorContexts.First()
 					: new ColorContext(PixelFormats.Bgra32); // Fallback color profile
 
-				ccb.DestinationColorContext = !String.IsNullOrEmpty(colorProfilePath)
+				ccb.DestinationColorContext = !string.IsNullOrEmpty(colorProfilePath)
 					? new ColorContext(new Uri(colorProfilePath))
 					: new ColorContext(PixelFormats.Bgra32); // Fallback color profile
 

@@ -115,11 +115,7 @@ namespace MonitorAware.Models
 		/// Create string representation.
 		/// </summary>
 		/// <returns>String containing X and Y values of this structure</returns>
-		public override string ToString()
-		{
-			return String.Format("{0}-{1}", this.X, this.Y);
-		}
-
+		public override string ToString() => $"{this.X}-{this.Y}";
 
 		#region INotifyPropertyChanged member
 
@@ -130,9 +126,7 @@ namespace MonitorAware.Models
 
 		private void RaisePropertyChanged([CallerMemberName]string propertyName = null)
 		{
-			var handler = this.PropertyChanged;
-			if (handler != null)
-				handler(this, new PropertyChangedEventArgs(propertyName));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 		#endregion

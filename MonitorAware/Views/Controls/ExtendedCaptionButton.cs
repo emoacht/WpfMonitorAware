@@ -34,7 +34,7 @@ namespace MonitorAware.Views.Controls
 
 			this.SetBinding(
 				IsAboutActiveProperty,
-				new Binding("IsAboutActive")
+				new Binding(nameof(ExtendedWindow.IsAboutActive))
 				{
 					Source = window,
 					Mode = BindingMode.OneWay,
@@ -44,7 +44,7 @@ namespace MonitorAware.Views.Controls
 			{
 				this.SetBinding(
 					NormalBackgroundProperty,
-					new Binding("CaptionButtonBackground")
+					new Binding(nameof(ExtendedWindow.CaptionButtonBackground))
 					{
 						Source = window,
 						Mode = BindingMode.OneWay,
@@ -55,7 +55,7 @@ namespace MonitorAware.Views.Controls
 			{
 				this.SetBinding(
 					DeactivatedBackgroundProperty,
-					new Binding("ChromeDeactivatedBackground")
+					new Binding(nameof(ExtendedWindow.ChromeDeactivatedBackground))
 					{
 						Source = window,
 						Mode = BindingMode.OneWay,

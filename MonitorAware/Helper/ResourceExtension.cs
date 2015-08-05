@@ -20,14 +20,14 @@ namespace MonitorAware.Helper
 		/// <param name="oldUriString">Uri string of old resources to be removed (case-sensitive)</param>
 		public static void ApplyResource(this Application app, string newUriString, string oldUriString = "")
 		{
-			if (!String.IsNullOrWhiteSpace(oldUriString))
+			if (!string.IsNullOrWhiteSpace(oldUriString))
 			{
 				var oldDictionary = app.Resources.MergedDictionaries.FirstOrDefault(x => x.Source.OriginalString == oldUriString);
 				if (oldDictionary != null)
 					app.Resources.MergedDictionaries.Remove(oldDictionary);
 			}
 
-			if (String.IsNullOrWhiteSpace(newUriString))
+			if (string.IsNullOrWhiteSpace(newUriString))
 				return;
 
 			var newDictionary = new ResourceDictionary();
@@ -38,7 +38,7 @@ namespace MonitorAware.Helper
 			}
 			catch (IOException ex)
 			{
-				Debug.WriteLine("Failed to apply resources to Application resources. {0}", ex);
+				Debug.WriteLine($"Failed to apply resources to Application resources.\r\n{ex}");
 				return;
 			}
 
@@ -53,14 +53,14 @@ namespace MonitorAware.Helper
 		/// <param name="oldUriString">Uri string of old resources to be removed (case-sensitive)</param>
 		public static void ApplyResource(this ContentControl control, string newUriString, string oldUriString = "")
 		{
-			if (!String.IsNullOrWhiteSpace(oldUriString))
+			if (!string.IsNullOrWhiteSpace(oldUriString))
 			{
 				var oldDictionary = control.Resources.MergedDictionaries.FirstOrDefault(x => x.Source.OriginalString == oldUriString);
 				if (oldDictionary != null)
 					control.Resources.MergedDictionaries.Remove(oldDictionary);
 			}
 
-			if (String.IsNullOrWhiteSpace(newUriString))
+			if (string.IsNullOrWhiteSpace(newUriString))
 				return;
 
 			var newDictionary = new ResourceDictionary();
@@ -71,7 +71,7 @@ namespace MonitorAware.Helper
 			}
 			catch (IOException ex)
 			{
-				Debug.WriteLine("Failed to apply resources to ContentControl resources. {0}", ex);
+				Debug.WriteLine($"Failed to apply resources to ContentControl resources.\r\n{ex}");
 				return;
 			}
 

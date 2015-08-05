@@ -37,7 +37,7 @@ namespace MonitorAware.Models
 			if (!NativeMethod.GetMonitorInfo(handleMonitor, ref monitorInfo))
 				return null;
 
-			IntPtr deviceContext = IntPtr.Zero;
+			var deviceContext = IntPtr.Zero;
 
 			try
 			{
@@ -46,7 +46,6 @@ namespace MonitorAware.Models
 					monitorInfo.szDevice,
 					null,
 					IntPtr.Zero);
-
 				if (deviceContext == IntPtr.Zero)
 					return null;
 

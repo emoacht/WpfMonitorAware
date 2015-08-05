@@ -66,7 +66,7 @@ namespace MonitorAware.Views
 			TitleBarGrid = this.GetTemplateChild("PART_TitleBarGrid") as Grid;
 
 			var icon = this.GetTemplateChild("PART_TitleBarIcon") as Image;
-			if ((icon != null) && (icon.Visibility == Visibility.Visible))
+			if (icon?.Visibility == Visibility.Visible)
 				TitleBarIcon = icon;
 
 			TitleBarOptionGrid = this.GetTemplateChild("PART_TitleBarOptionGrid") as Grid;
@@ -173,7 +173,6 @@ namespace MonitorAware.Views
 			RemoveDragHandler();
 		}
 
-
 		#region Template Part
 
 		/// <summary>
@@ -228,12 +227,11 @@ namespace MonitorAware.Views
 
 		#endregion
 
-
 		#region Resource
 
-		private static readonly Dictionary<ExtendedTheme, string> _themeUriMap = new Dictionary<ExtendedTheme, string>() 
+		private static readonly Dictionary<ExtendedTheme, string> _themeUriMap = new Dictionary<ExtendedTheme, string>()
 		{
-			{ExtendedTheme.Default, String.Empty},
+			{ExtendedTheme.Default, string.Empty},
 			{ExtendedTheme.Plain, @"/MonitorAware;component/Views/Themes/PlainTheme.xaml"},
 			{ExtendedTheme.Light, @"/MonitorAware;component/Views/Themes/LightTheme.xaml"},
 			{ExtendedTheme.Dark, @"/MonitorAware;component/Views/Themes/DarkTheme.xaml"},
@@ -278,7 +276,7 @@ namespace MonitorAware.Views
 				typeof(string),
 				typeof(ExtendedWindow),
 				new FrameworkPropertyMetadata(
-					String.Empty,
+					string.Empty,
 					(d, e) =>
 					{
 						var window = (ExtendedWindow)d;
@@ -318,7 +316,7 @@ namespace MonitorAware.Views
 
 		private void ApplyCaptionTheme(ResourceDictionary targetDictionary, ResourceDictionary sourceDictionary, Brush background)
 		{
-			var defaultDictionary = new ResourceDictionary() { Source = new Uri(_defaultCaptionThemeUriString, UriKind.Relative) };
+			var defaultDictionary = new ResourceDictionary { Source = new Uri(_defaultCaptionThemeUriString, UriKind.Relative) };
 
 			foreach (var key in defaultDictionary.Keys)
 			{
@@ -372,7 +370,6 @@ namespace MonitorAware.Views
 
 		#endregion
 
-
 		#region Command
 
 		private void RegisterCommands()
@@ -409,7 +406,6 @@ namespace MonitorAware.Views
 			CommandManager.InvalidateRequerySuggested();
 		}
 
-
 		#region SystemCommands.MinimizeWindow
 
 		private void MinimizeExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -436,7 +432,6 @@ namespace MonitorAware.Views
 				new FrameworkPropertyMetadata(true));
 
 		#endregion
-
 
 		#region SystemCommands.MaximizeWindow
 
@@ -474,7 +469,6 @@ namespace MonitorAware.Views
 
 		#endregion
 
-
 		#region SystemCommands.RestoreWindow
 
 		private void RestoreExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -511,7 +505,6 @@ namespace MonitorAware.Views
 
 		#endregion
 
-
 		#region SystemCommands.CloseWindow
 
 		private void CloseExecuted(object target, ExecutedRoutedEventArgs e)
@@ -522,7 +515,6 @@ namespace MonitorAware.Views
 		#endregion
 
 		#endregion
-
 
 		#region Layout
 
@@ -942,7 +934,6 @@ namespace MonitorAware.Views
 				new FrameworkPropertyMetadata(_chromeBorderBrush));
 
 		#endregion
-
 
 		#region Method
 

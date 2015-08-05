@@ -15,10 +15,7 @@ namespace MonitorAware.Helper
 		public static bool IsTransparent(this Brush source)
 		{
 			var solid = source as SolidColorBrush;
-			if (solid == null)
-				return false;
-
-			return (solid.Color == Colors.Transparent);
+			return (solid?.Color == Colors.Transparent);
 		}
 	}
 }

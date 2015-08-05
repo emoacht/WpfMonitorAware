@@ -19,15 +19,15 @@ namespace MonitorAware.Helper
 		public static bool IsDefined(Type enumType, string value, StringComparison comparisonType)
 		{
 			if (enumType == null)
-				throw new ArgumentNullException("enumType");
+				throw new ArgumentNullException(nameof(enumType));
 
 			if (!enumType.IsEnum)
-				throw new ArgumentException("The type must be Enum.", "enumType");
+				throw new ArgumentException("The type must be Enum.", nameof(enumType));
 
-			if (String.IsNullOrWhiteSpace(value))
+			if (string.IsNullOrWhiteSpace(value))
 				return false;
 
-			return Enum.GetNames(enumType).Any(x => String.Compare(x, value, comparisonType) == 0);
+			return Enum.GetNames(enumType).Any(x => string.Compare(x, value, comparisonType) == 0);
 		}
 
 		/// <summary>
@@ -41,17 +41,17 @@ namespace MonitorAware.Helper
 		public static object Parse(Type enumType, string value, StringComparison comparisonType)
 		{
 			if (enumType == null)
-				throw new ArgumentNullException("enumType");
+				throw new ArgumentNullException(nameof(enumType));
 
 			if (!enumType.IsEnum)
-				throw new ArgumentException("The type must be Enum.", "enumType");
+				throw new ArgumentException("The type must be Enum.", nameof(enumType));
 
-			if (String.IsNullOrWhiteSpace(value))
-				throw new ArgumentNullException("value");
+			if (string.IsNullOrWhiteSpace(value))
+				throw new ArgumentNullException(nameof(value));
 
-			var name = Enum.GetNames(enumType).FirstOrDefault(x => String.Compare(x, value, comparisonType) == 0);
+			var name = Enum.GetNames(enumType).FirstOrDefault(x => string.Compare(x, value, comparisonType) == 0);
 			if (name == null)
-				throw new ArgumentException("The value must be included in Enum names.", "value");
+				throw new ArgumentException("The value must be included in Enum names.", nameof(value));
 
 			return Enum.Parse(enumType, name);
 		}
@@ -68,15 +68,15 @@ namespace MonitorAware.Helper
 		public static bool TryParse<TEnum>(string value, out TEnum result, StringComparison comparisonType)
 		{
 			if (!typeof(TEnum).IsEnum)
-				throw new ArgumentException("The type must be Enum.", "TEnum");
+				throw new ArgumentException("The type must be Enum.", nameof(TEnum));
 
-			if (String.IsNullOrWhiteSpace(value))
+			if (string.IsNullOrWhiteSpace(value))
 			{
 				result = default(TEnum);
 				return false;
 			}
 
-			var name = Enum.GetNames(typeof(TEnum)).FirstOrDefault(x => String.Compare(x, value, comparisonType) == 0);
+			var name = Enum.GetNames(typeof(TEnum)).FirstOrDefault(x => string.Compare(x, value, comparisonType) == 0);
 			if (name == null)
 			{
 				result = default(TEnum);

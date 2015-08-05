@@ -42,7 +42,6 @@ namespace WpfMonitorAwareBehavior.Views
 			base.OnClosed(e);
 
 			MonitorBehavior.WindowHandler.DpiChanged -= _onDpiChanged;
-
 			MonitorBehavior.WindowHandler.ColorProfileChanged -= _onColorProfileChanged;
 		}
 	}

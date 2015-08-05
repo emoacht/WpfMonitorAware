@@ -37,7 +37,6 @@ namespace MonitorAware.Helper
 
 		#endregion
 
-
 		/// <summary>
 		/// Get OS's window chrome color.
 		/// </summary>

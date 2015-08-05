@@ -28,7 +28,6 @@ namespace MonitorAware.Models
 
 		#endregion
 
-
 		/// <summary>
 		/// Handle window messages.
 		/// </summary>
@@ -44,31 +43,21 @@ namespace MonitorAware.Models
 			switch (msg)
 			{
 				case (int)WindowMessage.WM_ACTIVATE:
+					switch (wParam.ToInt32())
 					{
-						var handler = WindowActivatedChanged;
-						if (handler == null)
+						case NativeMethod.WA_ACTIVE:
+						case NativeMethod.WA_CLICKACTIVE:
+							WindowActivatedChanged?.Invoke(this, true); // Activated.
 							break;
 
-						switch (wParam.ToInt32())
-						{
-							case NativeMethod.WA_ACTIVE:
-							case NativeMethod.WA_CLICKACTIVE:
-								handler(this, true); // Activated.
-								break;
-
-							case NativeMethod.WA_INACTIVE:
-								handler(this, false); // Deactivated.
-								break;
-						}
+						case NativeMethod.WA_INACTIVE:
+							WindowActivatedChanged?.Invoke(this, false); // Deactivated.
+							break;
 					}
 					break;
 
 				case (int)WindowMessage.WM_DWMCOLORIZATIONCOLORCHANGED:
-					{
-						var handler = DwmColorizationColorChanged;
-						if (handler != null)
-							handler(this, EventArgs.Empty);
-					}
+					DwmColorizationColorChanged?.Invoke(this, EventArgs.Empty);
 					break;
 			}
 
