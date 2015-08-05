@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -36,6 +37,8 @@ namespace WpfMonitorAwareWindow.Views
 
 			_onColorProfileChanged = (_sender, _e) => SystemSounds.Exclamation.Play();
 			WindowHandler.ColorProfileChanged += _onColorProfileChanged;
+
+			Debug.WriteLine("Notification Area DPI: {0}", DpiChecker.GetNotificationAreaDpi());
 		}
 
 		protected override void OnClosed(EventArgs e)

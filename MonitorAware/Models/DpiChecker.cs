@@ -169,5 +169,42 @@ namespace MonitorAware.Models
 		}
 
 		#endregion
+
+
+		#region Notification Area DPI
+
+		/// <summary>
+		/// Get Per-Monitor DPI of the monitor in which the notification area is contained.
+		/// </summary>
+		/// <returns>DPI struct</returns>
+		public static Dpi GetNotificationAreaDpi()
+		{
+			if (!OsVersion.IsEightOneOrNewer)
+				return SystemDpi;
+
+			var handleTaskBar = NativeMethod.FindWindowEx(
+				IntPtr.Zero,
+				IntPtr.Zero,
+				"Shell_TrayWnd",
+				String.Empty);
+			if (handleTaskBar == IntPtr.Zero)
+				return SystemDpi;
+
+			var handleNotificationArea = NativeMethod.FindWindowEx(
+				handleTaskBar,
+				IntPtr.Zero,
+				"TrayNotifyWnd",
+				String.Empty);
+			if (handleNotificationArea == IntPtr.Zero)
+				return SystemDpi;
+
+			var handleMonitor = NativeMethod.MonitorFromWindow(
+				handleNotificationArea,
+				NativeMethod.MONITOR_DEFAULTTO.MONITOR_DEFAULTTOPRIMARY);
+
+			return GetDpi(handleMonitor);
+		}
+
+		#endregion
 	}
 }

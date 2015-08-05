@@ -86,6 +86,13 @@ namespace MonitorAware.Models.Win32
 		}
 
 		[DllImport("User32.dll", SetLastError = true)]
+		public static extern IntPtr FindWindowEx(
+			IntPtr hwndParent,
+			IntPtr hwndChildAfter,
+			string lpszClass,
+			string lpszWindow);
+
+		[DllImport("User32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetWindowPos(
 			IntPtr hWnd,
