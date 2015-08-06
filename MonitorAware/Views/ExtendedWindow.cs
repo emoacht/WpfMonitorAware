@@ -45,11 +45,7 @@ namespace MonitorAware.Views
 		/// <summary>
 		/// Handler for <see cref="ExtendedWindow"/>
 		/// </summary>
-		public ExtendedWindowHandler WindowHandler
-		{
-			get { return _windowHandler ?? (_windowHandler = new ExtendedWindowHandler()); }
-		}
-		private ExtendedWindowHandler _windowHandler;
+		public ExtendedWindowHandler WindowHandler { get; } = new ExtendedWindowHandler();
 
 		/// <summary>
 		/// OnApplyTemplate

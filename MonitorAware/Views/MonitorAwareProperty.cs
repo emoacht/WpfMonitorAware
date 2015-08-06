@@ -23,7 +23,6 @@ namespace MonitorAware.Views
 
 		#endregion
 
-
 		/// <summary>
 		/// Get AttachedProperty.
 		/// </summary>
@@ -77,11 +76,7 @@ namespace MonitorAware.Views
 		/// <summary>
 		/// Handler for <see cref="Window"/>
 		/// </summary>
-		public WindowHandler WindowHandler
-		{
-			get { return _windowhandler ?? (_windowhandler = new WindowHandler()); }
-		}
-		private WindowHandler _windowhandler;
+		public WindowHandler WindowHandler { get; } = new WindowHandler();
 
 		private void OnWindowLoaded(object sender, RoutedEventArgs e)
 		{
