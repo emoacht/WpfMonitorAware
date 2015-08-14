@@ -5,7 +5,7 @@ A library for WPF Per-Monitor DPI aware and color profile aware window
 
 ##Requirements
 
- * .NET Framework 4.5
+ * .NET Framework 4.5.2
  * Windows 8.1 or newer to take advantage of Per-Monitor DPI
 
 ##Types
