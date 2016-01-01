@@ -269,7 +269,7 @@ namespace MonitorAware.Models
 		private WindowStatus _currentStatus = WindowStatus.None;
 
 		/// <summary>
-		/// Size of target Window to be the base for calculating due size when DPI changed 
+		/// Size of target Window to be the base for calculating due size when DPI changed
 		/// </summary>
 		private Size _baseSize = Size.Empty;
 

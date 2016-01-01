@@ -237,7 +237,7 @@ namespace MonitorAware.Models.Win32
 
 		/// <summary>
 		/// The window has been maximized.
-		/// </summary> 
+		/// </summary>
 		public const int SIZE_MAXIMIZED = 2;
 
 		/// <summary>

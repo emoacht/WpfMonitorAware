@@ -13,7 +13,7 @@ namespace MonitorAware.Models
 
 		/// <summary>
 		/// Window activated changed event
-		/// </summary> 
+		/// </summary>
 		/// <remarks>
 		/// Args true:  Window is being activated.
 		/// Args false: Window is being deactivated.

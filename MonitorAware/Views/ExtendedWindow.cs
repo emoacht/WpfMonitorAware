@@ -744,8 +744,8 @@ namespace MonitorAware.Views
 		/// <summary>
 		/// Title bar height when a Window is other than maximized
 		/// </summary>
-		/// <remarks>This height includes neither chrome outer border thickness nor chrome inner border thickness. 
-		/// By OS's default, title bar height (when a window is maximized) will be sum of 
+		/// <remarks>This height includes neither chrome outer border thickness nor chrome inner border thickness.
+		/// By OS's default, title bar height (when a window is maximized) will be sum of
 		/// SystemParameters.WindowResizeBorderThickness.Top and SystemParameters.WindowNonClientFrameThickness.Top
 		/// which includes chrome border thickness.</remarks>
 		public double TitleBarNormalHeight
@@ -873,7 +873,7 @@ namespace MonitorAware.Views
 				new FrameworkPropertyMetadata(14D));
 
 		/// <summary>
-		/// Content (Window.Content) margin 
+		/// Content (Window.Content) margin
 		/// </summary>
 		/// <remarks>Default value (6,0,6,6) is for reproducing OS's default.</remarks>
 		public Thickness ContentMargin
@@ -983,7 +983,7 @@ namespace MonitorAware.Views
 				}
 			}
 
-			// Manage title bar and content border.						
+			// Manage title bar and content border.
 			if ((this.WindowState == WindowState.Maximized) && !KeepsTitleContentMargin)
 			{
 				if (TitleBarGrid != null)
