@@ -63,7 +63,6 @@ namespace MonitorAware.Views.Controls
 			}
 		}
 
-
 		#region Property
 
 		/// <summary>

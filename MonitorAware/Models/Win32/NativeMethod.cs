@@ -105,7 +105,6 @@ namespace MonitorAware.Models.Win32
 
 		#endregion
 
-
 		#region DPI
 
 		[DllImport("Gdi32.dll", SetLastError = true)]
@@ -184,7 +183,6 @@ namespace MonitorAware.Models.Win32
 
 		#endregion
 
-
 		#region Color Profile
 
 		[DllImport("Gdi32.dll", EntryPoint = "GetICMProfileW", CharSet = CharSet.Unicode, SetLastError = true)]
@@ -207,7 +205,6 @@ namespace MonitorAware.Models.Win32
 
 		#endregion
 
-
 		#region Constants for WM_ACTIVATE
 
 		/// <summary>
@@ -226,7 +223,6 @@ namespace MonitorAware.Models.Win32
 		public const int WA_INACTIVE = 0;
 
 		#endregion
-
 
 		#region Constants for WM_SIZE
 
