@@ -8,7 +8,7 @@ namespace MonitorAware.Helper
 	internal static class BrushExtension
 	{
 		/// <summary>
-		/// Check if a Brush is Transparent.
+		/// Checks if a Brush is Transparent.
 		/// </summary>
 		/// <param name="source">Source Brush</param>
 		/// <returns>True if Transparent</returns>

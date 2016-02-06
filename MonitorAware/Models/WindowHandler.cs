@@ -294,7 +294,7 @@ namespace MonitorAware.Models
 		private int _countSizeChanged;
 
 		/// <summary>
-		/// Handle window messages.
+		/// Handles window messages.
 		/// </summary>
 		/// <param name="hwnd">The window handle</param>
 		/// <param name="msg">The message ID</param>

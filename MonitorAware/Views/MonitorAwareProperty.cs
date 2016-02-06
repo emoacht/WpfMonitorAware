@@ -13,7 +13,7 @@ namespace MonitorAware.Views
 		#region Freezable member
 
 		/// <summary>
-		/// Implement <see cref="Freezable.CreateInstanceCore">Freezable.CreateInstanceCore</see>.
+		/// Implements <see cref="Freezable.CreateInstanceCore">Freezable.CreateInstanceCore</see>.
 		/// </summary>
 		/// <returns>New Freezable</returns>
 		protected override Freezable CreateInstanceCore()
@@ -24,7 +24,7 @@ namespace MonitorAware.Views
 		#endregion
 
 		/// <summary>
-		/// Get AttachedProperty.
+		/// Gets AttachedProperty.
 		/// </summary>
 		/// <param name="window">Owner <see cref="Window"/></param>
 		/// <returns>AttachedProperty</returns>
@@ -33,7 +33,7 @@ namespace MonitorAware.Views
 			return (MonitorAwareProperty)window.GetValue(AttachedPropertyProperty);
 		}
 		/// <summary>
-		/// Set AttachedProperty.
+		/// Sets AttachedProperty.
 		/// </summary>
 		/// <param name="window">Owner <see cref="Window"/></param>
 		/// <param name="attachedProperty">AttachedProperty</param>

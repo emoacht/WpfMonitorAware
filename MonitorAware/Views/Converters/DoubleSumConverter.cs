@@ -6,12 +6,12 @@ using System.Windows.Data;
 namespace MonitorAware.Views.Converters
 {
 	/// <summary>
-	/// Convert doubles to summed double.
+	/// Converts doubles to summed double.
 	/// </summary>
 	public class DoubleSumConverter : IMultiValueConverter
 	{
 		/// <summary>
-		/// Convert doubles to summed double.
+		/// Converts doubles to summed double.
 		/// </summary>
 		/// <param name="values">Source doubles</param>
 		/// <param name="targetType"></param>

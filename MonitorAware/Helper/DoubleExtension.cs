@@ -9,7 +9,7 @@ namespace MonitorAware.Helper
 	internal static class DoubleExtension
 	{
 		/// <summary>
-		/// Convert a double to a preliminarily rounded double to prevent a FrameworkElement from getting blurred by ScaleTransform.
+		/// Converts a double to a preliminarily rounded double to prevent a FrameworkElement from getting blurred by ScaleTransform.
 		/// </summary>
 		/// <param name="source">Source double</param>
 		/// <param name="factor">Factor of ScaleTransform</param>

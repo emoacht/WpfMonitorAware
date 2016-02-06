@@ -10,7 +10,7 @@ namespace MonitorAware.Views.Controls
 	public class DrawingMaximizeIcon : IDrawingIcon
 	{
 		/// <summary>
-		/// Draw maximize icon.
+		/// Draws maximize icon.
 		/// </summary>
 		/// <param name="drawingContext">DrawingContext of canvas</param>
 		/// <param name="factor">Factor from default DPI</param>

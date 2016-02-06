@@ -38,7 +38,7 @@ namespace MonitorAware.Helper
 		#endregion
 
 		/// <summary>
-		/// Get OS's window chrome color.
+		/// Gets OS's window chrome color.
 		/// </summary>
 		/// <returns>Window chrome color</returns>
 		/// <remarks>This method is intended to get window chrome color of Windows 8 or newer.</remarks>

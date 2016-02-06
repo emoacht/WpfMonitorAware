@@ -9,7 +9,7 @@ namespace MonitorAware.Helper
 	internal static class EnumAddition
 	{
 		/// <summary>
-		/// Check if a specified string exists in the names of a specified Enum.
+		/// Checks if a specified string exists in the names of a specified Enum.
 		/// </summary>
 		/// <param name="enumType">Enum type</param>
 		/// <param name="value">Source string</param>
@@ -31,7 +31,7 @@ namespace MonitorAware.Helper
 		}
 
 		/// <summary>
-		/// Convert a specified string to the equivalent object of a specified Enum.
+		/// Converts a specified string to the equivalent object of a specified Enum.
 		/// </summary>
 		/// <param name="enumType">Enum type</param>
 		/// <param name="value">Source string</param>
@@ -57,7 +57,7 @@ namespace MonitorAware.Helper
 		}
 
 		/// <summary>
-		/// Convert a specified string to the equivalent object of a specified Enum.
+		/// Converts a specified string to the equivalent object of a specified Enum.
 		/// </summary>
 		/// <typeparam name="TEnum">Enum type</typeparam>
 		/// <param name="value">Source string</param>

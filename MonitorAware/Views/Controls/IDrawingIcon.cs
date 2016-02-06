@@ -8,7 +8,7 @@ namespace MonitorAware.Views.Controls
 	public interface IDrawingIcon
 	{
 		/// <summary>
-		/// Draw icon.
+		/// Draws icon.
 		/// </summary>
 		/// <param name="drawingContext">DrawingContext of canvas</param>
 		/// <param name="factor">Factor from default DPI</param>

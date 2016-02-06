@@ -10,7 +10,7 @@ namespace MonitorAware.Views.Controls
 	public class DrawingRestoreIcon : IDrawingIcon
 	{
 		/// <summary>
-		/// Draw restore icon.
+		/// Draws restore icon.
 		/// </summary>
 		/// <param name="drawingContext">DrawingContext of canvas</param>
 		/// <param name="factor">Factor from default DPI</param>

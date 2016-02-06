@@ -10,7 +10,7 @@ namespace WpfExtendedWindow.Models
 	public class ImageConverter
 	{
 		/// <summary>
-		/// Convert byte array of an image to BitmapSource reflecting color profiles.
+		/// Converts byte array of an image to BitmapSource reflecting color profiles.
 		/// </summary>
 		/// <param name="sourceData">Byte array of source image</param>
 		/// <param name="colorProfilePath">Color profile file path used by a monitor</param>

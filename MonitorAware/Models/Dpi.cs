@@ -103,7 +103,7 @@ namespace MonitorAware.Models
 		}
 
 		/// <summary>
-		/// Get hash code.
+		/// Gets hash code.
 		/// </summary>
 		/// <returns>Hash code for this structure</returns>
 		public override int GetHashCode()
@@ -112,7 +112,7 @@ namespace MonitorAware.Models
 		}
 
 		/// <summary>
-		/// Create string representation.
+		/// Creates string representation.
 		/// </summary>
 		/// <returns>String containing X and Y values of this structure</returns>
 		public override string ToString() => $"{this.X}-{this.Y}";

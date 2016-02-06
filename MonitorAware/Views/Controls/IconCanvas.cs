@@ -131,7 +131,7 @@ namespace MonitorAware.Views.Controls
 		}
 
 		/// <summary>
-		/// Draw fallback icon.
+		/// Draws fallback icon.
 		/// </summary>
 		/// <param name="drawingContext">DrawingContext of canvas</param>
 		/// <param name="factor">Factor from default DPI</param>

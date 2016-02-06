@@ -12,7 +12,7 @@ namespace MonitorAware.Views.Controls
 	public class FrameworkElementCenterProperty : DependencyObject
 	{
 		/// <summary>
-		/// Get AttachedProperty.
+		/// Gets AttachedProperty.
 		/// </summary>
 		/// <param name="element">Owner <see cref="FrameworkElement"/></param>
 		/// <returns>AttachedProperty</returns>
@@ -21,7 +21,7 @@ namespace MonitorAware.Views.Controls
 			return (FrameworkElementCenterProperty)element.GetValue(AttachedPropertyProperty);
 		}
 		/// <summary>
-		/// Set AttachedProperty.
+		/// Sets AttachedProperty.
 		/// </summary>
 		/// <param name="element">Owner <see cref="FrameworkElement"/></param>
 		/// <param name="attachedProperty">AttachedProperty</param>

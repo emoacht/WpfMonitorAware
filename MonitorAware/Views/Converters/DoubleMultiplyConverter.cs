@@ -6,13 +6,13 @@ using System.Windows.Data;
 namespace MonitorAware.Views.Converters
 {
 	/// <summary>
-	/// Convert double to multiplied double.
+	/// Converts double to multiplied double.
 	/// </summary>
 	[ValueConversion(typeof(double), typeof(double))]
 	public class DoubleMultiplyConverter : IValueConverter
 	{
 		/// <summary>
-		/// Convert double to multiplied double.
+		/// Converts double to multiplied double.
 		/// </summary>
 		/// <param name="value">Source double</param>
 		/// <param name="targetType"></param>
@@ -33,7 +33,7 @@ namespace MonitorAware.Views.Converters
 		}
 
 		/// <summary>
-		/// Convert double to divided double.
+		/// Converts double to divided double.
 		/// </summary>
 		/// <param name="value">Source double</param>
 		/// <param name="targetType"></param>

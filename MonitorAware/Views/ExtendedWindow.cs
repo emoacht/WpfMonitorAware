@@ -934,7 +934,7 @@ namespace MonitorAware.Views
 		#region Method
 
 		/// <summary>
-		/// Adjust layout of Window parts.
+		/// Adjusts layout of Window parts.
 		/// </summary>
 		protected void AdjustLayout()
 		{

@@ -9,14 +9,14 @@ using MonitorAware.Models.Win32;
 namespace MonitorAware.Models
 {
 	/// <summary>
-	/// Check DPI.
+	/// Checks DPI.
 	/// </summary>
 	public static class DpiChecker
 	{
 		#region DPI Awareness
 
 		/// <summary>
-		/// Check if current process is Per-Monitor DPI aware.
+		/// Checks if current process is Per-Monitor DPI aware.
 		/// </summary>
 		/// <returns>True if Per-Monitor DPI aware</returns>
 		internal static bool IsPerMonitorDpiAware()
@@ -26,7 +26,7 @@ namespace MonitorAware.Models
 		}
 
 		/// <summary>
-		/// Get DPI awareness of current process.
+		/// Gets DPI awareness of current process.
 		/// </summary>
 		/// <returns>If succeeded, Nullable PROCESS_DPI_AWARENESS. If failed, null.</returns>
 		internal static NativeMethod.PROCESS_DPI_AWARENESS? GetDpiAwareness()
@@ -55,7 +55,7 @@ namespace MonitorAware.Models
 		internal static readonly Dpi SystemDpi = GetSystemDpi();
 
 		/// <summary>
-		/// Get system DPI.
+		/// Gets system DPI.
 		/// </summary>
 		/// <param name="sourceVisual">Source Visual</param>
 		/// <returns>DPI struct</returns>
@@ -74,7 +74,7 @@ namespace MonitorAware.Models
 		}
 
 		/// <summary>
-		/// Get system DPI.
+		/// Gets system DPI.
 		/// </summary>
 		/// <returns>DPI struct</returns>
 		public static Dpi GetSystemDpi()
@@ -103,7 +103,7 @@ namespace MonitorAware.Models
 		#region Per-Monitor DPI
 
 		/// <summary>
-		/// Get Per-Monitor DPI of the monitor to which a specified Window belongs.
+		/// Gets Per-Monitor DPI of the monitor to which a specified Window belongs.
 		/// </summary>
 		/// <param name="sourceVisual">Source Visual</param>
 		/// <returns>DPI struct</returns>
@@ -127,7 +127,7 @@ namespace MonitorAware.Models
 		}
 
 		/// <summary>
-		/// Get Per-Monitor DPI of the monitor to which a specified Rect belongs.
+		/// Gets Per-Monitor DPI of the monitor to which a specified Rect belongs.
 		/// </summary>
 		/// <param name="sourceRect">Source Rect</param>
 		/// <returns>DPI struct</returns>
@@ -171,7 +171,7 @@ namespace MonitorAware.Models
 		#region Notification Area DPI
 
 		/// <summary>
-		/// Get Per-Monitor DPI of the monitor in which the notification area is contained.
+		/// Gets Per-Monitor DPI of the monitor in which the notification area is contained.
 		/// </summary>
 		/// <returns>DPI struct</returns>
 		public static Dpi GetNotificationAreaDpi()

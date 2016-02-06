@@ -6,13 +6,13 @@ using System.Windows.Data;
 namespace MonitorAware.Views.Converters
 {
 	/// <summary>
-	/// Convert whether object is null to Visibility.
+	/// Converts whether object is null to Visibility.
 	/// </summary>
 	[ValueConversion(typeof(object), typeof(Visibility))]
 	public class ObjectToVisibilityConverter : IValueConverter
 	{
 		/// <summary>
-		/// Convert whether object is null to Visibility.
+		/// Converts whether object is null to Visibility.
 		/// </summary>
 		/// <param name="value">Source object</param>
 		/// <param name="targetType"></param>

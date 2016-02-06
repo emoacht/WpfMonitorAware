@@ -13,7 +13,7 @@ namespace MonitorAware.Helper
 	internal static class ResourceExtension
 	{
 		/// <summary>
-		/// Add/Remove resources to/from <see cref="Application"/> resources.
+		/// Adds/Removes resources to/from <see cref="Application"/> resources.
 		/// </summary>
 		/// <param name="app">Target Application</param>
 		/// <param name="newUriString">Uri string of new resources to be added</param>
@@ -46,7 +46,7 @@ namespace MonitorAware.Helper
 		}
 
 		/// <summary>
-		/// Add/Remove resources to/from <see cref="ContentControl"/> resources.
+		/// Adds/Removes resources to/from <see cref="ContentControl"/> resources.
 		/// </summary>
 		/// <param name="control">Target ContentControl</param>
 		/// <param name="newUriString">Uri string of new resources to be added</param>

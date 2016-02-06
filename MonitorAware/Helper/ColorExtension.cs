@@ -10,7 +10,7 @@ namespace MonitorAware.Helper
 	internal static class ColorExtension
 	{
 		/// <summary>
-		/// Convert a Color to an opaque Color using white background.
+		/// Converts a Color to an opaque Color using white background.
 		/// </summary>
 		/// <param name="source">Source Color</param>
 		/// <returns>Opaque Color</returns>
@@ -25,7 +25,7 @@ namespace MonitorAware.Helper
 		}
 
 		/// <summary>
-		/// Convert two Colors to a blended Color ignoring alpha channel.
+		/// Converts two Colors to a blended Color ignoring alpha channel.
 		/// </summary>
 		/// <param name="source">Source Color</param>
 		/// <param name="target">Target Color</param>
@@ -40,7 +40,7 @@ namespace MonitorAware.Helper
 		#region Helper
 
 		/// <summary>
-		/// Blend two Colors.
+		/// Blends two Colors.
 		/// </summary>
 		/// <param name="color1">1st Color</param>
 		/// <param name="color2">2nd Color</param>

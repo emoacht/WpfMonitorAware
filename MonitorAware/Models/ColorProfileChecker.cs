@@ -10,12 +10,12 @@ using MonitorAware.Models.Win32;
 namespace MonitorAware.Models
 {
 	/// <summary>
-	/// Check color profile.
+	/// Checks color profile.
 	/// </summary>
 	public static class ColorProfileChecker
 	{
 		/// <summary>
-		/// Get color profile file path used by the monitor to which a specified Window belongs.
+		/// Gets color profile file path used by the monitor to which a specified Window belongs.
 		/// </summary>
 		/// <param name="sourceVisual">Source Window</param>
 		/// <returns>Color profile file path</returns>
