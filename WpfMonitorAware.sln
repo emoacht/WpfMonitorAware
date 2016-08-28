@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareWindow", "WpfMonitorAwareWindow\WpfMonitorAwareWindow.csproj", "{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}"
 EndProject
@@ -12,6 +12,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareBehavior", "WpfMonitorAwareBehavior\WpfMonitorAwareBehavior.csproj", "{6666B061-3522-413C-9124-E814A0611AF2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareProperty", "WpfMonitorAwareProperty\WpfMonitorAwareProperty.csproj", "{B40BA673-4E56-467E-B5D2-0D0D5C1F7EF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfBuiltinScaling", "WpfBuiltinScaling\WpfBuiltinScaling.csproj", "{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E216CB47-4CD6-4F68-8378-67D53423277B} = {E216CB47-4CD6-4F68-8378-67D53423277B}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +44,10 @@ Global
 		{B40BA673-4E56-467E-B5D2-0D0D5C1F7EF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B40BA673-4E56-467E-B5D2-0D0D5C1F7EF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B40BA673-4E56-467E-B5D2-0D0D5C1F7EF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
