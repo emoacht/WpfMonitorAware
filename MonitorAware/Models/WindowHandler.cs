@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 
+using MonitorAware.Helper;
 using MonitorAware.Models.Win32;
 
 namespace MonitorAware.Models
@@ -121,6 +122,40 @@ namespace MonitorAware.Models
 		/// </summary>
 		public static readonly DependencyProperty WindowDpiProperty = WindowDpiPropertyKey.DependencyProperty;
 
+		/// <summary>
+		/// Whether to forbear scaling if it is unnecessary because built-in scaling is enabled
+		/// </summary>
+		public bool WillForbearScalingIfUnnecessary
+		{
+			get { return _willForbearScalingIfUnnecessary; }
+			set
+			{
+				_willForbearScalingIfUnnecessary = value;
+				ForbearScaling = value && BuiltinFunction.IsScalingSupported(_targetWindow);
+			}
+		}
+		private bool _willForbearScalingIfUnnecessary;
+
+		/// <summary>
+		/// Whether to forbear scaling
+		/// </summary>
+		public bool ForbearScaling
+		{
+			get { return (bool)GetValue(ForbearScalingProperty); }
+			set { SetValue(ForbearScalingProperty, value); }
+		}
+		/// <summary>
+		/// Dependency property for <see cref="ForbearScaling"/>
+		/// </summary>
+		public static readonly DependencyProperty ForbearScalingProperty =
+			DependencyProperty.Register(
+				"ForbearScaling",
+				typeof(bool),
+				typeof(WindowHandler),
+				new FrameworkPropertyMetadata(
+					false,
+					(d, e) => Debug.WriteLine($"Forbear Scaling: {(bool)e.NewValue}")));
+
 		#endregion
 
 		#region Property (Color profile)
@@ -219,13 +254,15 @@ namespace MonitorAware.Models
 			_targetWindow = window;
 			_targetElement = element;
 
+			ForbearScaling = WillForbearScalingIfUnnecessary && BuiltinFunction.IsScalingSupported(_targetWindow);
+
 			if (IsPerMonitorDpiAware)
 			{
 				MonitorDpi = DpiChecker.GetDpiFromVisual(_targetWindow);
 
-				if (MonitorDpi.Equals(SystemDpi))
+				if (MonitorDpi.Equals(SystemDpi) || ForbearScaling)
 				{
-					WindowDpi = SystemDpi;
+					WindowDpi = MonitorDpi;
 				}
 				else
 				{
@@ -244,7 +281,7 @@ namespace MonitorAware.Models
 			else
 			{
 				MonitorDpi = SystemDpi;
-				WindowDpi = SystemDpi;
+				WindowDpi = MonitorDpi;
 			}
 
 			ColorProfilePath = ColorProfileChecker.GetColorProfilePath(_targetWindow);
@@ -308,15 +345,23 @@ namespace MonitorAware.Models
 			switch (msg)
 			{
 				case (int)WindowMessage.WM_DPICHANGED:
-					var oldDpi = MonitorDpi;
-					MonitorDpi = new Dpi(
+					var newDpi = new Dpi(
 						NativeMacro.GetLoWord((uint)wParam),
 						NativeMacro.GetHiWord((uint)wParam));
 
-					Debug.WriteLine($"DPICHANGED: {oldDpi.X} -> {MonitorDpi.X}");
+					Debug.WriteLine($"DPICHANGED: {MonitorDpi.X} -> {newDpi.X}");
 
-					if (MonitorDpi.Equals(oldDpi))
+					if (MonitorDpi.Equals(newDpi))
 						break;
+
+					var oldDpi = MonitorDpi;
+					MonitorDpi = newDpi;
+
+					if (ForbearScaling)
+					{
+						WindowDpi = MonitorDpi;
+						break;
+					}
 
 					_isDpiChanged = true;
 
@@ -364,7 +409,7 @@ namespace MonitorAware.Models
 				case (int)WindowMessage.WM_ENTERSIZEMOVE:
 					Debug.WriteLine("ENTERSIZEMOVE");
 
-					if (!IsPerMonitorDpiAware)
+					if (!IsPerMonitorDpiAware || ForbearScaling)
 						break;
 
 					_baseSize = new Size(_targetWindow.Width, _targetWindow.Height);

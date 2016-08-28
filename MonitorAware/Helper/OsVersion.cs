@@ -35,5 +35,14 @@ namespace MonitorAware.Helper
 		{
 			get { return ((6 == _ver.Major) && (3 <= _ver.Minor)) || (7 <= _ver.Major); }
 		}
+
+		/// <summary>
+		/// Whether OS is Windows 10 Anniversary Update (Redstone 1) or newer
+		/// </summary>
+		/// <remarks>Windows 10 Anniversary Update = version 10.0.14393</remarks>
+		public static bool IsRedstoneOneOrNewer
+		{
+			get { return (new Version(10, 0, 14393) <= _ver); }
+		}
 	}
 }
