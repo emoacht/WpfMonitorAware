@@ -59,7 +59,6 @@ namespace WpfBuiltinScaling.Views
 				{
 					_isMonitorDpiChanged = false;
 				}
-
 			};
 			MonitorProperty.WindowHandler.DpiChanged += _onMonitorDpiChanged;
 		}
