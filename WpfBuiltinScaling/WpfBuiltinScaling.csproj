@@ -68,6 +68,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DpiConverter.cs" />
+    <Compile Include="Views\DpiAwareImage.cs" />
+    <Compile Include="Views\ImageHelper.cs" />
+    <Compile Include="Views\ImageItem.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

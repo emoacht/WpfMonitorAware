@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -37,33 +38,50 @@ namespace WpfBuiltinScaling.Views
 
 		#endregion
 
-		private EventHandler<MonitorAware.Models.DpiChangedEventArgs> _onDpiChanged;
+		private EventHandler<MonitorAware.Models.DpiChangedEventArgs> _onMonitorDpiChanged;
+		private bool _isMonitorDpiChanged;
 
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
 
-			_onDpiChanged = (_sender, _e) =>
+			_onMonitorDpiChanged = (_sender, _e) =>
 			{
 				Message = "MonitorAware Scaling Fired";
 				SystemSounds.Exclamation.Play();
+
+				try
+				{
+					_isMonitorDpiChanged = true;
+					VisualTreeHelper.SetRootDpi(this, _e.NewDpi.ToDpiScale());
+				}
+				finally
+				{
+					_isMonitorDpiChanged = false;
+				}
+
 			};
-			MonitorProperty.WindowHandler.DpiChanged += _onDpiChanged;
+			MonitorProperty.WindowHandler.DpiChanged += _onMonitorDpiChanged;
 		}
 
 		protected override void OnClosed(EventArgs e)
 		{
 			base.OnClosed(e);
 
-			MonitorProperty.WindowHandler.DpiChanged -= _onDpiChanged;
+			MonitorProperty.WindowHandler.DpiChanged -= _onMonitorDpiChanged;
 		}
 
 		protected override void OnDpiChanged(DpiScale oldDpi, DpiScale newDpi)
 		{
 			base.OnDpiChanged(oldDpi, newDpi);
 
-			Message = "Built-in Scaling Fired";
-			SystemSounds.Hand.Play();
+			if (!_isMonitorDpiChanged)
+			{
+				Message = "Built-in Scaling Fired";
+				SystemSounds.Hand.Play();
+			}
+
+			Debug.WriteLine($"Window DpiChanged: {newDpi.PixelsPerDip}");
 		}
 	}
 }
