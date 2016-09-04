@@ -41,6 +41,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -113,6 +114,27 @@
       <Project>{e216cb47-4cd6-4f68-8378-67d53423277b}</Project>
       <Name>MonitorAware</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\chairs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\chairs.scale-100.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\chairs.scale-125.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\chairs.scale-150.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\chairs.scale-200.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\chairs.scale-250.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\chairs.scale-300.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

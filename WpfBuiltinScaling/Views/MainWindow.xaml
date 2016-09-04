@@ -64,8 +64,10 @@
 					 Text="{Binding ElementName= WindowRoot, Path=Message, Mode=OneWay}"/>
 		</Grid>
 
-		<views:DpiAwareImage Grid.Row="4" Grid.ColumnSpan="2"
-							 Width="256" Margin="4"
-							 />
+		<Grid Grid.Row="4" Grid.ColumnSpan="2"
+			  Background="Green">
+			<views:DpiAwareImage Width="256" Margin="4"
+								 Source="/WpfBuiltinScaling;component/Resources/chairs.scale-100.png"/>
+		</Grid>
 	</Grid>
 </Window>
