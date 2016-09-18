@@ -12,19 +12,33 @@ namespace WpfBuiltinScaling.Views
 {
 	internal class ImageHelper
 	{
-		public static ImageItem[] GetImageItems(string basePath)
+		/// <summary>
+		/// Gets image items from application resources.
+		/// </summary>
+		/// <param name="referencePath">File path of reference image</param>
+		/// <returns>Array of image items</returns>
+		public static ImageItem[] GetImageItems(string referencePath)
 		{
-			return EnumerateImageItems(basePath).OrderBy(x => x.PixelsPerDip).ToArray();
+			return EnumerateImageItems(referencePath).OrderBy(x => x.PixelsPerDip).ToArray();
 		}
 
-		private static IEnumerable<ImageItem> EnumerateImageItems(string basePath)
+		/// <summary>
+		/// Enumerates image items from application resources.
+		/// </summary>
+		/// <param name="referencePath">File bath of reference image</param>
+		/// <returns>Sequence of image items</returns>
+		/// <remarks>
+		/// File name of images must be in the following format:
+		/// XXX.scale-YYY.ZZZ (XXX is image name, YYY is percent of intended DIP, ZZZ is file extension)
+		/// </remarks>
+		private static IEnumerable<ImageItem> EnumerateImageItems(string referencePath)
 		{
-			if (string.IsNullOrWhiteSpace(basePath))
+			if (string.IsNullOrWhiteSpace(referencePath))
 				yield break;
 
-			var basePattern = new Regex(@"(?<pack>.+;component/)(?<path>.+)\.scale-[0-9]{3}\.(?<extension>[a-zA-Z]{3})$");
+			var basePattern = new Regex(@"(?<pack>.+;component/)(?<path>.+)\.scale-[0-9]{2,3}\.(?<extension>[a-zA-Z]{3})$");
 
-			var baseMatch = basePattern.Match(basePath);
+			var baseMatch = basePattern.Match(referencePath);
 			if (!baseMatch.Success)
 				yield break;
 
@@ -32,7 +46,7 @@ namespace WpfBuiltinScaling.Views
 			var path = baseMatch.Groups["path"].Value;
 			var extension = baseMatch.Groups["extension"].Value;
 
-			var resourcePattern = new Regex($@"({path}|{path.ToLowerInvariant()})\.scale-(?<percent>[0-9]{{3}})\.{extension}$");
+			var resourcePattern = new Regex($@"({path}|{path.ToLowerInvariant()})\.scale-(?<percent>[0-9]{{2,3}})\.{extension}$");
 
 			foreach (var resourcePath in _resourcePaths.Value)
 			{

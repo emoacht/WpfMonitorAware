@@ -23,9 +23,9 @@ namespace WpfBuiltinScaling.Views
 		{
 			base.OnInitialized(e);
 
-			var basePath = ((BitmapFrame)this.Source).Decoder.ToString(); // Actually, this.Source.ToString() will return the same.
+			var referencePath = ((BitmapFrame)this.Source).Decoder.ToString(); // Actually, this.Source.ToString() will return the same.
 
-			_imageItems = ImageHelper.GetImageItems(basePath);
+			_imageItems = ImageHelper.GetImageItems(referencePath);
 
 			var initialDpi = VisualTreeHelper.GetDpi(this);
 			SetSource(initialDpi.PixelsPerDip);
