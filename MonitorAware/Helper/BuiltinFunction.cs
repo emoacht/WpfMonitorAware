@@ -19,15 +19,15 @@ namespace MonitorAware.Helper
 		/// <returns>True if could not find any indication that built-in scaling is not supported</returns>
 		/// <remarks>
 		/// The prerequisites for built-in scaling are the following:
-		/// - OS is Windows 10 Anniversary Update (Redstone 1) or newer.
-		/// - Target framework of assembly is .NET Framework 4.6.2 or newer.
-		/// - dpiAwareness in the application manifest is set to PerMonitor.
+		/// * OS is Windows 10 Anniversary Update (Redstone 1) or newer.
+		/// * Target framework of assembly is .NET Framework 4.6.2 or newer.
+		/// * dpiAwareness in the application manifest is set to PerMonitor.
 		///   (dpiAwareness value cannot be checked directly at run time.)
 		/// 
 		/// In addition, if Switch.System.Windows.DoNotScaleForDpiChanges is specified in
 		/// the application configuration, it will have the following effects:
-		///   True - DISABLE built-in scaling even if the above conditions are met.
-		///   False - ENABLE built-in scaling even if target framework is older than 4.6.2.
+		/// * True - DISABLE built-in scaling even if the above conditions are met.
+		/// * False - ENABLE built-in scaling even if target framework is older than 4.6.2.
 		/// </remarks>
 		public static bool IsScalingSupported(Window window)
 		{
