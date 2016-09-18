@@ -37,6 +37,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -51,11 +52,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helper\BrushExtension.cs" />
+    <Compile Include="Helper\BuiltinFunction.cs" />
     <Compile Include="Helper\ColorExtension.cs" />
     <Compile Include="Helper\DoubleExtension.cs" />
     <Compile Include="Helper\EnumAddition.cs" />
     <Compile Include="Helper\OsVersion.cs" />
     <Compile Include="Helper\ResourceExtension.cs" />
+    <Compile Include="Helper\TargetFramework.cs" />
     <Compile Include="Helper\WindowChromeColor.cs" />
     <Compile Include="Models\ColorProfileChangedEventArgs.cs" />
     <Compile Include="Models\ColorProfileChecker.cs" />

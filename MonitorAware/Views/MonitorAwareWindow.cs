@@ -36,5 +36,18 @@ namespace MonitorAware.Views
 
 			WindowHandler.Close();
 		}
+
+		#region Property
+
+		/// <summary>
+		/// Whether to forbear scaling if it is unnecessary because built-in scaling is enabled
+		/// </summary>
+		public bool WillForbearScalingIfUnnecessary
+		{
+			get { return WindowHandler.WillForbearScalingIfUnnecessary; }
+			set { WindowHandler.WillForbearScalingIfUnnecessary = value; }
+		}
+
+		#endregion
 	}
 }
