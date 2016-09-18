@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace MonitorAware.Helper
 {
 	/// <summary>
-	/// WPF Built-in functions information
+	/// WPF built-in functions information
 	/// </summary>
 	internal static class BuiltinFunction
 	{
@@ -16,17 +16,18 @@ namespace MonitorAware.Helper
 		/// Checks if scaling for Per-Monitor DPI is supported 
 		/// </summary>
 		/// <param name="window">Window class defined in the assembly</param>
-		/// <returns>True if could not find any indication that the scaling is not supported</returns>
+		/// <returns>True if could not find any indication that built-in scaling is not supported</returns>
 		/// <remarks>
 		/// The prerequisites for built-in scaling are the following:
 		/// - OS is Windows 10 Anniversary Update (Redstone 1) or newer.
 		/// - Target framework of assembly is .NET Framework 4.6.2 or newer.
 		/// - dpiAwareness in the application manifest is set to PerMonitor.
+		///   (dpiAwareness value cannot be checked directly at run time.)
 		/// 
 		/// In addition, if Switch.System.Windows.DoNotScaleForDpiChanges is specified in
 		/// the application configuration, it will have the following effects:
-		///   True - DISABLE the scaling even if the above conditions are met.
-		///   False - ENABLE the scaling even if target framework is older than 4.6.2.
+		///   True - DISABLE built-in scaling even if the above conditions are met.
+		///   False - ENABLE built-in scaling even if target framework is older than 4.6.2.
 		/// </remarks>
 		public static bool IsScalingSupported(Window window)
 		{
