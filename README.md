@@ -1,14 +1,13 @@
-﻿WPF Monitor Aware Window
-========================
+﻿# WPF Monitor Aware Window
 
 A library for WPF Per-Monitor DPI aware and color profile aware window
 
-##Requirements
+## Requirements
 
  * .NET Framework 4.5.2
  * Windows 8.1 or newer to take advantage of Per-Monitor DPI
 
-##Types
+## Types
 
 | Type                 | Description                                                                                                                                                              |
 |----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -17,7 +16,7 @@ A library for WPF Per-Monitor DPI aware and color profile aware window
 | MonitorAwareProperty | Attached property to make a window Per-Monitor DPI aware.                                                                                                                |
 | ExtendedWindow       | Per-Monitor DPI aware and customizable chrome Window. This window is completely Per-Monitor DPI aware including window chrome.                                           |
 
-##Common Properties
+## Common Properties
 
 | Property                           | Description                                                                                                                                                                                                                                                                                                                                                                      |
 |------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -31,18 +30,18 @@ A library for WPF Per-Monitor DPI aware and color profile aware window
 
 The default DPI of WPF rendering system is 96. To adjust scaling of FrameworkElements by code, you have to carefully select the source DPI and the destination DPI.
 
-##Common Events
+## Common Events
 
 | Event                             | Description                                               |
 |-----------------------------------|-----------------------------------------------------------|
 | WindowHandler.DpiChanged          | Occurs when the WindowDpi is conformed to the MonitorDpi. |
 | WindowHandler.ColorProfileChanged | Occurs when the ColorProfilePath is changed.              |
 
-##DPI Awareness
+## DPI Awareness
 
 This library has no function to notify OS of DPI awareness of an app. The app using this library needs to declare itself Per-Monitor DPI aware in the application manifest.
 
-##Built-in Scaling
+## Built-in Scaling
 
 From Windows 10 Anniversary Update (Redstone 1), built-in scaling for WPF is supported.
 
@@ -61,6 +60,6 @@ See the Developer Guide in [Microsoft/WPF-Samples/PerMonitorDPI/](https://github
 
 To use built-in scaling instead of this library's scaling in an environment where built-in scaling is enabled, set `WillForbearScalingIfUnnecessary` property to True.
 
-##License
+## License
 
  - MIT License
