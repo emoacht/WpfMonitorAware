@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="WpfExtendedWindow.Views.Controls.DropCircle"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+			 xmlns:controls="clr-namespace:WpfExtendedWindow.Views.Controls"
+			 Width="240" Height="240"
+			 Foreground="White">
+	<UserControl.Resources>
+		<sys:Double x:Key="DiameterKey">240</sys:Double>
+		<Duration x:Key="DurationKey">0:0:1.2</Duration>
+	</UserControl.Resources>
+
+	<Grid>
+		<Canvas>
+			<Ellipse x:Name="circleShape"
+					 Opacity="1"
+					 Canvas.Left="95"
+					 Canvas.Top="95"
+					 Width="10"
+					 Height="10"
+					 StrokeThickness="5"
+					 Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:DropCircle}}, Path=Foreground}"
+					 IsHitTestVisible="False"/>
+		</Canvas>
+
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="CommonStates">
+				<VisualState x:Name="Normal"/>
+				<VisualState x:Name="Animating">
+					<Storyboard>
+						<DoubleAnimation
+							Storyboard.TargetName="circleShape"
+							Storyboard.TargetProperty="Opacity"
+							Duration="{StaticResource DurationKey}"
+							To="0"/>
+						<DoubleAnimation
+							Storyboard.TargetName="circleShape"
+							Storyboard.TargetProperty="(Canvas.Left)"
+							Duration="{StaticResource DurationKey}"
+							To="0"/>
+						<DoubleAnimation
+							Storyboard.TargetName="circleShape"
+							Storyboard.TargetProperty="(Canvas.Top)"
+							Duration="{StaticResource DurationKey}"
+							To="0"/>
+						<DoubleAnimation
+							Storyboard.TargetName="circleShape"
+							Storyboard.TargetProperty="Width"
+							Duration="{StaticResource DurationKey}"
+							To="{StaticResource DiameterKey}"/>
+						<DoubleAnimation
+							Storyboard.TargetName="circleShape"
+							Storyboard.TargetProperty="Height"
+							Duration="{StaticResource DurationKey}"
+							To="{StaticResource DiameterKey}"/>
+						<DoubleAnimation
+							Storyboard.TargetName="circleShape"
+							Storyboard.TargetProperty="StrokeThickness"
+							Duration="{StaticResource DurationKey}"
+							To="2"/>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+	</Grid>
+</UserControl>
