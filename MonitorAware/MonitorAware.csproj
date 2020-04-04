@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E216CB47-4CD6-4F68-8378-67D53423277B}</ProjectGuid>
+    <ProjectGuid>{5B7B205F-B87B-4A8D-848B-B4739283E474}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MonitorAware</RootNamespace>
     <AssemblyName>MonitorAware</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -74,9 +75,9 @@
     <Compile Include="Views\Controls\DrawingMaximizeIcon.cs" />
     <Compile Include="Views\Controls\DrawingRestoreIcon.cs" />
     <Compile Include="Views\Controls\ExtendedCaptionButton.cs" />
+    <Compile Include="Views\Controls\FrameworkElementCenterProperty.cs" />
     <Compile Include="Views\Controls\IconCanvas.cs" />
     <Compile Include="Views\Controls\IDrawingIcon.cs" />
-    <Compile Include="Views\Controls\FrameworkElementCenterProperty.cs" />
     <Compile Include="Views\Converters\DoubleMultiplyConverter.cs" />
     <Compile Include="Views\Converters\DoubleSumConverter.cs" />
     <Compile Include="Views\Converters\ObjectToVisibilityConverter.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="Views\MonitorAwareProperty.cs" />
     <Compile Include="Views\MonitorAwareWindow.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -114,11 +114,4 @@
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

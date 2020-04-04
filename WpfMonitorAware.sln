@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareWindow", "WpfMonitorAwareWindow\WpfMonitorAwareWindow.csproj", "{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorAware", "MonitorAware\MonitorAware.csproj", "{5B7B205F-B87B-4A8D-848B-B4739283E474}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorAware", "MonitorAware\MonitorAware.csproj", "{E216CB47-4CD6-4F68-8378-67D53423277B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorAware.Old", "MonitorAware.Old\MonitorAware.Old.csproj", "{E216CB47-4CD6-4F68-8378-67D53423277B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareWindow", "WpfMonitorAwareWindow\WpfMonitorAwareWindow.csproj", "{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfExtendedWindow", "WpfExtendedWindow\WpfExtendedWindow.csproj", "{4B7C28F2-8C8E-4FD3-9D90-E33189D5D007}"
 EndProject
@@ -14,9 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareProperty", "WpfMonitorAwareProperty\WpfMonitorAwareProperty.csproj", "{B40BA673-4E56-467E-B5D2-0D0D5C1F7EF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfBuiltinScaling", "WpfBuiltinScaling\WpfBuiltinScaling.csproj", "{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E216CB47-4CD6-4F68-8378-67D53423277B} = {E216CB47-4CD6-4F68-8378-67D53423277B}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,14 +23,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B7B205F-B87B-4A8D-848B-B4739283E474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B7B205F-B87B-4A8D-848B-B4739283E474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B7B205F-B87B-4A8D-848B-B4739283E474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B7B205F-B87B-4A8D-848B-B4739283E474}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E216CB47-4CD6-4F68-8378-67D53423277B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E216CB47-4CD6-4F68-8378-67D53423277B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E216CB47-4CD6-4F68-8378-67D53423277B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E216CB47-4CD6-4F68-8378-67D53423277B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABEBDBE4-1EF5-4D9E-81E8-454A1920659D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4B7C28F2-8C8E-4FD3-9D90-E33189D5D007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B7C28F2-8C8E-4FD3-9D90-E33189D5D007}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B7C28F2-8C8E-4FD3-9D90-E33189D5D007}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,5 +54,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {55C41A04-1C04-435C-B7EC-7D5951EB24F6}
 	EndGlobalSection
 EndGlobal

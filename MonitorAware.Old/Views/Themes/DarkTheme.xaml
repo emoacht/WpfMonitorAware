@@ -1,0 +1,46 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+	<sys:Boolean x:Key="ExtendedWindow.KeepsTitleContentMargin">true</sys:Boolean>
+	<sys:Boolean x:Key="ExtendedWindiw.BlendsCaptionButtonVisualStyle">true</sys:Boolean>
+	<sys:Boolean x:Key="ExtendedWindow.UsesDefaultChromeBackground">false</sys:Boolean>
+
+	<SolidColorBrush x:Key="ExtendedWindow.Chrome.Background" Color="#FF2d2d30"/>
+	<SolidColorBrush x:Key="ExtendedWindow.Chrome.Foreground" Color="White"/>
+	<Thickness x:Key="ExtendedWindow.Chrome.BorderThickness">1</Thickness>
+	<SolidColorBrush x:Key="ExtendedWindow.Chrome.BorderBrush" Color="#3Cdcdcdc"/>
+
+	<SolidColorBrush x:Key="ExtendedWindow.TitleBar.Background" Color="Transparent"/>
+	<sys:Double x:Key="ExtendedWindow.TitleBar.Normal.Height">31</sys:Double>
+	<sys:Double x:Key="ExtendedWindow.TitleBar.Maximized.Height">25</sys:Double>
+	<sys:Double x:Key="ExtendedWindow.TitleBar.Padding.Right">0</sys:Double>
+
+	<Thickness x:Key="ExtendedWindow.Content.Margin">7,0,7,7</Thickness>
+	<Thickness x:Key="ExtendedWindow.Content.BorderThickness">0</Thickness>
+	<SolidColorBrush x:Key="ExtendedWindow.Content.BorderBrush" Color="Transparent"/>
+
+	<sys:Double x:Key="ExtendedCaptionButton.Height">22</sys:Double>
+	<sys:Double x:Key="ExtendedCaptionButton.Minimize.Width">30</sys:Double>
+	<sys:Double x:Key="ExtendedCaptionButton.Maximize.Width">30</sys:Double>
+	<Thickness x:Key="ExtendedCaptionButton.Maximize.Margin">0,0,0,0</Thickness>
+	<sys:Double x:Key="ExtendedCaptionButton.Close.Width">30</sys:Double>
+
+	<!-- Colors for ColorAnimation in VisualState must be applied to Application resources. -->
+	<SolidColorBrush x:Key="ExtendedCaptionButton.State.Normal.Foreground" Color="White"/>
+	<SolidColorBrush x:Key="ExtendedCaptionButton.State.Normal.Background" Color="Transparent"/>
+	<Color x:Key="ExtendedCaptionButton.State.MouseOver.ForegroundColor">DeepSkyBlue</Color>
+	<Color x:Key="ExtendedCaptionButton.State.MouseOver.BackgroundColor">#44aaaaaa</Color>
+	<Color x:Key="ExtendedCaptionButton.State.Pressed.ForegroundColor">DeepSkyBlue</Color>
+	<Color x:Key="ExtendedCaptionButton.State.Pressed.BackgroundColor">#44888888</Color>
+	<SolidColorBrush x:Key="ExtendedCaptionButton.State.Deactivated.Background" Color="Transparent"/>
+
+	<SolidColorBrush x:Key="ExtendedCaptionButton.Close.Normal.Foreground" Color="White"/>
+	<SolidColorBrush x:Key="ExtendedCaptionButton.Close.Normal.Background" Color="Transparent"/>
+	<Color x:Key="ExtendedCaptionButton.Close.MouseOver.ForegroundColor">DeepSkyBlue</Color>
+	<Color x:Key="ExtendedCaptionButton.Close.MouseOver.BackgroundColor">#44aaaaaa</Color>
+	<Color x:Key="ExtendedCaptionButton.Close.Pressed.ForegroundColor">DeepSkyBlue</Color>
+	<Color x:Key="ExtendedCaptionButton.Close.Pressed.BackgroundColor">#44888888</Color>
+	<SolidColorBrush x:Key="ExtendedCaptionButton.Close.Deactivated.Background" Color="Transparent"/>
+
+</ResourceDictionary>

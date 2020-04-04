@@ -102,7 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonitorAware\MonitorAware.csproj">
-      <Project>{e216cb47-4cd6-4f68-8378-67d53423277b}</Project>
+      <Project>{5b7b205f-b87b-4a8d-848b-b4739283e474}</Project>
       <Name>MonitorAware</Name>
     </ProjectReference>
   </ItemGroup>
