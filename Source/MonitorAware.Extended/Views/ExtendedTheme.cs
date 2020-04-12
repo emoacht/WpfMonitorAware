@@ -1,5 +1,5 @@
 ﻿
-namespace MonitorAware.Views
+namespace MonitorAware.Extended.Views
 {
 	/// <summary>
 	/// Theme for ExtendedWindow

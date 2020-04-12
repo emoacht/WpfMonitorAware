@@ -3,9 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-using MonitorAware.Models;
-
-namespace MonitorAware.Views.Controls
+namespace MonitorAware.Extended.Views.Controls
 {
 	/// <summary>
 	/// Canvas for drawing icon
@@ -102,12 +100,12 @@ namespace MonitorAware.Views.Controls
 
 		#endregion
 
-		private static readonly Dpi _systemDpi = DpiChecker.GetSystemDpi();
+		private static readonly MonitorAware.Models.Dpi _systemDpi = MonitorAware.Models.DpiChecker.GetSystemDpi();
 		private double _drawingFactor = 1D;
 
 		private void SetDrawingFactor(ScaleTransform transform = null)
 		{
-			var factorX = (double)_systemDpi.X / Dpi.Default.X;
+			var factorX = (double)_systemDpi.X / MonitorAware.Models.Dpi.Default.X;
 
 			if (transform != null)
 				factorX *= transform.ScaleX;

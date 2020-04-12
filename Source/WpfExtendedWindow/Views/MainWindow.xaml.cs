@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using MonitorAware.Models;
-using MonitorAware.Views;
+using MonitorAware.Extended.Views;
 using WpfExtendedWindow.Models;
 using WpfExtendedWindow.Views.Controls;
 

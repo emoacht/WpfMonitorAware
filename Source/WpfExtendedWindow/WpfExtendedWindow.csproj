@@ -116,6 +116,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MonitorAware.Extended\MonitorAware.Extended.csproj">
+      <Project>{74be8dc3-f575-489e-a66a-3e23d960487f}</Project>
+      <Name>MonitorAware.Extended</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MonitorAware\MonitorAware.csproj">
       <Project>{5b7b205f-b87b-4a8d-848b-b4739283e474}</Project>
       <Name>MonitorAware</Name>

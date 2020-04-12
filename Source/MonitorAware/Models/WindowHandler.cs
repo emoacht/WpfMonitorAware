@@ -243,7 +243,12 @@ namespace MonitorAware.Models
 		/// </summary>
 		private HwndSource _targetSource;
 
-		internal void Initialize(Window window, FrameworkElement element = null)
+		/// <summary>
+		/// Initializes.
+		/// </summary>
+		/// <param name="window">Window to be scaled</param>
+		/// <param name="element">FrameworkElement to be scaled</param>
+		protected internal void Initialize(Window window, FrameworkElement element = null)
 		{
 			if (window == null)
 				throw new ArgumentNullException(nameof(window));
@@ -290,7 +295,10 @@ namespace MonitorAware.Models
 			_targetSource?.AddHook(WndProc);
 		}
 
-		internal void Close()
+		/// <summary>
+		/// Closes.
+		/// </summary>
+		protected internal void Close()
 		{
 			_targetSource?.RemoveHook(WndProc);
 		}

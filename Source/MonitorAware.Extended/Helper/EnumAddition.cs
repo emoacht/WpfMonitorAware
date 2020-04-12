@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace MonitorAware.Helper
+namespace MonitorAware.Extended.Helper
 {
 	/// <summary>
 	/// Additional method for <see cref="Enum"/>

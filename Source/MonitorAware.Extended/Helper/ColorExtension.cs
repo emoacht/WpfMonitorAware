@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using static System.Math;
 
-namespace MonitorAware.Helper
+namespace MonitorAware.Extended.Helper
 {
 	/// <summary>
 	/// Extension method for <see cref="System.Windows.Media.Color"/>

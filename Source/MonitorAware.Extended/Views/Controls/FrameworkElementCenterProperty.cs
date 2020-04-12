@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Media;
 
-using MonitorAware.Helper;
+using MonitorAware.Extended.Helper;
 
-namespace MonitorAware.Views.Controls
+namespace MonitorAware.Extended.Views.Controls
 {
 	/// <summary>
 	/// Attached property to locate inner <see cref="FrameworkElement"/> at the center of outer <see cref="FrameworkElement"/>

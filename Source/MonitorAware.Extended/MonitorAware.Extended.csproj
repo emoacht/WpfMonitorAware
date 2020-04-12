@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5B7B205F-B87B-4A8D-848B-B4739283E474}</ProjectGuid>
+    <ProjectGuid>{74BE8DC3-F575-489E-A66A-3E23D960487F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonitorAware</RootNamespace>
-    <AssemblyName>MonitorAware</AssemblyName>
+    <RootNamespace>MonitorAware.Extended</RootNamespace>
+    <AssemblyName>MonitorAware.Extended</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -22,7 +22,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\MonitorAware.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,10 +30,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\MonitorAware.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -44,7 +41,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -52,22 +48,60 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper\BuiltinFunction.cs" />
+    <Compile Include="Helper\BrushExtension.cs" />
+    <Compile Include="Helper\ColorExtension.cs" />
+    <Compile Include="Helper\DoubleExtension.cs" />
+    <Compile Include="Helper\EnumAddition.cs" />
     <Compile Include="Helper\OsVersion.cs" />
-    <Compile Include="Helper\TargetFramework.cs" />
-    <Compile Include="Models\Win32\NativeMacro.cs" />
+    <Compile Include="Helper\ResourceExtension.cs" />
+    <Compile Include="Helper\WindowChromeColor.cs" />
+    <Compile Include="Models\ExtendedWindowHandler.cs" />
     <Compile Include="Models\Win32\NativeMethod.cs" />
     <Compile Include="Models\Win32\WindowMessage.cs" />
-    <Compile Include="Models\ColorProfileChangedEventArgs.cs" />
-    <Compile Include="Models\ColorProfileChecker.cs" />
-    <Compile Include="Models\Dpi.cs" />
-    <Compile Include="Models\DpiChangedEventArgs.cs" />
-    <Compile Include="Models\DpiChecker.cs" />
-    <Compile Include="Models\WindowHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\MonitorAwareBehavior.cs" />
-    <Compile Include="Views\MonitorAwareProperty.cs" />
-    <Compile Include="Views\MonitorAwareWindow.cs" />
+    <Compile Include="Views\Controls\DrawingMaximizeIcon.cs" />
+    <Compile Include="Views\Controls\DrawingRestoreIcon.cs" />
+    <Compile Include="Views\Controls\ExtendedCaptionButton.cs" />
+    <Compile Include="Views\Controls\FrameworkElementCenterProperty.cs" />
+    <Compile Include="Views\Controls\IconCanvas.cs" />
+    <Compile Include="Views\Controls\IDrawingIcon.cs" />
+    <Compile Include="Views\Converters\DoubleMultiplyConverter.cs" />
+    <Compile Include="Views\Converters\DoubleSumConverter.cs" />
+    <Compile Include="Views\Converters\ObjectToVisibilityConverter.cs" />
+    <Compile Include="Views\ExtendedTheme.cs" />
+    <Compile Include="Views\ExtendedWindow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Themes\DarkTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Themes\DefaultCaptionTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Themes\DefaultTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Themes\LightTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Themes\PlainTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MonitorAware\MonitorAware.csproj">
+      <Project>{5b7b205f-b87b-4a8d-848b-b4739283e474}</Project>
+      <Name>MonitorAware</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

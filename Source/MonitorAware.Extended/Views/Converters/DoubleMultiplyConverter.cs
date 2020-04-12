@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace MonitorAware.Views.Converters
+namespace MonitorAware.Extended.Views.Converters
 {
 	/// <summary>
 	/// Converts double to multiplied double.

@@ -1,7 +1,7 @@
 ﻿using System;
 using static System.Math;
 
-namespace MonitorAware.Helper
+namespace MonitorAware.Extended.Helper
 {
 	/// <summary>
 	/// Extension method for <see cref="Double"/>

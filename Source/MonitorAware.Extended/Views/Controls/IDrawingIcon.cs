@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace MonitorAware.Views.Controls
+namespace MonitorAware.Extended.Views.Controls
 {
 	/// <summary>
 	/// Interface for drawing icon

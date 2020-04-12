@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Windows;
 
-using MonitorAware.Models.Win32;
+using MonitorAware.Extended.Models.Win32;
 
-namespace MonitorAware.Models
+namespace MonitorAware.Extended.Models
 {
 	/// <summary>
-	/// Handler for <see cref="MonitorAware.Views.ExtendedWindow"/>
+	/// Handler for <see cref="MonitorAware.Extended.Views.ExtendedWindow"/>
 	/// </summary>
-	public class ExtendedWindowHandler : WindowHandler
+	public class ExtendedWindowHandler : MonitorAware.Models.WindowHandler
 	{
 		#region Event
 
@@ -27,6 +28,11 @@ namespace MonitorAware.Models
 		internal event EventHandler DwmColorizationColorChanged;
 
 		#endregion
+
+		internal new void Initialize(Window window, FrameworkElement element = null)
+		{
+			base.Initialize(window, element);
+		}
 
 		/// <summary>
 		/// Handles window messages.
@@ -62,6 +68,11 @@ namespace MonitorAware.Models
 			}
 
 			return base.WndProc(hwnd, msg, wParam, lParam, ref handled);
+		}
+
+		internal new void Close()
+		{
+			base.Close();
 		}
 	}
 }

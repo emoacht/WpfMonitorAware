@@ -1,14 +1,14 @@
-﻿<ma:ExtendedWindow x:Class="WpfExtendedWindow.Views.MainWindow"
+﻿<me:ExtendedWindow x:Class="WpfExtendedWindow.Views.MainWindow"
 				   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 				   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 				   xmlns:sys="clr-namespace:System;assembly=mscorlib"
-				   xmlns:ma="clr-namespace:MonitorAware.Views;assembly=MonitorAware"
+				   xmlns:me="clr-namespace:MonitorAware.Extended.Views;assembly=MonitorAware.Extended"
 				   x:Name="WindowRoot"
 				   Title="WPF Extended Window"
 				   FontFamily="Segoe UI"
 				   Height="400" Width="500"
 				   Icon="/Resources/fourcolors.png">
-	<ma:ExtendedWindow.Resources>
+	<me:ExtendedWindow.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="/Views/Themes/ControlTheme.xaml"/>
@@ -18,11 +18,11 @@
 								ObjectType="{x:Type sys:Enum}"
 								MethodName="GetValues">
 				<ObjectDataProvider.MethodParameters>
-					<x:Type TypeName="ma:ExtendedTheme"/>
+					<x:Type TypeName="me:ExtendedTheme"/>
 				</ObjectDataProvider.MethodParameters>
 			</ObjectDataProvider>
 		</ResourceDictionary>
-	</ma:ExtendedWindow.Resources>
+	</me:ExtendedWindow.Resources>
 
 	<Grid x:Name="ContentRoot"
 		  Background="#99FFFFFF">
@@ -93,4 +93,4 @@
 			</Grid>
 		</Grid>
 	</Grid>
-</ma:ExtendedWindow>
+</me:ExtendedWindow>

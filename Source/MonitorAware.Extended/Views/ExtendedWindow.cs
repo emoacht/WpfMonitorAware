@@ -8,11 +8,11 @@ using System.Windows.Media;
 using System.Windows.Shell;
 using System.Windows.Threading;
 
-using MonitorAware.Helper;
-using MonitorAware.Models;
-using MonitorAware.Views.Controls;
+using MonitorAware.Extended.Helper;
+using MonitorAware.Extended.Models;
+using MonitorAware.Extended.Views.Controls;
 
-namespace MonitorAware.Views
+namespace MonitorAware.Extended.Views
 {
 	/// <summary>
 	/// Per-Monitor DPI aware and customizable chrome Window
@@ -36,7 +36,7 @@ namespace MonitorAware.Views
 		{
 			//DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedWindow), new FrameworkPropertyMetadata(typeof(ExtendedWindow)));
 
-			Application.Current.ApplyResource("/MonitorAware;component/Themes/Generic.xaml");
+			Application.Current.ApplyResource("/MonitorAware.Extended;component/Themes/Generic.xaml");
 			this.Style = Application.Current.FindResource(typeof(ExtendedWindow)) as Style;
 
 			RegisterCommands();
@@ -228,12 +228,12 @@ namespace MonitorAware.Views
 		private static readonly Dictionary<ExtendedTheme, string> _themeUriMap = new Dictionary<ExtendedTheme, string>()
 		{
 			{ExtendedTheme.Default, string.Empty},
-			{ExtendedTheme.Plain, @"/MonitorAware;component/Views/Themes/PlainTheme.xaml"},
-			{ExtendedTheme.Light, @"/MonitorAware;component/Views/Themes/LightTheme.xaml"},
-			{ExtendedTheme.Dark, @"/MonitorAware;component/Views/Themes/DarkTheme.xaml"},
+			{ExtendedTheme.Plain, @"/MonitorAware.Extended;component/Views/Themes/PlainTheme.xaml"},
+			{ExtendedTheme.Light, @"/MonitorAware.Extended;component/Views/Themes/LightTheme.xaml"},
+			{ExtendedTheme.Dark, @"/MonitorAware.Extended;component/Views/Themes/DarkTheme.xaml"},
 		};
 
-		private const string _defaultCaptionThemeUriString = @"/MonitorAware;component/Views/Themes/DefaultCaptionTheme.xaml";
+		private const string _defaultCaptionThemeUriString = @"/MonitorAware.Extended;component/Views/Themes/DefaultCaptionTheme.xaml";
 
 		/// <summary>
 		/// Window theme out of ExtendedTheme
@@ -938,8 +938,8 @@ namespace MonitorAware.Views
 		/// </summary>
 		protected void AdjustLayout()
 		{
-			var factorFromDefaultX = (double)WindowHandler.WindowDpi.X / Dpi.Default.X;
-			var factorFromDefaultY = (double)WindowHandler.WindowDpi.Y / Dpi.Default.Y;
+			var factorFromDefaultX = (double)WindowHandler.WindowDpi.X / MonitorAware.Models.Dpi.Default.X;
+			var factorFromDefaultY = (double)WindowHandler.WindowDpi.Y / MonitorAware.Models.Dpi.Default.Y;
 			var factorFromSystemX = (double)WindowHandler.WindowDpi.X / WindowHandler.SystemDpi.X;
 			var factorFromSystemY = (double)WindowHandler.WindowDpi.Y / WindowHandler.SystemDpi.Y;
 

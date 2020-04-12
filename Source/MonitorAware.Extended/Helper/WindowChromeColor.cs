@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Media;
 
-namespace MonitorAware.Helper
+namespace MonitorAware.Extended.Helper
 {
 	/// <summary>
 	/// Window chrome color information

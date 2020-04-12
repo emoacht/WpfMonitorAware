@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MonitorAware.Helper
+namespace MonitorAware.Extended.Helper
 {
 	/// <summary>
 	/// Extension method for <see cref="FrameworkElement"/> to manage resources

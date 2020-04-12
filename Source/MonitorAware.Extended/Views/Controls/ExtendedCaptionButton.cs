@@ -4,12 +4,12 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
-using MonitorAware.Helper;
+using MonitorAware.Extended.Helper;
 
-namespace MonitorAware.Views.Controls
+namespace MonitorAware.Extended.Views.Controls
 {
 	/// <summary>
-	/// Caption button for <see cref="MonitorAware.Views.ExtendedWindow"/>
+	/// Caption button for <see cref="MonitorAware.Extended.Views.ExtendedWindow"/>
 	/// </summary>
 	public class ExtendedCaptionButton : Button
 	{

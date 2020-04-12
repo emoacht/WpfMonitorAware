@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace MonitorAware.Helper
+namespace MonitorAware.Extended.Helper
 {
 	/// <summary>
 	/// Extension method for <see cref="System.Windows.Media.Brush"/>
