@@ -38,7 +38,7 @@ namespace WpfBuiltinScaling.Views
 
 		#endregion
 
-		private EventHandler<MonitorAware.Models.DpiChangedEventArgs> _onMonitorDpiChanged;
+		private EventHandler<DpiChangedEventArgs> _onMonitorDpiChanged;
 		private bool _isMonitorDpiChanged;
 
 		protected override void OnSourceInitialized(EventArgs e)
@@ -53,7 +53,7 @@ namespace WpfBuiltinScaling.Views
 				try
 				{
 					_isMonitorDpiChanged = true;
-					VisualTreeHelper.SetRootDpi(this, _e.NewDpi.ToDpiScale());
+					VisualTreeHelper.SetRootDpi(this, _e.NewDpi);
 				}
 				finally
 				{

@@ -11,14 +11,14 @@ using MonitorAware.Models.Win32;
 namespace MonitorAware.Models
 {
 	/// <summary>
-	/// Handler for <see cref="Window"/>
+	/// Handler for <see cref="System.Windows.Window"/>
 	/// </summary>
 	public class WindowHandler : DependencyObject
 	{
 		#region Type
 
 		/// <summary>
-		/// Status of a <see cref="Window"/>
+		/// Status of a Window
 		/// </summary>
 		private enum WindowStatus
 		{
@@ -39,22 +39,18 @@ namespace MonitorAware.Models
 		}
 
 		/// <summary>
-		/// DPI and other information on a <see cref="Window"/>
+		/// DPI and other information on a Window
 		/// </summary>
 		private class WindowInfo
 		{
-			public Dpi Dpi { get; set; }
+			public DpiScale Dpi { get; set; }
 			public double Width { get; set; }
 			public double Height { get; set; }
 
 			public Size Size
 			{
-				get { return new Size(this.Width, this.Height); }
-				set
-				{
-					this.Width = value.Width;
-					this.Height = value.Height;
-				}
+				get => new Size(Width, Height);
+				set => (this.Width, this.Height) = (value.Width, value.Height);
 			}
 		}
 
@@ -65,20 +61,20 @@ namespace MonitorAware.Models
 		/// <summary>
 		/// Whether target Window is Per-Monitor DPI aware (readonly)
 		/// </summary>
-		public bool IsPerMonitorDpiAware => DpiChecker.IsPerMonitorDpiAware();
+		public bool IsPerMonitorDpiAware => DpiHelper.IsPerMonitorDpiAware();
 
 		/// <summary>
 		/// System DPI (readonly)
 		/// </summary>
-		public Dpi SystemDpi => DpiChecker.SystemDpi;
+		public DpiScale SystemDpi => DpiHelper.SystemDpi;
 
 		/// <summary>
 		/// Per-Monitor DPI of current monitor (public readonly)
 		/// </summary>
 		/// <remarks>This property cannot become a binding target because it has no public setter.</remarks>
-		public Dpi MonitorDpi
+		public DpiScale MonitorDpi
 		{
-			get { return (Dpi)GetValue(MonitorDpiProperty); }
+			get { return (DpiScale)GetValue(MonitorDpiProperty); }
 			private set { SetValue(MonitorDpiPropertyKey, value); }
 		}
 		/// <summary>
@@ -87,11 +83,9 @@ namespace MonitorAware.Models
 		private static readonly DependencyPropertyKey MonitorDpiPropertyKey =
 			DependencyProperty.RegisterReadOnly(
 				"MonitorDpi",
-				typeof(Dpi),
+				typeof(DpiScale),
 				typeof(WindowHandler),
-				new FrameworkPropertyMetadata(
-					Dpi.Default,
-					(d, e) => Debug.WriteLine($"Monitor DPI: {(Dpi)e.OldValue} -> {(Dpi)e.NewValue}")));
+				new PropertyMetadata(DpiHelper.Default));
 		/// <summary>
 		/// Dependency property for <see cref="MonitorDpi"/>
 		/// </summary>
@@ -101,9 +95,9 @@ namespace MonitorAware.Models
 		/// Per-Monitor DPI of target Window (public readonly)
 		/// </summary>
 		/// <remarks>This property cannot become a binding target because it has no public setter.</remarks>
-		public Dpi WindowDpi
+		public DpiScale WindowDpi
 		{
-			get { return (Dpi)GetValue(WindowDpiProperty); }
+			get { return (DpiScale)GetValue(WindowDpiProperty); }
 			private set { SetValue(WindowDpiPropertyKey, value); }
 		}
 		/// <summary>
@@ -112,22 +106,47 @@ namespace MonitorAware.Models
 		private static readonly DependencyPropertyKey WindowDpiPropertyKey =
 			DependencyProperty.RegisterReadOnly(
 				"WindowDpi",
-				typeof(Dpi),
+				typeof(DpiScale),
 				typeof(WindowHandler),
-				new FrameworkPropertyMetadata(
-					Dpi.Default,
-					(d, e) => Debug.WriteLine($"Window DPI: {(Dpi)e.OldValue} -> {(Dpi)e.NewValue}")));
+				new PropertyMetadata(DpiHelper.Default));
 		/// <summary>
 		/// Dependency property for <see cref="WindowDpi"/>
 		/// </summary>
 		public static readonly DependencyProperty WindowDpiProperty = WindowDpiPropertyKey.DependencyProperty;
 
 		/// <summary>
+		/// Scale factor of target Window (public readonly)
+		/// </summary>
+		/// <remarks>This property cannot become a binding target because it has no public setter.</remarks>
+		public Point WindowScaleFactor
+		{
+			get { return (Point)GetValue(WindowScaleFactorProperty); }
+			private set { SetValue(WindowScaleFactorPropertyKey, value); }
+		}
+		/// <summary>
+		/// Dependency property key for <see cref="WindowScaleFactor"/>
+		/// </summary>
+		private static readonly DependencyPropertyKey WindowScaleFactorPropertyKey =
+			DependencyProperty.RegisterReadOnly(
+				"WindowScaleFactor",
+				typeof(Point),
+				typeof(WindowHandler),
+				new PropertyMetadata(
+					IdentityFactor,
+					(d, e) => Debug.WriteLine($"Window Scale Factor: {((Point)e.OldValue).X} -> {((Point)e.NewValue).X}")));
+		/// <summary>
+		/// Dependency property for <see cref="WindowScaleFactor"/>
+		/// </summary>
+		public static readonly DependencyProperty WindowScaleFactorProperty = WindowScaleFactorPropertyKey.DependencyProperty;
+
+		private static readonly Point IdentityFactor = new Point(1D, 1D);
+
+		/// <summary>
 		/// Whether to forbear scaling if it is unnecessary because built-in scaling is enabled
 		/// </summary>
 		public bool WillForbearScalingIfUnnecessary
 		{
-			get { return _willForbearScalingIfUnnecessary; }
+			get => _willForbearScalingIfUnnecessary;
 			set
 			{
 				_willForbearScalingIfUnnecessary = value;
@@ -190,17 +209,21 @@ namespace MonitorAware.Models
 		#region Event
 
 		/// <summary>
-		/// DPI changed event
+		/// Occurs when target Window's DPI is changed.
 		/// </summary>
-		/// <remarks>This event is fired when DPI of target Window is changed. It is not necessarily the same timing
-		/// when DPI of the monitor to which target Window belongs is changed.</remarks>
+		/// <remarks>
+		/// This event is fired when DPI of target Window is changed. It is not necessarily the same timing
+		/// when DPI of the monitor to which target Window belongs is changed.
+		/// </remarks>
 		public event EventHandler<DpiChangedEventArgs> DpiChanged;
 
 		/// <summary>
-		/// Color profile path changed event
+		/// Occurs when color profile path has changed.
 		/// </summary>
-		/// <remarks>This event is fired when color profile path of the monitor to which target Window belongs has
-		/// changed and Window's move/resize which caused the change has exited.</remarks>
+		/// <remarks>
+		/// This event is fired when color profile path of the monitor to which target Window belongs has changed
+		/// and Window's move/resize which caused the change has exited.
+		/// </remarks>
 		public event EventHandler<ColorProfileChangedEventArgs> ColorProfileChanged;
 
 		#endregion
@@ -211,8 +234,7 @@ namespace MonitorAware.Models
 		/// Default constructor
 		/// </summary>
 		public WindowHandler()
-		{
-		}
+		{ }
 
 		/// <summary>
 		/// Constructor
@@ -220,7 +242,6 @@ namespace MonitorAware.Models
 		/// <param name="window">Target Window</param>
 		/// <param name="element">Target FrameworkElement</param>
 		public WindowHandler(Window window, FrameworkElement element = null)
-			: this()
 		{
 			Initialize(window, element);
 		}
@@ -233,24 +254,21 @@ namespace MonitorAware.Models
 		private Window _targetWindow;
 
 		/// <summary>
-		/// Target FrameworkElement which will be transformed when DPI changed
+		/// Target FrameworkElement which will be transformed when DPI is changed
 		/// </summary>
 		/// <remarks>If this FrameworkElement is null, Window.Content will be transformed.</remarks>
 		private FrameworkElement _targetElement;
 
-		/// <summary>
-		/// HwndSource of target Window
-		/// </summary>
 		private HwndSource _targetSource;
 
 		/// <summary>
 		/// Initializes.
 		/// </summary>
-		/// <param name="window">Window to be scaled</param>
-		/// <param name="element">FrameworkElement to be scaled</param>
+		/// <param name="window">Target Window</param>
+		/// <param name="element">Target FrameworkElement</param>
 		protected internal void Initialize(Window window, FrameworkElement element = null)
 		{
-			if (window == null)
+			if (window is null)
 				throw new ArgumentNullException(nameof(window));
 
 			if (!window.IsInitialized)
@@ -263,7 +281,7 @@ namespace MonitorAware.Models
 
 			if (IsPerMonitorDpiAware)
 			{
-				MonitorDpi = DpiChecker.GetDpiFromVisual(_targetWindow);
+				MonitorDpi = DpiHelper.GetDpiFromVisual(_targetWindow);
 
 				if (MonitorDpi.Equals(SystemDpi) || ForbearScaling)
 				{
@@ -271,14 +289,14 @@ namespace MonitorAware.Models
 				}
 				else
 				{
-					var newInfo = new WindowInfo
+					var firstInfo = new WindowInfo
 					{
 						Dpi = MonitorDpi,
-						Width = _targetWindow.Width * (double)MonitorDpi.X / SystemDpi.X,
-						Height = _targetWindow.Height * (double)MonitorDpi.Y / SystemDpi.Y,
+						Width = _targetWindow.Width * MonitorDpi.DpiScaleX / SystemDpi.DpiScaleX,
+						Height = _targetWindow.Height * MonitorDpi.DpiScaleY / SystemDpi.DpiScaleY,
 					};
 
-					Interlocked.Exchange(ref _dueInfo, newInfo);
+					Interlocked.Exchange(ref _dueInfo, firstInfo);
 
 					ChangeDpi();
 				}
@@ -314,11 +332,6 @@ namespace MonitorAware.Models
 		private WindowStatus _currentStatus = WindowStatus.None;
 
 		/// <summary>
-		/// Size of target Window to be the base for calculating due size when DPI changed
-		/// </summary>
-		private Size _baseSize = Size.Empty;
-
-		/// <summary>
 		/// Whether target Window's location or size has started to be changed
 		/// </summary>
 		private bool _isEnteredSizeMove;
@@ -327,6 +340,11 @@ namespace MonitorAware.Models
 		/// Whether DPI has changed after target Window's location or size has started to be changed
 		/// </summary>
 		private bool _isDpiChanged;
+
+		/// <summary>
+		/// Target Window's size suggested by WM_DPICHANGED message
+		/// </summary>
+		private Size _suggestedSize = Size.Empty;
 
 		/// <summary>
 		/// Count of WM_MOVE messages
@@ -353,16 +371,13 @@ namespace MonitorAware.Models
 			switch (msg)
 			{
 				case (int)WindowMessage.WM_DPICHANGED:
-					var newDpi = new Dpi(
-						NativeMacro.GetLoWord((uint)wParam),
-						NativeMacro.GetHiWord((uint)wParam));
+					var newDpi = DpiChangedEventHelper.ConvertPointerToDpi(wParam);
 
-					Debug.WriteLine($"DPICHANGED: {MonitorDpi.X} -> {newDpi.X}");
+					Debug.WriteLine($"DPICHANGED: {MonitorDpi.PixelsPerInchX} -> {newDpi.PixelsPerInchX}");
 
 					if (MonitorDpi.Equals(newDpi))
 						break;
 
-					var oldDpi = MonitorDpi;
 					MonitorDpi = newDpi;
 
 					if (ForbearScaling)
@@ -379,14 +394,7 @@ namespace MonitorAware.Models
 					{
 						case WindowStatus.None:
 						case WindowStatus.LocationChanged:
-							if ((_baseSize == Size.Empty) || (_currentStatus == WindowStatus.None))
-								_baseSize = new Size(_targetWindow.Width, _targetWindow.Height);
-
-							_baseSize = new Size(
-								_baseSize.Width * (double)MonitorDpi.X / oldDpi.X,
-								_baseSize.Height * (double)MonitorDpi.Y / oldDpi.Y);
-
-							newInfo.Size = _baseSize;
+							newInfo.Size = _suggestedSize = DpiChangedEventHelper.ConvertPointerToRect(lParam).Size;
 							break;
 
 						case WindowStatus.SizeChanged:
@@ -420,10 +428,9 @@ namespace MonitorAware.Models
 					if (!IsPerMonitorDpiAware || ForbearScaling)
 						break;
 
-					_baseSize = new Size(_targetWindow.Width, _targetWindow.Height);
-
 					_isEnteredSizeMove = true;
 					_isDpiChanged = false;
+					_suggestedSize = Size.Empty;
 					_countLocationChanged = 0;
 					_countSizeChanged = 0;
 					break;
@@ -436,12 +443,12 @@ namespace MonitorAware.Models
 						_isEnteredSizeMove = false;
 
 						// Last stand!!!
-						if (_isDpiChanged && (_currentStatus == WindowStatus.LocationChanged))
+						if (_isDpiChanged && (_suggestedSize != Size.Empty) && (_currentStatus == WindowStatus.LocationChanged))
 						{
 							var lastInfo = new WindowInfo
 							{
 								Dpi = MonitorDpi,
-								Size = _baseSize,
+								Size = _suggestedSize,
 							};
 
 							Interlocked.Exchange(ref _dueInfo, lastInfo);
@@ -468,10 +475,7 @@ namespace MonitorAware.Models
 					}
 					break;
 
-				case (int)WindowMessage.WM_SIZE:
-					if ((uint)wParam != NativeMethod.SIZE_RESTORED)
-						break;
-
+				case (int)WindowMessage.WM_SIZE when ((uint)wParam == NativeMethod.SIZE_RESTORED):
 					Debug.WriteLine("SIZE");
 
 					if (_isEnteredSizeMove)
@@ -508,7 +512,7 @@ namespace MonitorAware.Models
 
 				while (testInfo != null)
 				{
-					var testRect = new Rect(new Point(_targetWindow.Left, _targetWindow.Top), testInfo.Size);
+					var testRect = new Rect(_targetWindow.Left, _targetWindow.Top, testInfo.Width, testInfo.Height);
 
 					bool changesNow = true;
 
@@ -521,7 +525,7 @@ namespace MonitorAware.Models
 
 						case WindowStatus.LocationChanged:
 							// Determine whether to reflect information now.
-							var testDpi = DpiChecker.GetDpiFromRect(testRect);
+							var testDpi = DpiHelper.GetDpiFromRect(testRect);
 
 							changesNow = testInfo.Dpi.Equals(testDpi);
 							break;
@@ -562,16 +566,28 @@ namespace MonitorAware.Models
 						var content = _targetElement ?? _targetWindow.Content as FrameworkElement;
 						if (content != null)
 						{
-							content.LayoutTransform = (testInfo.Dpi.Equals(SystemDpi))
-								? Transform.Identity
-								: new ScaleTransform(
-									(double)WindowDpi.X / SystemDpi.X,
-									(double)WindowDpi.Y / SystemDpi.Y);
+							if (WindowDpi.Equals(SystemDpi))
+							{
+								content.LayoutTransform = Transform.Identity;
+								WindowScaleFactor = IdentityFactor;
+							}
+							else
+							{
+								var factor = new Point(
+									WindowDpi.DpiScaleX / SystemDpi.DpiScaleX,
+									WindowDpi.DpiScaleY / SystemDpi.DpiScaleY);
+
+								content.LayoutTransform = new ScaleTransform(factor.X, factor.Y);
+								WindowScaleFactor = factor;
+							}
 						}
 
 						// Fire DpiChanged event last so that it can be utilized to supplement preceding changes
 						// in target Window.
-						DpiChanged?.Invoke(this, new DpiChangedEventArgs(oldDpi, WindowDpi));
+						DpiChanged?.Invoke(this, DpiChangedEventHelper.Create(_targetWindow, oldDpi, WindowDpi));
+
+						// Set root DPI so as to fire Window.DpiChanged event.
+						VisualTreeHelper.SetRootDpi(_targetWindow, WindowDpi);
 
 						// Take new information which is to be tested from _dueInfo again for the case where new
 						// information has been stored during this operation. If there is new information, repeat

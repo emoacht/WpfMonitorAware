@@ -52,7 +52,7 @@ namespace WpfExtendedWindow.Views
 
 			PrepareAnimation();
 
-			Debug.WriteLine($"Notification Area DPI: {DpiChecker.GetNotificationAreaDpi()}");
+			Debug.WriteLine($"Notification Area DPI: {DpiHelper.GetNotificationAreaDpi().PixelsPerInchX}");
 		}
 
 		protected override void OnClosing(CancelEventArgs e)

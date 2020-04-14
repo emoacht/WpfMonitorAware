@@ -55,14 +55,12 @@
     <Compile Include="Helper\BuiltinFunction.cs" />
     <Compile Include="Helper\OsVersion.cs" />
     <Compile Include="Helper\TargetFramework.cs" />
-    <Compile Include="Models\Win32\NativeMacro.cs" />
     <Compile Include="Models\Win32\NativeMethod.cs" />
     <Compile Include="Models\Win32\WindowMessage.cs" />
     <Compile Include="Models\ColorProfileChangedEventArgs.cs" />
     <Compile Include="Models\ColorProfileChecker.cs" />
-    <Compile Include="Models\Dpi.cs" />
-    <Compile Include="Models\DpiChangedEventArgs.cs" />
-    <Compile Include="Models\DpiChecker.cs" />
+    <Compile Include="Models\DpiChangedEventHelper.cs" />
+    <Compile Include="Models\DpiHelper.cs" />
     <Compile Include="Models\WindowHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\MonitorAwareBehavior.cs" />

@@ -8,12 +8,17 @@ namespace MonitorAware.Models.Win32
 	{
 		#region Common
 
-		[DllImport("User32.dll", SetLastError = true)]
+		[DllImport("User32.dll")]
+		public static extern IntPtr MonitorFromPoint(
+			POINT pt,
+			MONITOR_DEFAULTTO dwFlags);
+
+		[DllImport("User32.dll")]
 		public static extern IntPtr MonitorFromRect(
 			ref RECT lprc,
 			MONITOR_DEFAULTTO dwFlags);
 
-		[DllImport("User32.dll", SetLastError = true)]
+		[DllImport("User32.dll")]
 		public static extern IntPtr MonitorFromWindow(
 			IntPtr hwnd,
 			MONITOR_DEFAULTTO dwFlags);
@@ -55,6 +60,22 @@ namespace MonitorAware.Models.Win32
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
+		public struct POINT
+		{
+			public int x;
+			public int y;
+
+			public POINT(int x, int y)
+			{
+				this.x = x;
+				this.y = y;
+			}
+
+			public static implicit operator POINT(System.Windows.Point point) => new POINT((int)point.X, (int)point.Y);
+			public static implicit operator System.Windows.Point(POINT point) => new System.Windows.Point(point.x, point.y);
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
 		public struct RECT
 		{
 			public int left;
@@ -62,8 +83,10 @@ namespace MonitorAware.Models.Win32
 			public int right;
 			public int bottom;
 
+			public int Width => right - left;
+			public int Height => bottom - top;
+
 			public RECT(int left, int top, int right, int bottom)
-				: this()
 			{
 				this.left = left;
 				this.top = top;
@@ -71,18 +94,8 @@ namespace MonitorAware.Models.Win32
 				this.bottom = bottom;
 			}
 
-			public RECT(System.Windows.Rect rect)
-				: this((int)rect.Left, (int)rect.Top, (int)rect.Right, (int)rect.Bottom)
-			{ }
-
-			public System.Windows.Rect ToRect()
-			{
-				return new System.Windows.Rect(
-					(double)this.left,
-					(double)this.top,
-					(double)(this.right - this.left),
-					(double)(this.bottom - this.top));
-			}
+			public static implicit operator RECT(System.Windows.Rect rect) => new RECT((int)rect.Left, (int)rect.Top, (int)rect.Right, (int)rect.Bottom);
+			public static implicit operator System.Windows.Rect(RECT rect) => new System.Windows.Rect(rect.left, rect.top, rect.Width, rect.Height);
 		}
 
 		[DllImport("User32.dll", SetLastError = true)]
@@ -102,6 +115,8 @@ namespace MonitorAware.Models.Win32
 			int cx,
 			int cy,
 			uint uFlags);
+
+		public const int S_OK = 0x0;
 
 		#endregion
 
@@ -155,8 +170,8 @@ namespace MonitorAware.Models.Win32
 		public static extern int GetDpiForMonitor(
 			IntPtr hmonitor,
 			MONITOR_DPI_TYPE dpiType,
-			ref uint dpiX,
-			ref uint dpiY);
+			out uint dpiX,
+			out uint dpiY);
 
 		public enum MONITOR_DPI_TYPE
 		{

@@ -100,12 +100,11 @@ namespace MonitorAware.Extended.Views.Controls
 
 		#endregion
 
-		private static readonly MonitorAware.Models.Dpi _systemDpi = MonitorAware.Models.DpiChecker.GetSystemDpi();
 		private double _drawingFactor = 1D;
 
 		private void SetDrawingFactor(ScaleTransform transform = null)
 		{
-			var factorX = (double)_systemDpi.X / MonitorAware.Models.Dpi.Default.X;
+			var factorX = MonitorAware.Models.DpiHelper.SystemDpi.DpiScaleX;
 
 			if (transform != null)
 				factorX *= transform.ScaleX;

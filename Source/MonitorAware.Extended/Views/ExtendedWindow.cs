@@ -938,10 +938,10 @@ namespace MonitorAware.Extended.Views
 		/// </summary>
 		protected void AdjustLayout()
 		{
-			var factorFromDefaultX = (double)WindowHandler.WindowDpi.X / MonitorAware.Models.Dpi.Default.X;
-			var factorFromDefaultY = (double)WindowHandler.WindowDpi.Y / MonitorAware.Models.Dpi.Default.Y;
-			var factorFromSystemX = (double)WindowHandler.WindowDpi.X / WindowHandler.SystemDpi.X;
-			var factorFromSystemY = (double)WindowHandler.WindowDpi.Y / WindowHandler.SystemDpi.Y;
+			var factorFromDefaultX = WindowHandler.WindowDpi.DpiScaleX;
+			var factorFromDefaultY = WindowHandler.WindowDpi.DpiScaleY;
+			var factorFromSystemX = WindowHandler.WindowDpi.DpiScaleX / WindowHandler.SystemDpi.DpiScaleX;
+			var factorFromSystemY = WindowHandler.WindowDpi.DpiScaleY / WindowHandler.SystemDpi.DpiScaleY;
 
 			var captionHeight = 0D;
 
