@@ -9,7 +9,7 @@
 		Height="300" Width="500" SizeToContent="Height">
 	<ma:MonitorAwareProperty.AttachedProperty>
 		<ma:MonitorAwareProperty x:Name="MonitorProperty"
-								 WillForbearScalingIfUnnecessary="True"/>
+								 ForbearScaling="True"/>
 	</ma:MonitorAwareProperty.AttachedProperty>
 
 	<Grid x:Name="ContentRoot" Margin="4">

@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-using MonitorAware.Helper;
 using MonitorAware.Models.Win32;
 
 namespace MonitorAware.Models
@@ -142,21 +141,7 @@ namespace MonitorAware.Models
 		private static readonly Point IdentityFactor = new Point(1D, 1D);
 
 		/// <summary>
-		/// Whether to forbear scaling if it is unnecessary because built-in scaling is enabled
-		/// </summary>
-		public bool WillForbearScalingIfUnnecessary
-		{
-			get => _willForbearScalingIfUnnecessary;
-			set
-			{
-				_willForbearScalingIfUnnecessary = value;
-				ForbearScaling = value && BuiltinFunction.IsScalingSupported(_targetWindow);
-			}
-		}
-		private bool _willForbearScalingIfUnnecessary;
-
-		/// <summary>
-		/// Whether to forbear scaling
+		/// Whether to forbear scaling and leave it to the built-in functionality
 		/// </summary>
 		public bool ForbearScaling
 		{
@@ -171,9 +156,7 @@ namespace MonitorAware.Models
 				"ForbearScaling",
 				typeof(bool),
 				typeof(WindowHandler),
-				new FrameworkPropertyMetadata(
-					false,
-					(d, e) => Debug.WriteLine($"Forbear Scaling: {(bool)e.NewValue}")));
+				new PropertyMetadata(false));
 
 		#endregion
 
@@ -276,8 +259,6 @@ namespace MonitorAware.Models
 
 			_targetWindow = window;
 			_targetElement = element;
-
-			ForbearScaling = WillForbearScalingIfUnnecessary && BuiltinFunction.IsScalingSupported(_targetWindow);
 
 			if (IsPerMonitorDpiAware)
 			{

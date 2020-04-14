@@ -52,9 +52,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper\BuiltinFunction.cs" />
     <Compile Include="Helper\OsVersion.cs" />
-    <Compile Include="Helper\TargetFramework.cs" />
     <Compile Include="Models\Win32\NativeMethod.cs" />
     <Compile Include="Models\Win32\WindowMessage.cs" />
     <Compile Include="Models\ColorProfileChangedEventArgs.cs" />

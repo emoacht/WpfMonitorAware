@@ -11,7 +11,7 @@ namespace MonitorAware.Views
 	public class MonitorAwareWindow : Window
 	{
 		/// <summary>
-		/// Handler for <see cref="Window"/>
+		/// Handler for Window
 		/// </summary>
 		public WindowHandler WindowHandler { get; } = new WindowHandler();
 
@@ -40,12 +40,12 @@ namespace MonitorAware.Views
 		#region Property
 
 		/// <summary>
-		/// Whether to forbear scaling if it is unnecessary because built-in scaling is enabled
+		/// Whether to forbear scaling and leave it to the built-in functionality
 		/// </summary>
-		public bool WillForbearScalingIfUnnecessary
+		public bool ForbearScaling
 		{
-			get { return WindowHandler.WillForbearScalingIfUnnecessary; }
-			set { WindowHandler.WillForbearScalingIfUnnecessary = value; }
+			get => WindowHandler.ForbearScaling;
+			set => WindowHandler.ForbearScaling = value;
 		}
 
 		#endregion
