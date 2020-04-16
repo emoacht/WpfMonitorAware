@@ -64,7 +64,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\MonitorAwareBehavior.cs" />
     <Compile Include="Views\MonitorAwareProperty.cs" />
-    <Compile Include="Views\MonitorAwareWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
