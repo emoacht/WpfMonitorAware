@@ -219,34 +219,5 @@ namespace MonitorAware.Models.Win32
 		public static extern bool DeleteDC(IntPtr hdc);
 
 		#endregion
-
-		#region Constants for WM_SIZE
-
-		/// <summary>
-		/// Some other window is maximized.
-		/// </summary>
-		public const int SIZE_MAXHIDE = 4;
-
-		/// <summary>
-		/// The window has been maximized.
-		/// </summary>
-		public const int SIZE_MAXIMIZED = 2;
-
-		/// <summary>
-		/// Some other window has been restored to its former size.
-		/// </summary>
-		public const int SIZE_MAXSHOW = 3;
-
-		/// <summary>
-		/// The window has been minimized.
-		/// </summary>
-		public const int SIZE_MINIMIZED = 1;
-
-		/// <summary>
-		/// The window has been resized, but neither the SIZE_MINIMIZED nor SIZE_MAXIMIZED value applies.
-		/// </summary>
-		public const int SIZE_RESTORED = 0;
-
-		#endregion
 	}
 }

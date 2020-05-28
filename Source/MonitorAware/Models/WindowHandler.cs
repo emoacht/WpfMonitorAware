@@ -351,7 +351,7 @@ namespace MonitorAware.Models
 		{
 			switch (msg)
 			{
-				case (int)WindowMessage.WM_DPICHANGED:
+				case WindowMessage.WM_DPICHANGED:
 					var newDpi = DpiChangedEventHelper.ConvertPointerToDpi(wParam);
 
 					Debug.WriteLine($"DPICHANGED: {MonitorDpi.PixelsPerInchX} -> {newDpi.PixelsPerInchX}");
@@ -403,7 +403,7 @@ namespace MonitorAware.Models
 					handled = true;
 					break;
 
-				case (int)WindowMessage.WM_ENTERSIZEMOVE:
+				case WindowMessage.WM_ENTERSIZEMOVE:
 					Debug.WriteLine("ENTERSIZEMOVE");
 
 					if (!IsPerMonitorDpiAware || ForbearScaling)
@@ -416,7 +416,7 @@ namespace MonitorAware.Models
 					_countSizeChanged = 0;
 					break;
 
-				case (int)WindowMessage.WM_EXITSIZEMOVE:
+				case WindowMessage.WM_EXITSIZEMOVE:
 					Debug.WriteLine("EXITSIZEMOVE");
 
 					if (_isEnteredSizeMove)
@@ -443,7 +443,7 @@ namespace MonitorAware.Models
 					ChangeColorProfilePath();
 					break;
 
-				case (int)WindowMessage.WM_MOVE:
+				case WindowMessage.WM_MOVE:
 					Debug.WriteLine("MOVE");
 
 					if (_isEnteredSizeMove)
@@ -456,7 +456,7 @@ namespace MonitorAware.Models
 					}
 					break;
 
-				case (int)WindowMessage.WM_SIZE when ((uint)wParam == NativeMethod.SIZE_RESTORED):
+				case WindowMessage.WM_SIZE when ((uint)wParam == WindowMessage.SIZE_RESTORED):
 					Debug.WriteLine("SIZE");
 
 					if (_isEnteredSizeMove)
