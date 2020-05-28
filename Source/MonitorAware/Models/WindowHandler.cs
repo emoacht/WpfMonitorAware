@@ -84,7 +84,7 @@ namespace MonitorAware.Models
 				"MonitorDpi",
 				typeof(DpiScale),
 				typeof(WindowHandler),
-				new PropertyMetadata(DpiHelper.Default));
+				new PropertyMetadata(DpiHelper.Identity));
 		/// <summary>
 		/// Dependency property for <see cref="MonitorDpi"/>
 		/// </summary>
@@ -107,7 +107,7 @@ namespace MonitorAware.Models
 				"WindowDpi",
 				typeof(DpiScale),
 				typeof(WindowHandler),
-				new PropertyMetadata(DpiHelper.Default));
+				new PropertyMetadata(DpiHelper.Identity));
 		/// <summary>
 		/// Dependency property for <see cref="WindowDpi"/>
 		/// </summary>

@@ -21,16 +21,16 @@ namespace MonitorAware.Models
 		public const double DefaultPixelsPerInch = 96D;
 
 		/// <summary>
-		/// Default DPI
+		/// Identity DPI
 		/// </summary>
-		public static DpiScale Default { get; } = new DpiScale(1D, 1D);
+		public static DpiScale Identity { get; } = new DpiScale(1D, 1D);
 
 		/// <summary>
-		/// Determines whether a specified DPI is default
+		/// Determines whether a specified DPI indicates identity scaling.
 		/// </summary>
 		/// <param name="dpi">DPI scale information</param>
-		/// <returns>True if default. False otherwise.</returns>
-		public static bool IsDefault(this DpiScale dpi) => dpi.Equals(Default);
+		/// <returns>True if identity scaling. False otherwise.</returns>
+		public static bool IsIdentity(this DpiScale dpi) => dpi.Equals(Identity);
 
 		#endregion
 
@@ -85,7 +85,7 @@ namespace MonitorAware.Models
 			{
 				screen = NativeMethod.GetDC(IntPtr.Zero);
 				if (screen == IntPtr.Zero)
-					return Default; // Fallback
+					return Identity; // Fallback
 
 				return new DpiScale(
 					NativeMethod.GetDeviceCaps(screen, NativeMethod.LOGPIXELSX) / DefaultPixelsPerInch,
@@ -110,7 +110,7 @@ namespace MonitorAware.Models
 
 			var source = PresentationSource.FromVisual(visual);
 			if (source?.CompositionTarget is null)
-				return Default; // Fallback
+				return Identity; // Fallback
 
 			return new DpiScale(
 				source.CompositionTarget.TransformToDevice.M11,
