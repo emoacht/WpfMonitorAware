@@ -148,22 +148,22 @@ namespace MonitorAware.Models
 		public static readonly DependencyProperty ScaleFactorProperty = ScaleFactorPropertyKey.DependencyProperty;
 
 		/// <summary>
-		/// Whether to forbear scaling and leave it to the built-in functionality
+		/// Scaling mode of target Window
 		/// </summary>
-		public bool ForbearScaling
+		public ScaleMode ScaleMode
 		{
-			get { return (bool)GetValue(ForbearScalingProperty); }
-			set { SetValue(ForbearScalingProperty, value); }
+			get { return (ScaleMode)GetValue(ScaleModeProperty); }
+			set { SetValue(ScaleModeProperty, value); }
 		}
 		/// <summary>
-		/// Dependency property for <see cref="ForbearScaling"/>
+		/// Dependency property for <see cref="ScaleMode"/>
 		/// </summary>
-		public static readonly DependencyProperty ForbearScalingProperty =
+		public static readonly DependencyProperty ScaleModeProperty =
 			DependencyProperty.Register(
-				"ForbearScaling",
-				typeof(bool),
+				"ScaleMode",
+				typeof(ScaleMode),
 				typeof(WindowHandler),
-				new PropertyMetadata(false));
+				new PropertyMetadata(ScaleMode.InvokeWhileMoving));
 
 		#endregion
 
@@ -345,7 +345,7 @@ namespace MonitorAware.Models
 
 					MonitorDpi = newDpi;
 
-					if (ForbearScaling)
+					if (ScaleMode == ScaleMode.Forbear)
 					{
 						WindowDpi = MonitorDpi;
 						break;
@@ -390,7 +390,7 @@ namespace MonitorAware.Models
 				case WindowMessage.WM_ENTERSIZEMOVE:
 					Debug.WriteLine("ENTERSIZEMOVE");
 
-					if (!IsPerMonitorDpiAware || ForbearScaling)
+					if (!IsPerMonitorDpiAware || (ScaleMode == ScaleMode.Forbear))
 						break;
 
 					_isEnteredSizeMove = true;
@@ -435,7 +435,8 @@ namespace MonitorAware.Models
 						_countLocationChanged++;
 						if (_countLocationChanged > _countSizeChanged)
 							_currentStatus = WindowStatus.LocationChanged;
-					
+
+						if (ScaleMode == ScaleMode.InvokeWhileMoving)
 							ChangeDpi(WindowStatus.LocationChanged);
 					}
 					break;

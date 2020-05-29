@@ -65,6 +65,7 @@
     <Compile Include="Models\WindowHelper.cs" />
     <Compile Include="Views\MonitorAwareBehavior.cs" />
     <Compile Include="Views\MonitorAwareProperty.cs" />
+    <Compile Include="ScaleMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

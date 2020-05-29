@@ -95,12 +95,12 @@ namespace MonitorAware.Views
 		#region Property
 
 		/// <summary>
-		/// Whether to forbear scaling and leave it to the built-in functionality
+		/// Scaling mode
 		/// </summary>
-		public bool ForbearScaling
+		public ScaleMode ScaleMode
 		{
-			get => WindowHandler.ForbearScaling;
-			set => WindowHandler.ForbearScaling = value;
+			get => WindowHandler.ScaleMode;
+			set => WindowHandler.ScaleMode = value;
 		}
 
 		#endregion
