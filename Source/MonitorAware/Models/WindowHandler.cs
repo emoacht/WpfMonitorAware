@@ -288,7 +288,7 @@ namespace MonitorAware.Models
 				WindowDpi = MonitorDpi;
 			}
 
-			ColorProfilePath = ColorProfileChecker.GetColorProfilePath(_targetWindow);
+			ColorProfilePath = ColorProfileHelper.GetColorProfilePath(_targetWindow);
 
 			_targetSource = PresentationSource.FromVisual(_targetWindow) as HwndSource;
 			_targetSource?.AddHook(WndProc);
@@ -594,7 +594,7 @@ namespace MonitorAware.Models
 
 		private void ChangeColorProfilePath()
 		{
-			var newPath = ColorProfileChecker.GetColorProfilePath(_targetWindow);
+			var newPath = ColorProfileHelper.GetColorProfilePath(_targetWindow);
 			if (ColorProfilePath.Equals(newPath, StringComparison.OrdinalIgnoreCase))
 				return;
 

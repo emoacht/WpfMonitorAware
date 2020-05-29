@@ -4,12 +4,13 @@ using System.Windows.Interop;
 using System.Windows.Media;
 
 using MonitorAware.Helper;
-using MonitorAware.Models.Win32;
+
+using static MonitorAware.Models.Win32.NativeMethod;
 
 namespace MonitorAware.Models
 {
 	/// <summary>
-	/// Utility methods for DPI
+	/// Utility methods for <see cref="System.Windows.DpiScale"/>
 	/// </summary>
 	public static class DpiHelper
 	{
@@ -43,22 +44,22 @@ namespace MonitorAware.Models
 		public static bool IsPerMonitorDpiAware()
 		{
 			var awareness = GetDpiAwareness();
-			return (awareness == NativeMethod.PROCESS_DPI_AWARENESS.Process_Per_Monitor_DPI_Aware);
+			return (awareness == PROCESS_DPI_AWARENESS.Process_Per_Monitor_DPI_Aware);
 		}
 
 		/// <summary>
 		/// Gets DPI awareness of the current process.
 		/// </summary>
 		/// <returns>If successfully gets, PROCESS_DPI_AWARENESS. Otherwise, null.</returns>
-		internal static NativeMethod.PROCESS_DPI_AWARENESS? GetDpiAwareness()
+		internal static PROCESS_DPI_AWARENESS? GetDpiAwareness()
 		{
 			if (!OsVersion.IsEightOneOrNewer)
 				return null;
 
-			var result = NativeMethod.GetProcessDpiAwareness(
+			var result = GetProcessDpiAwareness(
 				IntPtr.Zero, // Current process
-				out NativeMethod.PROCESS_DPI_AWARENESS value);
-			if (result != NativeMethod.S_OK)
+				out PROCESS_DPI_AWARENESS value);
+			if (result != S_OK)
 				return null;
 
 			return value;
@@ -80,21 +81,21 @@ namespace MonitorAware.Models
 		/// <returns>DPI scale information</returns>
 		internal static DpiScale GetSystemDpi()
 		{
-			var screen = IntPtr.Zero;
+			var deviceHandle = IntPtr.Zero;
 			try
 			{
-				screen = NativeMethod.GetDC(IntPtr.Zero);
-				if (screen == IntPtr.Zero)
+				deviceHandle = GetDC(IntPtr.Zero);
+				if (deviceHandle == IntPtr.Zero)
 					return Identity; // Fallback
 
 				return new DpiScale(
-					NativeMethod.GetDeviceCaps(screen, NativeMethod.LOGPIXELSX) / DefaultPixelsPerInch,
-					NativeMethod.GetDeviceCaps(screen, NativeMethod.LOGPIXELSY) / DefaultPixelsPerInch);
+					GetDeviceCaps(deviceHandle, LOGPIXELSX) / DefaultPixelsPerInch,
+					GetDeviceCaps(deviceHandle, LOGPIXELSY) / DefaultPixelsPerInch);
 			}
 			finally
 			{
-				if (screen != IntPtr.Zero)
-					NativeMethod.ReleaseDC(IntPtr.Zero, screen);
+				if (deviceHandle != IntPtr.Zero)
+					ReleaseDC(IntPtr.Zero, deviceHandle);
 			}
 		}
 
@@ -139,11 +140,11 @@ namespace MonitorAware.Models
 			if (source is null)
 				return SystemDpi;
 
-			var handleMonitor = NativeMethod.MonitorFromWindow(
+			var monitorHandle = MonitorFromWindow(
 				source.Handle,
-				NativeMethod.MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST);
+				MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST);
 
-			return GetDpi(handleMonitor);
+			return GetDpi(monitorHandle);
 		}
 
 		/// <summary>
@@ -156,11 +157,11 @@ namespace MonitorAware.Models
 			if (!OsVersion.IsEightOneOrNewer)
 				return SystemDpi;
 
-			var handleMonitor = NativeMethod.MonitorFromPoint(
+			var monitorHandle = MonitorFromPoint(
 				point,
-				NativeMethod.MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST);
+				MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST);
 
-			return GetDpi(handleMonitor);
+			return GetDpi(monitorHandle);
 		}
 
 		/// <summary>
@@ -176,25 +177,25 @@ namespace MonitorAware.Models
 			if (!OsVersion.IsEightOneOrNewer)
 				return SystemDpi;
 
-			NativeMethod.RECT nativeRect = rect;
-			var handleMonitor = NativeMethod.MonitorFromRect(
-				ref nativeRect,
-				NativeMethod.MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST);
+			RECT buffer = rect;
+			var monitorHandle = MonitorFromRect(
+				ref buffer,
+				MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST);
 
-			return GetDpi(handleMonitor);
+			return GetDpi(monitorHandle);
 		}
 
-		private static DpiScale GetDpi(IntPtr handleMonitor)
+		private static DpiScale GetDpi(IntPtr monitorHandle)
 		{
-			if (handleMonitor == IntPtr.Zero)
+			if (monitorHandle == IntPtr.Zero)
 				return SystemDpi;
 
-			var result = NativeMethod.GetDpiForMonitor(
-				handleMonitor,
-				NativeMethod.MONITOR_DPI_TYPE.MDT_Default,
+			var result = GetDpiForMonitor(
+				monitorHandle,
+				MONITOR_DPI_TYPE.MDT_Default,
 				out uint dpiX,
 				out uint dpiY);
-			if (result != NativeMethod.S_OK)
+			if (result != S_OK)
 				return SystemDpi;
 
 			return new DpiScale(dpiX / DefaultPixelsPerInch, dpiY / DefaultPixelsPerInch);
@@ -213,27 +214,27 @@ namespace MonitorAware.Models
 			if (!OsVersion.IsEightOneOrNewer)
 				return SystemDpi;
 
-			var handleTaskBar = NativeMethod.FindWindowEx(
+			var taskBarHandle = FindWindowEx(
 				IntPtr.Zero,
 				IntPtr.Zero,
 				"Shell_TrayWnd",
 				string.Empty);
-			if (handleTaskBar == IntPtr.Zero)
+			if (taskBarHandle == IntPtr.Zero)
 				return SystemDpi;
 
-			var handleNotificationArea = NativeMethod.FindWindowEx(
-				handleTaskBar,
+			var notificationAreaHandle = FindWindowEx(
+				taskBarHandle,
 				IntPtr.Zero,
 				"TrayNotifyWnd",
 				string.Empty);
-			if (handleNotificationArea == IntPtr.Zero)
+			if (notificationAreaHandle == IntPtr.Zero)
 				return SystemDpi;
 
-			var handleMonitor = NativeMethod.MonitorFromWindow(
-				handleNotificationArea,
-				NativeMethod.MONITOR_DEFAULTTO.MONITOR_DEFAULTTOPRIMARY);
+			var monitorHandle = MonitorFromWindow(
+				notificationAreaHandle,
+				MONITOR_DEFAULTTO.MONITOR_DEFAULTTOPRIMARY);
 
-			return GetDpi(handleMonitor);
+			return GetDpi(monitorHandle);
 		}
 
 		#endregion

@@ -57,13 +57,14 @@
     <Compile Include="Models\Win32\NativeMethod.cs" />
     <Compile Include="Models\Win32\WindowMessage.cs" />
     <Compile Include="Models\ColorProfileChangedEventArgs.cs" />
-    <Compile Include="Models\ColorProfileChecker.cs" />
+    <Compile Include="Models\ColorProfileHelper.cs" />
     <Compile Include="Models\DpiChangedEventHelper.cs" />
     <Compile Include="Models\DpiHelper.cs" />
     <Compile Include="Models\WindowHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\WindowHelper.cs" />
     <Compile Include="Views\MonitorAwareBehavior.cs" />
     <Compile Include="Views\MonitorAwareProperty.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

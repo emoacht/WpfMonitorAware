@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-using MonitorAware.Models.Win32;
+using static MonitorAware.Models.Win32.NativeMethod;
 
 namespace MonitorAware.Models
 {
@@ -31,7 +31,7 @@ namespace MonitorAware.Models
 		/// </summary>
 		/// <param name="lParam">lParam value</param>
 		/// <returns>Rect</returns>
-		internal static Rect ConvertPointerToRect(IntPtr lParam) => Marshal.PtrToStructure<NativeMethod.RECT>(lParam);
+		internal static Rect ConvertPointerToRect(IntPtr lParam) => Marshal.PtrToStructure<RECT>(lParam);
 
 		private static ConstructorInfo _constructorInfo;
 
