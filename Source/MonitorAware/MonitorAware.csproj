@@ -60,6 +60,7 @@
     <Compile Include="Models\ColorProfileHelper.cs" />
     <Compile Include="Models\DpiChangedEventHelper.cs" />
     <Compile Include="Models\DpiHelper.cs" />
+    <Compile Include="Models\VisualTreeHelperAddition.cs" />
     <Compile Include="Models\WindowHandler.cs" />
     <Compile Include="Models\WindowHelper.cs" />
     <Compile Include="Views\MonitorAwareBehavior.cs" />

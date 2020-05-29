@@ -114,31 +114,38 @@ namespace MonitorAware.Models
 		public static readonly DependencyProperty WindowDpiProperty = WindowDpiPropertyKey.DependencyProperty;
 
 		/// <summary>
-		/// Scale factor of target Window (public readonly)
+		/// Per-Monitor DPI of target Window when it is initialized
+		/// </summary>
+		protected DpiScale InitialDpi { get; private set; }
+
+		/// <summary>
+		/// Scaling factor for <see cref="Transform.Identity"/>
+		/// </summary>
+		/// <remarks>This must locate before <see cref="ScaleFactor"/> property.</remarks>
+		private static readonly Point IdentityFactor = new Point(1D, 1D);
+
+		/// <summary>
+		/// Scaling factor of target Window (public readonly)
 		/// </summary>
 		/// <remarks>This property cannot become a binding target because it has no public setter.</remarks>
-		public Point WindowScaleFactor
+		public Point ScaleFactor
 		{
-			get { return (Point)GetValue(WindowScaleFactorProperty); }
-			private set { SetValue(WindowScaleFactorPropertyKey, value); }
+			get { return (Point)GetValue(ScaleFactorProperty); }
+			private set { SetValue(ScaleFactorPropertyKey, value); }
 		}
 		/// <summary>
-		/// Dependency property key for <see cref="WindowScaleFactor"/>
+		/// Dependency property key for <see cref="ScaleFactor"/>
 		/// </summary>
-		private static readonly DependencyPropertyKey WindowScaleFactorPropertyKey =
+		private static readonly DependencyPropertyKey ScaleFactorPropertyKey =
 			DependencyProperty.RegisterReadOnly(
-				"WindowScaleFactor",
+				"ScaleFactor",
 				typeof(Point),
 				typeof(WindowHandler),
-				new PropertyMetadata(
-					IdentityFactor,
-					(d, e) => Debug.WriteLine($"Window Scale Factor: {((Point)e.OldValue).X} -> {((Point)e.NewValue).X}")));
+				new PropertyMetadata(IdentityFactor));
 		/// <summary>
-		/// Dependency property for <see cref="WindowScaleFactor"/>
+		/// Dependency property for <see cref="ScaleFactor"/>
 		/// </summary>
-		public static readonly DependencyProperty WindowScaleFactorProperty = WindowScaleFactorPropertyKey.DependencyProperty;
-
-		private static readonly Point IdentityFactor = new Point(1D, 1D);
+		public static readonly DependencyProperty ScaleFactorProperty = ScaleFactorPropertyKey.DependencyProperty;
 
 		/// <summary>
 		/// Whether to forbear scaling and leave it to the built-in functionality
@@ -260,35 +267,12 @@ namespace MonitorAware.Models
 			_targetWindow = window;
 			_targetElement = element;
 
-			if (IsPerMonitorDpiAware)
-			{
-				MonitorDpi = DpiHelper.GetDpiFromVisual(_targetWindow);
+			InitialDpi = WindowDpi = MonitorDpi = IsPerMonitorDpiAware
+				? DpiHelper.GetDpiFromVisual(_targetWindow)
+				: SystemDpi;
 
-				if (MonitorDpi.Equals(SystemDpi) || ForbearScaling)
-				{
-					WindowDpi = MonitorDpi;
-				}
-				else
-				{
-					var firstInfo = new WindowInfo
-					{
-						Dpi = MonitorDpi,
-						Width = _targetWindow.Width * MonitorDpi.DpiScaleX / SystemDpi.DpiScaleX,
-						Height = _targetWindow.Height * MonitorDpi.DpiScaleY / SystemDpi.DpiScaleY,
-					};
-
-					Interlocked.Exchange(ref _dueInfo, firstInfo);
-
-					ChangeDpi();
-				}
-			}
-			else
-			{
-				MonitorDpi = SystemDpi;
-				WindowDpi = MonitorDpi;
-			}
-
-			ColorProfilePath = ColorProfileHelper.GetColorProfilePath(_targetWindow);
+			if (ColorProfileHelper.TryGetColorProfilePath(_targetWindow, out string profilePath))
+				ColorProfilePath = profilePath;
 
 			_targetSource = PresentationSource.FromVisual(_targetWindow) as HwndSource;
 			_targetSource?.AddHook(WndProc);
@@ -451,8 +435,8 @@ namespace MonitorAware.Models
 						_countLocationChanged++;
 						if (_countLocationChanged > _countSizeChanged)
 							_currentStatus = WindowStatus.LocationChanged;
-
-						ChangeDpi(WindowStatus.LocationChanged);
+					
+							ChangeDpi(WindowStatus.LocationChanged);
 					}
 					break;
 
@@ -493,7 +477,10 @@ namespace MonitorAware.Models
 
 				while (testInfo != null)
 				{
-					var testRect = new Rect(_targetWindow.Left, _targetWindow.Top, testInfo.Width, testInfo.Height);
+					if (!WindowHelper.TryGetWindowRect(_targetSource.Handle, out Rect windowRect))
+						continue;
+
+					var testRect = new Rect(windowRect.X, windowRect.Y, testInfo.Width, testInfo.Height);
 
 					bool changesNow = true;
 
@@ -523,19 +510,12 @@ namespace MonitorAware.Models
 						{
 							case WindowStatus.None:
 							case WindowStatus.LocationChanged:
-								// Change location and size of target Window. Setting these properties may fire
-								// LocationChanged and SizeChanged events twice in target Window. However, to use
-								// SetWindowPos function, a complicated conversion of coordinates is required.
-								// Also, it may cause a problem in applying styles if used in OnSourceInitialized
-								// method.
-								Debug.WriteLine($"Old Size: {_targetWindow.Width}-{_targetWindow.Height}");
+								// Change location and size of target Window. Calling virtually identical functions
+								// in a row is to ensure that the change of both width and height are duly reflected.
+								if (!WindowHelper.SetWindowLocation(_targetSource.Handle, testRect.X, testRect.Y) ||
+									!WindowHelper.SetWindowSize(_targetSource.Handle, testRect.Size))
+									continue;
 
-								_targetWindow.Left = testRect.Left;
-								_targetWindow.Top = testRect.Top;
-								_targetWindow.Width = testRect.Width;
-								_targetWindow.Height = testRect.Height;
-
-								Debug.WriteLine($"New Size: {_targetWindow.Width}-{_targetWindow.Height}");
 								break;
 
 							case WindowStatus.SizeChanged:
@@ -544,22 +524,23 @@ namespace MonitorAware.Models
 						}
 
 						// Scale contents of target Window.
-						var content = _targetElement ?? _targetWindow.Content as FrameworkElement;
+						var content = (_targetElement ??= VisualTreeHelperAddition.GetDescendant<FrameworkElement>(_targetWindow))
+							?? (_targetWindow.Content as FrameworkElement);
+
 						if (content != null)
 						{
-							if (WindowDpi.Equals(SystemDpi))
+							if (WindowDpi.Equals(InitialDpi))
 							{
 								content.LayoutTransform = Transform.Identity;
-								WindowScaleFactor = IdentityFactor;
+								ScaleFactor = IdentityFactor;
 							}
 							else
 							{
 								var factor = new Point(
-									WindowDpi.DpiScaleX / SystemDpi.DpiScaleX,
-									WindowDpi.DpiScaleY / SystemDpi.DpiScaleY);
-
+									WindowDpi.DpiScaleX / InitialDpi.DpiScaleX,
+									WindowDpi.DpiScaleY / InitialDpi.DpiScaleY);
 								content.LayoutTransform = new ScaleTransform(factor.X, factor.Y);
-								WindowScaleFactor = factor;
+								ScaleFactor = factor;
 							}
 						}
 
