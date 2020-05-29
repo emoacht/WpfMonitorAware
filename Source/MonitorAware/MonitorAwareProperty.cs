@@ -3,7 +3,7 @@ using System.Windows;
 
 using MonitorAware.Models;
 
-namespace MonitorAware.Views
+namespace MonitorAware
 {
 	/// <summary>
 	/// Attached property to make a <see cref="System.Windows.Window"/> Per-Monitor DPI aware
@@ -24,37 +24,37 @@ namespace MonitorAware.Views
 		#endregion
 
 		/// <summary>
-		/// Gets AttachedProperty.
+		/// Gets MonitorAwareProperty instance.
 		/// </summary>
 		/// <param name="window">Owner Window</param>
-		/// <returns>AttachedProperty</returns>
-		public static MonitorAwareProperty GetAttachedProperty(Window window)
+		/// <returns>MonitorAwareProperty</returns>
+		public static MonitorAwareProperty GetInstance(Window window)
 		{
-			return (MonitorAwareProperty)window.GetValue(AttachedPropertyProperty);
+			return (MonitorAwareProperty)window.GetValue(InstanceProperty);
 		}
 		/// <summary>
-		/// Sets AttachedProperty.
+		/// Sets MonitorAwareProperty instance.
 		/// </summary>
 		/// <param name="window">Owner Window</param>
-		/// <param name="attachedProperty">AttachedProperty</param>
-		public static void SetAttachedProperty(Window window, MonitorAwareProperty attachedProperty)
+		/// <param name="instance">MonitorAwareProperty</param>
+		public static void SetInstance(Window window, MonitorAwareProperty instance)
 		{
-			window.SetValue(AttachedPropertyProperty, attachedProperty);
+			window.SetValue(InstanceProperty, instance);
 		}
 		/// <summary>
-		/// Attached property for AttachedProperty
+		/// Attached property for Instance
 		/// </summary>
-		public static readonly DependencyProperty AttachedPropertyProperty =
+		public static readonly DependencyProperty InstanceProperty =
 			DependencyProperty.RegisterAttached(
-				"AttachedProperty",
+				"Instance",
 				typeof(MonitorAwareProperty),
 				typeof(MonitorAwareProperty),
-				new FrameworkPropertyMetadata(
+				new PropertyMetadata(
 					null,
 					(d, e) =>
 					{
 						var window = d as Window;
-						if (window == null)
+						if (window is null)
 							return;
 
 						((MonitorAwareProperty)e.NewValue).OwnerWindow = window;
@@ -72,6 +72,16 @@ namespace MonitorAware.Views
 			}
 		}
 		private Window _ownerWindow;
+
+		/// <summary>
+		/// Gets the instance of MonitorAwareProperty attached property from a specified Window.
+		/// </summary>
+		/// <param name="window">Window</param>
+		/// <returns>MonitorAwareProperty</returns>
+		public static MonitorAwareProperty GetMonitorAwareProperty(Window window)
+		{
+			return window.GetValue(InstanceProperty) as MonitorAwareProperty;
+		}
 
 		/// <summary>
 		/// Handler for Window

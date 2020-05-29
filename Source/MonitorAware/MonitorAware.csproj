@@ -63,8 +63,8 @@
     <Compile Include="Models\VisualTreeHelperAddition.cs" />
     <Compile Include="Models\WindowHandler.cs" />
     <Compile Include="Models\WindowHelper.cs" />
-    <Compile Include="Views\MonitorAwareBehavior.cs" />
-    <Compile Include="Views\MonitorAwareProperty.cs" />
+    <Compile Include="MonitorAwareBehavior.cs" />
+    <Compile Include="MonitorAwareProperty.cs" />
     <Compile Include="ScaleMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

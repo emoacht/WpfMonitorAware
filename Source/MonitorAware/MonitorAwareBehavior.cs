@@ -4,7 +4,7 @@ using Microsoft.Xaml.Behaviors;
 
 using MonitorAware.Models;
 
-namespace MonitorAware.Views
+namespace MonitorAware
 {
 	/// <summary>
 	/// Behavior to make a <see cref="System.Windows.Window"/> Per-Monitor DPI aware
