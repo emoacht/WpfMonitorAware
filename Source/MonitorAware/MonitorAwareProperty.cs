@@ -16,10 +16,7 @@ namespace MonitorAware
 		/// Implements <see cref="Freezable.CreateInstanceCore">Freezable.CreateInstanceCore</see>.
 		/// </summary>
 		/// <returns>New Freezable</returns>
-		protected override Freezable CreateInstanceCore()
-		{
-			return new MonitorAwareProperty();
-		}
+		protected override Freezable CreateInstanceCore() => new MonitorAwareProperty();
 
 		#endregion
 
@@ -62,7 +59,7 @@ namespace MonitorAware
 
 		private Window OwnerWindow
 		{
-			get { return _ownerWindow; }
+			get => _ownerWindow;
 			set
 			{
 				_ownerWindow = value;

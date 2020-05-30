@@ -10,12 +10,12 @@ namespace MonitorAware.Models
 		/// <summary>
 		/// Old color profile path
 		/// </summary>
-		public string OldPath { get; private set; }
+		public string OldPath { get; }
 
 		/// <summary>
 		/// New color profile path
 		/// </summary>
-		public string NewPath { get; private set; }
+		public string NewPath { get; }
 
 		/// <summary>
 		/// Constructor

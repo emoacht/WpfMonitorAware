@@ -5,44 +5,37 @@ namespace MonitorAware.Helper
 	/// <summary>
 	/// OS version information
 	/// </summary>
-	internal static class OsVersion
+	public static class OsVersion
 	{
-		private static readonly Version _ver = Environment.OSVersion.Version;
-
 		/// <summary>
 		/// Whether OS is Windows Vista or newer
 		/// </summary>
 		/// <remarks>Windows Vista = version 6.0</remarks>
-		public static bool IsVistaOrNewer
-		{
-			get { return (6 <= _ver.Major); }
-		}
-
-		/// <summary>
-		/// Whether OS is Windows 8 or newer
-		/// </summary>
-		/// <remarks>Windows 8 = version 6.2</remarks>
-		public static bool IsEightOrNewer
-		{
-			get { return ((6 == _ver.Major) && (2 <= _ver.Minor)) || (7 <= _ver.Major); }
-		}
+		public static bool IsVistaOrNewer => (_isVistaOrNewer ??= IsEqualToOrNewer(6, 0));
+		private static bool? _isVistaOrNewer;
 
 		/// <summary>
 		/// Whether OS is Windows 8.1 or newer
 		/// </summary>
 		/// <remarks>Windows 8.1 = version 6.3</remarks>
-		public static bool IsEightOneOrNewer
-		{
-			get { return ((6 == _ver.Major) && (3 <= _ver.Minor)) || (7 <= _ver.Major); }
-		}
+		public static bool IsEightOneOrNewer => (_isEightOneOrNewer ??= IsEqualToOrNewer(6, 3));
+		private static bool? _isEightOneOrNewer;
 
 		/// <summary>
 		/// Whether OS is Windows 10 Anniversary Update (Redstone 1) or newer
 		/// </summary>
-		/// <remarks>Windows 10 Anniversary Update = version 10.0.14393</remarks>
-		public static bool IsRedstoneOneOrNewer
-		{
-			get { return (new Version(10, 0, 14393) <= _ver); }
-		}
+		/// <remarks>Windows 10 Anniversary Update (1607) = version 10.0.14393</remarks>
+		public static bool IsRedstoneOneOrNewer => (_isRedstoneOneOrNewer ??= IsEqualToOrNewer(10, 0, 14393));
+		private static bool? _isRedstoneOneOrNewer;
+
+		/// <summary>
+		/// Whether OS is Windows 10 Creators Update (Redstone 2) or newer
+		/// </summary>
+		/// <remarks>Windows 10 Creators Update (1703) = version 10.0.15063</remarks>
+		public static bool IsRedstoneTwoOrNewer => (_isRedstoneTwoOrNewer ??= IsEqualToOrNewer(10, 0, 15063));
+		private static bool? _isRedstoneTwoOrNewer;
+
+		private static bool IsEqualToOrNewer(int major, int minor, int build = 0) =>
+			(new Version(major, minor, build) <= Environment.OSVersion.Version);
 	}
 }

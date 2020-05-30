@@ -186,9 +186,15 @@ namespace MonitorAware.Models
 				"ColorProfilePath",
 				typeof(string),
 				typeof(WindowHandler),
-				new FrameworkPropertyMetadata(
-					string.Empty,
-					(d, e) => Debug.WriteLine($"Color Profile Path: {(string)e.NewValue}")));
+				new PropertyMetadata(
+					null, // default(string)
+					(d, e) =>
+					{
+						Debug.WriteLine($"Color Profile Path: {(string)e.NewValue}");
+
+						var handler = (WindowHandler)d;
+						handler.ColorProfileChanged?.Invoke(handler, new ColorProfileChangedEventArgs((string)e.OldValue, (string)e.NewValue));
+					}));
 		/// <summary>
 		/// Dependency property for <see cref="ColorProfilePath"/>
 		/// </summary>
@@ -586,14 +592,8 @@ namespace MonitorAware.Models
 
 		private void ChangeColorProfilePath()
 		{
-			var newPath = ColorProfileHelper.GetColorProfilePath(_targetWindow);
-			if (ColorProfilePath.Equals(newPath, StringComparison.OrdinalIgnoreCase))
-				return;
-
-			var oldPath = ColorProfilePath;
-			ColorProfilePath = newPath;
-
-			ColorProfileChanged?.Invoke(this, new ColorProfileChangedEventArgs(oldPath, ColorProfilePath));
+			if (ColorProfileHelper.TryGetColorProfilePath(_targetWindow, out string profilePath))
+				ColorProfilePath = profilePath;
 		}
 	}
 }

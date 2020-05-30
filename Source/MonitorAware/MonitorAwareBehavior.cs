@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+
 using Microsoft.Xaml.Behaviors;
 
 using MonitorAware.Models;
@@ -29,9 +30,6 @@ namespace MonitorAware
 		protected override void OnDetaching()
 		{
 			base.OnDetaching();
-
-			if (this.AssociatedObject == null)
-				return;
 
 			this.AssociatedObject.Loaded -= OnWindowLoaded;
 			this.AssociatedObject.Closed -= OnWindowClosed;
