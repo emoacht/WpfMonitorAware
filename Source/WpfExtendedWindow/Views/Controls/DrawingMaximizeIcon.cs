@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace MonitorAware.Extended.Views.Controls
+namespace WpfExtendedWindow.Views.Controls
 {
 	/// <summary>
 	/// Drawing maximize icon
@@ -13,7 +13,7 @@ namespace MonitorAware.Extended.Views.Controls
 		/// Draws maximize icon.
 		/// </summary>
 		/// <param name="drawingContext">DrawingContext of canvas</param>
-		/// <param name="factor">Factor from default DPI</param>
+		/// <param name="factor">Factor from identity DPI</param>
 		/// <param name="foreground">Icon foreground Brush</param>
 		/// <remarks>This drawing assumes that canvas size is 16x16 by default.</remarks>
 		public void Draw(DrawingContext drawingContext, double factor, Brush foreground)

@@ -2,51 +2,49 @@
 using System.Windows;
 using System.Windows.Media;
 
-using MonitorAware.Extended.Helper;
-
-namespace MonitorAware.Extended.Views.Controls
+namespace WpfExtendedWindow.Views.Controls
 {
 	/// <summary>
-	/// Attached property to locate inner <see cref="FrameworkElement"/> at the center of outer <see cref="FrameworkElement"/>
+	/// Attached property to locate inner <see cref="System.Windows.FrameworkElement"/> at the center of outer <see cref="System.Windows.FrameworkElement"/>
 	/// </summary>
 	public class FrameworkElementCenterProperty : DependencyObject
 	{
 		/// <summary>
-		/// Gets AttachedProperty.
+		/// Gets FrameworkElementCenterProperty instance.
 		/// </summary>
-		/// <param name="element">Owner <see cref="FrameworkElement"/></param>
-		/// <returns>AttachedProperty</returns>
-		public static FrameworkElementCenterProperty GetAttachedProperty(FrameworkElement element)
+		/// <param name="element">Owner <see cref="System.Windows.FrameworkElement"/></param>
+		/// <returns>FrameworkElementCenterProperty</returns>
+		public static FrameworkElementCenterProperty GetInstance(FrameworkElement element)
 		{
-			return (FrameworkElementCenterProperty)element.GetValue(AttachedPropertyProperty);
+			return (FrameworkElementCenterProperty)element.GetValue(InstanceProperty);
 		}
 		/// <summary>
-		/// Sets AttachedProperty.
+		/// Sets FrameworkElementCenterProperty instance.
 		/// </summary>
-		/// <param name="element">Owner <see cref="FrameworkElement"/></param>
-		/// <param name="attachedProperty">AttachedProperty</param>
-		public static void SetAttachedProperty(FrameworkElement element, FrameworkElementCenterProperty attachedProperty)
+		/// <param name="element">Owner <see cref="System.Windows.FrameworkElement"/></param>
+		/// <param name="instance">FrameworkElementCenterProperty</param>
+		public static void SetInstance(FrameworkElement element, FrameworkElementCenterProperty instance)
 		{
-			element.SetValue(AttachedPropertyProperty, attachedProperty);
+			element.SetValue(InstanceProperty, instance);
 		}
 		/// <summary>
-		/// Attached property for AttachedProperty
+		/// Attached property for Instance
 		/// </summary>
-		public static readonly DependencyProperty AttachedPropertyProperty =
+		public static readonly DependencyProperty InstanceProperty =
 			DependencyProperty.RegisterAttached(
-				"AttachedProperty",
+				"Instance",
 				typeof(FrameworkElementCenterProperty),
 				typeof(FrameworkElementCenterProperty),
 				new PropertyMetadata(
 					null,
 					(d, e) =>
 					{
-						var innerElement = (FrameworkElement)d;
-						if (innerElement == null)
+						var innerElement = d as FrameworkElement;
+						if (innerElement is null)
 							return;
 
 						var outerElement = VisualTreeHelper.GetParent(innerElement) as FrameworkElement;
-						if (outerElement == null)
+						if (outerElement is null)
 							return;
 
 						((FrameworkElementCenterProperty)e.NewValue).InnerElement = innerElement;
@@ -55,13 +53,13 @@ namespace MonitorAware.Extended.Views.Controls
 
 		private FrameworkElement InnerElement
 		{
-			get { return _innerElement; }
+			get => _innerElement;
 			set
 			{
 				if (_innerElement != null)
 					_innerElement.LayoutUpdated -= OnLayoutUpdated;
 
-				if (value == null)
+				if (value is null)
 					return;
 
 				_innerElement = value;
@@ -89,25 +87,24 @@ namespace MonitorAware.Extended.Views.Controls
 			Ceiling,
 		}
 
-		private RoundingType _roundingValue;
-
 		/// <summary>
 		/// Rounding
 		/// </summary>
 		/// <remarks>This string must be one of RoundingType names.</remarks>
 		public string Rounding
 		{
-			get { return _rounding; }
+			get => _rounding;
 			set
 			{
 				_rounding = value;
 
-				_roundingValue = EnumAddition.IsDefined(typeof(RoundingType), value, StringComparison.OrdinalIgnoreCase)
-					? (RoundingType)EnumAddition.Parse(typeof(RoundingType), value, StringComparison.OrdinalIgnoreCase)
-					: default(RoundingType);
+				_roundingValue = Enum.TryParse(value, true, out RoundingType buffer)
+					? buffer
+					: default;
 			}
 		}
 		private string _rounding;
+		private RoundingType _roundingValue;
 
 		private void OnLayoutUpdated(object sender, EventArgs e)
 		{
@@ -132,17 +129,12 @@ namespace MonitorAware.Extended.Views.Controls
 		{
 			var marginLength = (outerLength - innerLength) / 2;
 
-			switch (_roundingValue)
+			return _roundingValue switch
 			{
-				case RoundingType.Floor:
-					return Math.Floor(marginLength);
-
-				case RoundingType.Ceiling:
-					return Math.Ceiling(marginLength);
-
-				default:
-					return Math.Round(marginLength);
-			}
+				RoundingType.Floor => Math.Floor(marginLength),
+				RoundingType.Ceiling => Math.Ceiling(marginLength),
+				_ => Math.Round(marginLength),
+			};
 		}
 	}
 }

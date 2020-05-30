@@ -1,5 +1,5 @@
 ﻿
-namespace MonitorAware.Extended.Views
+namespace WpfExtendedWindow.Views
 {
 	/// <summary>
 	/// Theme for ExtendedWindow

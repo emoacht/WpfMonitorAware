@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace MonitorAware.Extended.Views.Converters
+namespace WpfExtendedWindow.Views.Converters
 {
 	/// <summary>
 	/// Converts whether object is null to Visibility.

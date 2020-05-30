@@ -5,15 +5,15 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MonitorAware.Extended.Helper
+namespace WpfExtendedWindow.Helper
 {
 	/// <summary>
-	/// Extension method for <see cref="FrameworkElement"/> to manage resources
+	/// Extension methods for <see cref="System.Windows.FrameworkElement"/> to manage resources
 	/// </summary>
 	internal static class ResourceExtension
 	{
 		/// <summary>
-		/// Adds/Removes resources to/from <see cref="Application"/> resources.
+		/// Adds/Removes resources to/from <see cref="System.Windows.Application"/> resources.
 		/// </summary>
 		/// <param name="app">Target Application</param>
 		/// <param name="newUriString">Uri string of new resources to be added</param>
@@ -46,7 +46,7 @@ namespace MonitorAware.Extended.Helper
 		}
 
 		/// <summary>
-		/// Adds/Removes resources to/from <see cref="ContentControl"/> resources.
+		/// Adds/Removes resources to/from <see cref="System.Windows.Controls.ContentControl"/> resources.
 		/// </summary>
 		/// <param name="control">Target ContentControl</param>
 		/// <param name="newUriString">Uri string of new resources to be added</param>

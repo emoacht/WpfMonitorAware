@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace MonitorAware.Extended.Views.Converters
+namespace WpfExtendedWindow.Views.Converters
 {
 	/// <summary>
 	/// Converts double to multiplied double.
@@ -21,12 +21,10 @@ namespace MonitorAware.Extended.Views.Converters
 		/// <returns>Multiplied double</returns>
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			double source;
-			if ((value == null) || !double.TryParse(value.ToString(), out source))
+			if (!double.TryParse(value?.ToString(), out double source))
 				return DependencyProperty.UnsetValue;
 
-			double multiplier;
-			if ((parameter == null) || !double.TryParse(parameter.ToString(), out multiplier))
+			if (!double.TryParse(parameter?.ToString(), out double multiplier))
 				return DependencyProperty.UnsetValue;
 
 			return source * multiplier;
@@ -42,12 +40,10 @@ namespace MonitorAware.Extended.Views.Converters
 		/// <returns>Divided double</returns>
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			double source;
-			if ((value == null) || !double.TryParse(value.ToString(), out source))
+			if (!double.TryParse(value?.ToString(), out double source))
 				return DependencyProperty.UnsetValue;
 
-			double divider;
-			if ((parameter == null) || !double.TryParse(parameter.ToString(), out divider))
+			if (!double.TryParse(parameter?.ToString(), out double divider))
 				return DependencyProperty.UnsetValue;
 
 			return source / divider;

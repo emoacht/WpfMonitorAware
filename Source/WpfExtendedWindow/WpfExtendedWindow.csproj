@@ -58,6 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Controls\DropCircle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -70,15 +74,54 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helper\BrushExtension.cs" />
+    <Compile Include="Helper\ColorExtension.cs" />
+    <Compile Include="Helper\DoubleExtension.cs" />
+    <Compile Include="Helper\OsVersion.cs" />
+    <Compile Include="Helper\ResourceExtension.cs" />
+    <Compile Include="Helper\WindowChromeColor.cs" />
+    <Compile Include="Models\Win32\WindowMessage.cs" />	
+    <Compile Include="Models\ExtendedWindowHandler.cs" />
     <Compile Include="Models\ImageConverter.cs" />
+    <Compile Include="Views\Controls\DrawingMaximizeIcon.cs" />
+    <Compile Include="Views\Controls\DrawingRestoreIcon.cs" />
     <Compile Include="Views\Controls\DropCircle.xaml.cs">
       <DependentUpon>DropCircle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\ExtendedCaptionButton.cs" />
+    <Compile Include="Views\Controls\FrameworkElementCenterProperty.cs" />
+    <Compile Include="Views\Controls\IconCanvas.cs" />
+    <Compile Include="Views\Controls\IDrawingIcon.cs" />
+    <Compile Include="Views\Converters\DoubleMultiplyConverter.cs" />
+    <Compile Include="Views\Converters\DoubleSumConverter.cs" />
+    <Compile Include="Views\Converters\ObjectToVisibilityConverter.cs" />
+    <Compile Include="Views\ExtendedTheme.cs" />
+    <Compile Include="Views\ExtendedWindow.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Themes\ControlTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Themes\DarkTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Themes\DefaultCaptionTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Themes\DefaultTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Themes\LightTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Themes\PlainTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -116,10 +159,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonitorAware.Extended\MonitorAware.Extended.csproj">
-      <Project>{74be8dc3-f575-489e-a66a-3e23d960487f}</Project>
-      <Name>MonitorAware.Extended</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MonitorAware\MonitorAware.csproj">
       <Project>{5b7b205f-b87b-4a8d-848b-b4739283e474}</Project>
       <Name>MonitorAware</Name>
@@ -129,11 +168,4 @@
     <Resource Include="Resources\fourcolors.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Media;
 
-namespace MonitorAware.Extended.Helper
+namespace WpfExtendedWindow.Helper
 {
 	/// <summary>
 	/// Window chrome color information
@@ -17,7 +17,7 @@ namespace MonitorAware.Extended.Helper
 		[DllImport("Dwmapi.dll", SetLastError = true)]
 		private static extern void DwmGetColorizationColor(
 			out uint pcrColorization,
-			[MarshalAs(UnmanagedType.Bool)]out bool pfOpaqueBlend);
+			[MarshalAs(UnmanagedType.Bool)] out bool pfOpaqueBlend);
 
 		[DllImport("Dwmapi.dll", EntryPoint = "#127", SetLastError = true)] // Undocumented API
 		private static extern int DwmGetColorizationParameters(
@@ -35,6 +35,8 @@ namespace MonitorAware.Extended.Helper
 			public uint colorizationOpaqueBlend;
 		}
 
+		private const int S_OK = 0x0;
+
 		#endregion
 
 		/// <summary>
@@ -47,17 +49,14 @@ namespace MonitorAware.Extended.Helper
 			if (!OsVersion.IsVistaOrNewer)
 				return null;
 
-			bool isEnabled;
-			var hr1 = DwmIsCompositionEnabled(out isEnabled);
-			if ((hr1 != 0) || !isEnabled) // 0 means S_OK.
+			if ((DwmIsCompositionEnabled(out bool isEnabled) != S_OK) || !isEnabled)
 				return null;
 
 			DWMCOLORIZATIONPARAMS parameters;
 			try
 			{
 				// This API is undocumented and so may become unusable in future versions of OSes.
-				var hr2 = DwmGetColorizationParameters(out parameters);
-				if (hr2 != 0) // 0 means S_OK.
+				if (DwmGetColorizationParameters(out parameters) != S_OK)
 					return null;
 			}
 			catch

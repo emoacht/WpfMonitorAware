@@ -1,30 +1,25 @@
 ﻿using System;
 using System.Windows;
 
-using MonitorAware.Extended.Models.Win32;
+using MonitorAware.Models;
 
-namespace MonitorAware.Extended.Models
+using WpfExtendedWindow.Models.Win32;
+
+namespace WpfExtendedWindow.Models
 {
 	/// <summary>
-	/// Handler for <see cref="MonitorAware.Extended.Views.ExtendedWindow"/>
+	/// Handler for <see cref="WpfExtendedWindow.Views.ExtendedWindow"/>
 	/// </summary>
-	public class ExtendedWindowHandler : MonitorAware.Models.WindowHandler
+	public class ExtendedWindowHandler : WindowHandler
 	{
 		#region Event
 
 		/// <summary>
-		/// Window activated changed event
+		/// Occurs when DWM colorization color is changed.
 		/// </summary>
 		/// <remarks>
-		/// Args true:  Window is being activated.
-		/// Args false: Window is being deactivated.
+		/// This event is fired when default Window chrome color is changed.
 		/// </remarks>
-		internal event EventHandler<bool> WindowActivatedChanged;
-
-		/// <summary>
-		/// DWM colorization color changed event
-		/// </summary>
-		/// <remarks>This event is fired when default Window chrome color is changed.</remarks>
 		internal event EventHandler DwmColorizationColorChanged;
 
 		#endregion
@@ -48,21 +43,7 @@ namespace MonitorAware.Extended.Models
 		{
 			switch (msg)
 			{
-				case (int)WindowMessage.WM_ACTIVATE:
-					switch (wParam.ToInt32())
-					{
-						case NativeMethod.WA_ACTIVE:
-						case NativeMethod.WA_CLICKACTIVE:
-							WindowActivatedChanged?.Invoke(this, true); // Activated.
-							break;
-
-						case NativeMethod.WA_INACTIVE:
-							WindowActivatedChanged?.Invoke(this, false); // Deactivated.
-							break;
-					}
-					break;
-
-				case (int)WindowMessage.WM_DWMCOLORIZATIONCOLORCHANGED:
+				case WindowMessage.WM_DWMCOLORIZATIONCOLORCHANGED:
 					DwmColorizationColorChanged?.Invoke(this, EventArgs.Empty);
 					break;
 			}

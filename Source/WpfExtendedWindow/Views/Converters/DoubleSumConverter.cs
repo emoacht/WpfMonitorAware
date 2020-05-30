@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace MonitorAware.Extended.Views.Converters
+namespace WpfExtendedWindow.Views.Converters
 {
 	/// <summary>
 	/// Converts doubles to summed double.

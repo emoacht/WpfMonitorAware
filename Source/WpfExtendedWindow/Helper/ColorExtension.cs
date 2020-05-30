@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Windows.Media;
+
 using static System.Math;
 
-namespace MonitorAware.Extended.Helper
+namespace WpfExtendedWindow.Helper
 {
 	/// <summary>
-	/// Extension method for <see cref="System.Windows.Media.Color"/>
+	/// Extension methods for <see cref="System.Windows.Media.Color"/>
 	/// </summary>
 	internal static class ColorExtension
 	{

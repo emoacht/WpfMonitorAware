@@ -4,32 +4,32 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
-using MonitorAware.Extended.Helper;
+using WpfExtendedWindow.Helper;
 
-namespace MonitorAware.Extended.Views.Controls
+namespace WpfExtendedWindow.Views.Controls
 {
 	/// <summary>
-	/// Caption button for <see cref="MonitorAware.Extended.Views.ExtendedWindow"/>
+	/// Caption button for <see cref="WpfExtendedWindow.Views.ExtendedWindow"/>
 	/// </summary>
 	public class ExtendedCaptionButton : Button
 	{
 		/// <summary>
 		/// Default constructor
 		/// </summary>
-		public ExtendedCaptionButton()
-		{
-		}
+		public ExtendedCaptionButton() : base()
+		{ }
+
+		public ExtendedCaptionButton(Style style) => this.Style = style;
 
 		/// <summary>
 		/// OnInitialized
 		/// </summary>
-		/// <param name="e"></param>
 		protected override void OnInitialized(EventArgs e)
 		{
 			base.OnInitialized(e);
 
 			var window = Window.GetWindow(this) as ExtendedWindow;
-			if (window == null)
+			if (window is null)
 				return;
 
 			this.SetBinding(
@@ -85,7 +85,7 @@ namespace MonitorAware.Extended.Views.Controls
 				"IsAboutActive",
 				typeof(bool),
 				typeof(ExtendedCaptionButton),
-				new FrameworkPropertyMetadata(
+				new PropertyMetadata(
 					false,
 					(d, e) =>
 					{
@@ -112,7 +112,7 @@ namespace MonitorAware.Extended.Views.Controls
 				"NormalBackground",
 				typeof(Brush),
 				typeof(ExtendedCaptionButton),
-				new FrameworkPropertyMetadata(Brushes.Transparent));
+				new PropertyMetadata(Brushes.Transparent));
 
 		/// <summary>
 		/// Caption button background Brush when the owner Window is deactivated
@@ -131,7 +131,7 @@ namespace MonitorAware.Extended.Views.Controls
 				"DeactivatedBackground",
 				typeof(Brush),
 				typeof(ExtendedCaptionButton),
-				new FrameworkPropertyMetadata(Brushes.Transparent));
+				new PropertyMetadata(Brushes.Transparent));
 
 		/// <summary>
 		/// Geometry for button icon
@@ -149,7 +149,7 @@ namespace MonitorAware.Extended.Views.Controls
 				"IconGeometry",
 				typeof(Geometry),
 				typeof(ExtendedCaptionButton),
-				new FrameworkPropertyMetadata(null));
+				new PropertyMetadata(default(Geometry)));
 
 		/// <summary>
 		/// Drawing icon to be used by IconCanvas
@@ -167,7 +167,7 @@ namespace MonitorAware.Extended.Views.Controls
 				"DrawingIcon",
 				typeof(IDrawingIcon),
 				typeof(ExtendedCaptionButton),
-				new FrameworkPropertyMetadata(null));
+				new PropertyMetadata(default(IDrawingIcon)));
 
 		#endregion
 	}

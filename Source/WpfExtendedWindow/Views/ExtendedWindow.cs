@@ -8,11 +8,13 @@ using System.Windows.Media;
 using System.Windows.Shell;
 using System.Windows.Threading;
 
-using MonitorAware.Extended.Helper;
-using MonitorAware.Extended.Models;
-using MonitorAware.Extended.Views.Controls;
+using MonitorAware.Models;
 
-namespace MonitorAware.Extended.Views
+using WpfExtendedWindow.Helper;
+using WpfExtendedWindow.Models;
+using WpfExtendedWindow.Views.Controls;
+
+namespace WpfExtendedWindow.Views
 {
 	/// <summary>
 	/// Per-Monitor DPI aware and customizable chrome Window
@@ -36,14 +38,14 @@ namespace MonitorAware.Extended.Views
 		{
 			//DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedWindow), new FrameworkPropertyMetadata(typeof(ExtendedWindow)));
 
-			Application.Current.ApplyResource("/MonitorAware.Extended;component/Themes/Generic.xaml");
+			Application.Current.ApplyResource("/WpfExtendedWindow;component/Views/Generic.xaml");
 			this.Style = Application.Current.FindResource(typeof(ExtendedWindow)) as Style;
 
 			RegisterCommands();
 		}
 
 		/// <summary>
-		/// Handler for <see cref="ExtendedWindow"/>
+		/// Handler for ExtendedWindow
 		/// </summary>
 		public ExtendedWindowHandler WindowHandler { get; } = new ExtendedWindowHandler();
 
@@ -61,8 +63,8 @@ namespace MonitorAware.Extended.Views
 			TitleBarBackGrid = this.GetTemplateChild("PART_TitleBarBackGrid") as Grid;
 			TitleBarGrid = this.GetTemplateChild("PART_TitleBarGrid") as Grid;
 
-			var icon = this.GetTemplateChild("PART_TitleBarIcon") as Image;
-			if (icon?.Visibility == Visibility.Visible)
+			if ((this.GetTemplateChild("PART_TitleBarIcon") is Image icon) &&
+				(icon.Visibility == Visibility.Visible))
 				TitleBarIcon = icon;
 
 			TitleBarOptionGrid = this.GetTemplateChild("PART_TitleBarOptionGrid") as Grid;
@@ -73,35 +75,52 @@ namespace MonitorAware.Extended.Views
 		/// <summary>
 		/// OnSourceInitialized
 		/// </summary>
-		/// <param name="e"></param>
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
 
 			WindowHandler.Initialize(this, ChromeGrid);
 
-			WindowHandler.DpiChanged += OnDpiChanged;
-			WindowHandler.WindowActivatedChanged += OnWindowActivatedChanged;
 			WindowHandler.DwmColorizationColorChanged += OnDwmColorizationColorChanged;
 
 			if (TitleBarIcon != null)
 				TitleBarIcon.MouseDown += OnTitleBarIconMouseDown;
 
-			AdjustLayout();
+			ManageLayout();
 			ManageCommands();
 		}
 
-		private void OnDpiChanged(object sender, EventArgs e)
+		/// <summary>
+		/// OnDpiChanged
+		/// </summary>
+		protected override void OnDpiChanged(DpiScale oldDpi, DpiScale newDpi)
 		{
-			AdjustLayout();
+			base.OnDpiChanged(oldDpi, newDpi);
+
+			ManageLayout(newDpi);
 		}
 
-		private void OnWindowActivatedChanged(object sender, bool e)
+		/// <summary>
+		/// OnActivated
+		/// </summary>
+		protected override void OnActivated(EventArgs e)
 		{
-			if (e)
-				SetActivated();
-			else
-				SetDeactivated();
+			base.OnActivated(e);
+
+			SetActivated();
+
+			// Force this Window to render immediately.
+			this.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
+		}
+
+		/// <summary>
+		/// OnDeactivated
+		/// </summary>
+		protected override void OnDeactivated(EventArgs e)
+		{
+			base.OnDeactivated(e);
+
+			SetDeactivated();
 
 			// Force this Window to render immediately.
 			this.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
@@ -128,19 +147,17 @@ namespace MonitorAware.Extended.Views
 		/// <summary>
 		/// OnStateChanged
 		/// </summary>
-		/// <param name="e"></param>
 		protected override void OnStateChanged(EventArgs e)
 		{
 			base.OnStateChanged(e);
 
-			AdjustLayout();
+			ManageLayout();
 			ManageCommands();
 		}
 
 		/// <summary>
 		/// OnClosing
 		/// </summary>
-		/// <param name="e"></param>
 		protected override void OnClosing(CancelEventArgs e)
 		{
 			// Prevent default Window chrome from being shown at closing.
@@ -152,15 +169,12 @@ namespace MonitorAware.Extended.Views
 		/// <summary>
 		/// OnClosed
 		/// </summary>
-		/// <param name="e"></param>
 		protected override void OnClosed(EventArgs e)
 		{
 			base.OnClosed(e);
 
 			WindowHandler.Close();
 
-			WindowHandler.DpiChanged -= OnDpiChanged;
-			WindowHandler.WindowActivatedChanged -= OnWindowActivatedChanged;
 			WindowHandler.DwmColorizationColorChanged -= OnDwmColorizationColorChanged;
 
 			if (TitleBarIcon != null)
@@ -228,12 +242,12 @@ namespace MonitorAware.Extended.Views
 		private static readonly Dictionary<ExtendedTheme, string> _themeUriMap = new Dictionary<ExtendedTheme, string>()
 		{
 			{ExtendedTheme.Default, string.Empty},
-			{ExtendedTheme.Plain, @"/MonitorAware.Extended;component/Views/Themes/PlainTheme.xaml"},
-			{ExtendedTheme.Light, @"/MonitorAware.Extended;component/Views/Themes/LightTheme.xaml"},
-			{ExtendedTheme.Dark, @"/MonitorAware.Extended;component/Views/Themes/DarkTheme.xaml"},
+			{ExtendedTheme.Plain, @"/WpfExtendedWindow;component/Views/Themes/PlainTheme.xaml"},
+			{ExtendedTheme.Light, @"/WpfExtendedWindow;component/Views/Themes/LightTheme.xaml"},
+			{ExtendedTheme.Dark, @"/WpfExtendedWindow;component/Views/Themes/DarkTheme.xaml"},
 		};
 
-		private const string _defaultCaptionThemeUriString = @"/MonitorAware.Extended;component/Views/Themes/DefaultCaptionTheme.xaml";
+		private const string _defaultCaptionThemeUriString = @"/WpfExtendedWindow;component/Views/Themes/DefaultCaptionTheme.xaml";
 
 		/// <summary>
 		/// Window theme out of ExtendedTheme
@@ -251,7 +265,7 @@ namespace MonitorAware.Extended.Views
 				"Theme",
 				typeof(ExtendedTheme),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(
+				new PropertyMetadata(
 					ExtendedTheme.Default,
 					(d, e) => ((ExtendedWindow)d).ThemeUri = _themeUriMap[(ExtendedTheme)e.NewValue]));
 
@@ -271,19 +285,19 @@ namespace MonitorAware.Extended.Views
 				"ThemeUri",
 				typeof(string),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(
+				new PropertyMetadata(
 					string.Empty,
 					(d, e) =>
 					{
 						var window = (ExtendedWindow)d;
 
 						window.ApplyResource((string)e.NewValue, (string)e.OldValue);
-						window.AdjustLayout();
+						window.ManageLayout();
 
 						try
 						{
 							window._isChangingTheme = true;
-							window.CheckBackground();
+							window.ManageBackground();
 						}
 						finally
 						{
@@ -312,42 +326,25 @@ namespace MonitorAware.Extended.Views
 
 		private void ApplyCaptionTheme(ResourceDictionary targetDictionary, ResourceDictionary sourceDictionary, Brush background)
 		{
+			Color? GetColor(object key)
+			{
+				if (!sourceDictionary.Contains(key))
+					return null;
+
+				if (!(sourceDictionary[key] is Color color))
+					return null;
+
+				if (!BlendsCaptionButtonVisualStyle || !(background is SolidColorBrush solid))
+					return color;
+
+				return color.ToBlended(solid.Color.ToOpaque(), (double)(255 - color.A) / 255D * 100D);
+			}
+
 			var defaultDictionary = new ResourceDictionary { Source = new Uri(_defaultCaptionThemeUriString, UriKind.Relative) };
 
 			foreach (var key in defaultDictionary.Keys)
 			{
-				Color? newColor = null;
-
-				if (sourceDictionary.Contains(key))
-				{
-					var sourceValue = sourceDictionary[key];
-					if (sourceValue is Color)
-					{
-						newColor = (Color)sourceValue;
-
-						if (BlendsCaptionButtonVisualStyle)
-						{
-							var solid = background as SolidColorBrush;
-							if (solid != null)
-							{
-								newColor = newColor.Value.ToBlended(solid.Color.ToOpaque(), (double)(255 - newColor.Value.A) / 255D * 100D);
-							}
-						}
-					}
-				}
-
-				object newValue = newColor ?? defaultDictionary[key];
-
-				if (!targetDictionary.Contains(key))
-				{
-					// Add key and value.
-					targetDictionary.Add(key, newValue);
-				}
-				else
-				{
-					// Update value.
-					targetDictionary[key] = newValue;
-				}
+				targetDictionary[key] = GetColor(key) ?? defaultDictionary[key];
 			}
 		}
 
@@ -357,10 +354,10 @@ namespace MonitorAware.Extended.Views
 			{
 				TitleBarCaptionButtonsPanel.Children.Clear();
 
-				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.MinimizeStyle") as Style });
-				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.MaximizeStyle") as Style });
-				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.RestoreStyle") as Style });
-				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton() { Style = Application.Current.FindResource("ExtendedCaptionButton.CloseStyle") as Style });
+				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton(Application.Current.FindResource("ExtendedCaptionButton.MinimizeStyle") as Style));
+				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton(Application.Current.FindResource("ExtendedCaptionButton.MaximizeStyle") as Style));
+				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton(Application.Current.FindResource("ExtendedCaptionButton.RestoreStyle") as Style));
+				TitleBarCaptionButtonsPanel.Children.Add(new ExtendedCaptionButton(Application.Current.FindResource("ExtendedCaptionButton.CloseStyle") as Style));
 			}
 		}
 
@@ -425,7 +422,7 @@ namespace MonitorAware.Extended.Views
 				"IsMinimizeVisible",
 				typeof(bool),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(true));
+				new PropertyMetadata(true));
 
 		#endregion
 
@@ -461,7 +458,7 @@ namespace MonitorAware.Extended.Views
 				"IsMaximizeVisible",
 				typeof(bool),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(true));
+				new PropertyMetadata(true));
 
 		#endregion
 
@@ -497,7 +494,7 @@ namespace MonitorAware.Extended.Views
 				"IsRestoreVisible",
 				typeof(bool),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(false));
+				new PropertyMetadata(false));
 
 		#endregion
 
@@ -512,7 +509,7 @@ namespace MonitorAware.Extended.Views
 
 		#endregion
 
-		#region Layout
+		#region Layout (Property)
 
 		/// <summary>
 		/// Whether to keep title and content margin even when a Window is maximized
@@ -531,7 +528,7 @@ namespace MonitorAware.Extended.Views
 				"KeepsTitleContentMargin",
 				typeof(bool),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(false));
+				new PropertyMetadata(true));
 
 		/// <summary>
 		/// Whether to blend colors for caption buttons' visual style with their normal color
@@ -550,7 +547,7 @@ namespace MonitorAware.Extended.Views
 				"BlendsCaptionButtonVisualStyle",
 				typeof(bool),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(false));
+				new PropertyMetadata(false));
 
 		/// <summary>
 		/// Whether to use OS's default chrome background
@@ -569,7 +566,7 @@ namespace MonitorAware.Extended.Views
 				"UsesDefaultChromeBackground",
 				typeof(bool),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(
+				new PropertyMetadata(
 					false,
 					(d, e) => ((ExtendedWindow)d)._isDueCheckDefaultChromeBackground = (bool)e.NewValue));
 
@@ -590,7 +587,7 @@ namespace MonitorAware.Extended.Views
 				"DefaultChromeBackground",
 				typeof(Brush),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(SystemColors.ActiveCaptionBrush));
+				new PropertyMetadata(SystemColors.ActiveCaptionBrush));
 		/// <summary>
 		/// Dependency property for <see cref="DefaultChromeBackground"/>
 		/// </summary>
@@ -612,7 +609,7 @@ namespace MonitorAware.Extended.Views
 				"ChromeBackground",
 				typeof(Brush),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(
+				new PropertyMetadata(
 					Brushes.Transparent,
 					(d, e) => ((ExtendedWindow)d)._isDueCheckBackground = true));
 
@@ -633,7 +630,7 @@ namespace MonitorAware.Extended.Views
 				"ChromeForeground",
 				typeof(Brush),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(Brushes.Black));
+				new PropertyMetadata(Brushes.Black));
 
 		/// <summary>
 		/// Chrome background Brush when a Window is deactivated
@@ -657,7 +654,7 @@ namespace MonitorAware.Extended.Views
 				"ChromeDeactivatedBackground",
 				typeof(Brush),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(_deactivatedBackground));
+				new PropertyMetadata(_deactivatedBackground));
 
 		/// <summary>
 		/// Chrome foreground Brush when a Window is deactivated
@@ -676,7 +673,7 @@ namespace MonitorAware.Extended.Views
 				"ChromeDeactivatedForeground",
 				typeof(Brush),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(Brushes.Black));
+				new PropertyMetadata(Brushes.Black));
 
 		/// <summary>
 		/// Chrome border thickness (chrome outer border)
@@ -695,7 +692,7 @@ namespace MonitorAware.Extended.Views
 				"ChromeBorderThickness",
 				typeof(Thickness),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(new Thickness(1D)));
+				new PropertyMetadata(new Thickness(1D)));
 
 		/// <summary>
 		/// Chrome border Brush
@@ -719,7 +716,7 @@ namespace MonitorAware.Extended.Views
 				"ChromeBorderBrush",
 				typeof(Brush),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(_chromeBorderBrush));
+				new PropertyMetadata(_chromeBorderBrush));
 
 		/// <summary>
 		/// Title bar background Brush
@@ -737,7 +734,7 @@ namespace MonitorAware.Extended.Views
 				"TitleBarBackground",
 				typeof(Brush),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(
+				new PropertyMetadata(
 					Brushes.Transparent,
 					(d, e) => ((ExtendedWindow)d)._isDueCheckBackground = true));
 
@@ -761,7 +758,7 @@ namespace MonitorAware.Extended.Views
 				"TitleBarNormalHeight",
 				typeof(double),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(SystemParameters.CaptionHeight));
+				new PropertyMetadata(SystemParameters.CaptionHeight));
 
 		/// <summary>
 		/// Title bar height when a Window is maximized
@@ -779,7 +776,7 @@ namespace MonitorAware.Extended.Views
 				"TitleBarMaximizedHeight",
 				typeof(double),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(SystemParameters.CaptionHeight));
+				new PropertyMetadata(SystemParameters.CaptionHeight));
 
 		/// <summary>
 		/// Title bar padding at the left side
@@ -797,7 +794,7 @@ namespace MonitorAware.Extended.Views
 				"TitleBarPaddingLeft",
 				typeof(double),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(0D));
+				new PropertyMetadata(0D));
 
 		/// <summary>
 		/// Title bar padding at the right side
@@ -815,7 +812,7 @@ namespace MonitorAware.Extended.Views
 				"TitleBarPaddingRight",
 				typeof(double),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(0D));
+				new PropertyMetadata(0D));
 
 		/// <summary>
 		/// Size of icon (Window.Icon) in title bar
@@ -833,7 +830,7 @@ namespace MonitorAware.Extended.Views
 				"IconSize",
 				typeof(Size),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(new Size(16, 16)));
+				new PropertyMetadata(new Size(16, 16)));
 
 		/// <summary>
 		/// Alignment of title (Window.Title) in title bar
@@ -851,7 +848,7 @@ namespace MonitorAware.Extended.Views
 				"TitleAlignment",
 				typeof(HorizontalAlignment),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(HorizontalAlignment.Left));
+				new PropertyMetadata(HorizontalAlignment.Left));
 
 		/// <summary>
 		/// Font size of title (Window.Title) in title bar
@@ -870,7 +867,7 @@ namespace MonitorAware.Extended.Views
 				"TitleFontSize",
 				typeof(double),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(14D));
+				new PropertyMetadata(14D));
 
 		/// <summary>
 		/// Content (Window.Content) margin
@@ -889,7 +886,7 @@ namespace MonitorAware.Extended.Views
 				"ContentMargin",
 				typeof(Thickness),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(new Thickness(6D, 0D, 6D, 6D)));
+				new PropertyMetadata(new Thickness(6D, 0D, 6D, 6D)));
 
 		/// <summary>
 		/// Content border thickness (chrome inner border)
@@ -908,7 +905,7 @@ namespace MonitorAware.Extended.Views
 				"ContentBorderThickness",
 				typeof(Thickness),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(new Thickness(1D)));
+				new PropertyMetadata(new Thickness(1D)));
 
 		/// <summary>
 		/// Content border Brush
@@ -927,21 +924,33 @@ namespace MonitorAware.Extended.Views
 				"ContentBorderBrush",
 				typeof(Brush),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(_chromeBorderBrush));
+				new PropertyMetadata(_chromeBorderBrush));
 
 		#endregion
 
-		#region Method
+		#region Layout (Method)
+
+		public DpiScale SystemDpi => DpiHelper.SystemDpi;
+		public DpiScale WindowDpi { get; private set; }
 
 		/// <summary>
-		/// Adjusts layout of Window parts.
+		/// Manages layout of Window components.
 		/// </summary>
-		protected void AdjustLayout()
+		protected void ManageLayout(DpiScale dpi = default)
 		{
-			var factorFromDefaultX = WindowHandler.WindowDpi.DpiScaleX;
-			var factorFromDefaultY = WindowHandler.WindowDpi.DpiScaleY;
-			var factorFromSystemX = WindowHandler.WindowDpi.DpiScaleX / WindowHandler.SystemDpi.DpiScaleX;
-			var factorFromSystemY = WindowHandler.WindowDpi.DpiScaleY / WindowHandler.SystemDpi.DpiScaleY;
+			if (!dpi.Equals(default(DpiScale)))
+			{
+				WindowDpi = dpi;
+			}
+			else if (WindowDpi.Equals(default(DpiScale)))
+			{
+				WindowDpi = VisualTreeHelper.GetDpi(this);
+			}
+
+			var factorFromDefaultX = WindowDpi.DpiScaleX;
+			var factorFromDefaultY = WindowDpi.DpiScaleY;
+			var factorFromSystemX = WindowDpi.DpiScaleX / SystemDpi.DpiScaleX;
+			var factorFromSystemY = WindowDpi.DpiScaleY / SystemDpi.DpiScaleY;
 
 			var captionHeight = 0D;
 
@@ -1064,7 +1073,7 @@ namespace MonitorAware.Extended.Views
 				"CaptionButtonBackground",
 				typeof(Brush),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(
+				new PropertyMetadata(
 					Brushes.Transparent,
 					(d, e) => ((ExtendedWindow)d).ReflectCaptionTheme((Brush)e.NewValue)));
 
@@ -1085,11 +1094,11 @@ namespace MonitorAware.Extended.Views
 				"IsAboutActive",
 				typeof(bool),
 				typeof(ExtendedWindow),
-				new FrameworkPropertyMetadata(false));
+				new PropertyMetadata(false));
 
 		private void SetActivated()
 		{
-			CheckBackground();
+			ManageBackground();
 
 			IsAboutActive = true;
 
@@ -1111,7 +1120,7 @@ namespace MonitorAware.Extended.Views
 				TitleBarBackGrid.Background = ChromeDeactivatedBackground;
 		}
 
-		private void CheckBackground()
+		private void ManageBackground()
 		{
 			if (!_isDueCheckBackground && !_isDueCheckDefaultChromeBackground)
 				return;
@@ -1141,7 +1150,7 @@ namespace MonitorAware.Extended.Views
 		{
 			RemoveDragHandler();
 
-			if (!TitleBarBackground.IsTransparent() && (TitleBarGrid != null))
+			if ((TitleBarGrid != null) && !TitleBarBackground.IsTransparent())
 				TitleBarGrid.MouseLeftButtonDown += OnDrag;
 			else
 				this.MouseLeftButtonDown += OnDrag;
@@ -1157,14 +1166,23 @@ namespace MonitorAware.Extended.Views
 
 		private void ManageTitleBarIconClick(MouseButtonEventArgs e)
 		{
-			if (e.ClickCount == 1) // Single click
+			switch (e.ClickCount)
 			{
-				var clickPoint = this.PointToScreen(e.GetPosition(null));
-				SystemCommands.ShowSystemMenu(this, new Point(clickPoint.X + 1, clickPoint.Y + 1));
-			}
-			else if ((e.ClickCount == 2) && (e.LeftButton == MouseButtonState.Pressed)) // Double Click
-			{
-				SystemCommands.CloseWindow(this);
+				case 1: // Single click
+					var clickedPoint = this.PointToScreen(e.GetPosition(null));
+
+					// Move the location not to block double click.
+					var movedPoint = new Point(clickedPoint.X + 1D, clickedPoint.Y + 1D);
+
+					// Adjust the location to nullify scaling logic of SystemCommands.ShowSystemMenu method.
+					var adjustedPoint = new Point(movedPoint.X / WindowDpi.DpiScaleX, movedPoint.Y / WindowDpi.DpiScaleY);
+
+					SystemCommands.ShowSystemMenu(this, adjustedPoint);
+					break;
+
+				case 2 when (e.LeftButton == MouseButtonState.Pressed): // Double Click
+					SystemCommands.CloseWindow(this);
+					break;
 			}
 		}
 

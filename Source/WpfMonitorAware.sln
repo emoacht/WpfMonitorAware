@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29926.136
+VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorAware", "MonitorAware\MonitorAware.csproj", "{5B7B205F-B87B-4A8D-848B-B4739283E474}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorAware.Extended", "MonitorAware.Extended\MonitorAware.Extended.csproj", "{74BE8DC3-F575-489E-A66A-3E23D960487F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorAware.Old", "MonitorAware.Old\MonitorAware.Old.csproj", "{E216CB47-4CD6-4F68-8378-67D53423277B}"
 EndProject
@@ -27,10 +25,6 @@ Global
 		{5B7B205F-B87B-4A8D-848B-B4739283E474}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B7B205F-B87B-4A8D-848B-B4739283E474}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B7B205F-B87B-4A8D-848B-B4739283E474}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74BE8DC3-F575-489E-A66A-3E23D960487F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74BE8DC3-F575-489E-A66A-3E23D960487F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74BE8DC3-F575-489E-A66A-3E23D960487F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74BE8DC3-F575-489E-A66A-3E23D960487F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E216CB47-4CD6-4F68-8378-67D53423277B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E216CB47-4CD6-4F68-8378-67D53423277B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E216CB47-4CD6-4F68-8378-67D53423277B}.Release|Any CPU.ActiveCfg = Release|Any CPU

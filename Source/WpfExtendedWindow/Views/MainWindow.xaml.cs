@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -16,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using MonitorAware.Models;
-using MonitorAware.Extended.Views;
+
 using WpfExtendedWindow.Models;
 using WpfExtendedWindow.Views.Controls;
 
@@ -51,8 +50,6 @@ namespace WpfExtendedWindow.Views
 			WindowHandler.ColorProfileChanged += _onColorProfileChanged;
 
 			PrepareAnimation();
-
-			Debug.WriteLine($"Notification Area DPI: {DpiHelper.GetNotificationAreaDpi().PixelsPerInchX}");
 		}
 
 		protected override void OnClosing(CancelEventArgs e)
@@ -76,7 +73,7 @@ namespace WpfExtendedWindow.Views
 				"MainTheme",
 				typeof(ExtendedTheme),
 				typeof(MainWindow),
-				new FrameworkPropertyMetadata(
+				new PropertyMetadata(
 					ExtendedTheme.Default,
 					(d, e) =>
 					{
@@ -242,7 +239,7 @@ namespace WpfExtendedWindow.Views
 				typeof(string),
 				typeof(MainWindow),
 				new PropertyMetadata(
-					null,
+					string.Empty,
 					async (d, e) => await ((MainWindow)d).ConvertImageAsync()));
 
 		public BitmapSource ConvertedImage
@@ -255,7 +252,7 @@ namespace WpfExtendedWindow.Views
 				"ConvertedImage",
 				typeof(BitmapSource),
 				typeof(MainWindow),
-				new PropertyMetadata(null));
+				new PropertyMetadata(default(BitmapSource)));
 
 		private byte[] SourceData { get; set; }
 
@@ -289,7 +286,7 @@ namespace WpfExtendedWindow.Views
 
 		private async Task ConvertImageAsync()
 		{
-			if (SourceData == null)
+			if (SourceData is null)
 				return;
 
 			ConvertedImage = await ImageConverter.ConvertImageAsync(SourceData, ColorProfilePath);
