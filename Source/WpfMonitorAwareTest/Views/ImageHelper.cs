@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace WpfBuiltinScaling.Views
+namespace WpfMonitorAwareTest.Views
 {
 	internal class ImageHelper
 	{

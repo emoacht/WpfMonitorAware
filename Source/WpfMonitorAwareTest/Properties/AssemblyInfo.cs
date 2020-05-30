@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WPF Built-in Scaling")]
+[assembly: AssemblyTitle("WPF Monitor Aware Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WPF Built-in Scaling")]
+[assembly: AssemblyProduct("WPF Monitor Aware Test")]
 [assembly: AssemblyCopyright("Copyright © 2016 emoacht")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

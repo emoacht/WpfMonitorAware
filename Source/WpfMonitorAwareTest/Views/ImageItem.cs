@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfBuiltinScaling.Views
+namespace WpfMonitorAwareTest.Views
 {
 	internal class ImageItem
 	{

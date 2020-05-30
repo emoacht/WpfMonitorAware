@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareBehavior", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareProperty", "WpfMonitorAwareProperty\WpfMonitorAwareProperty.csproj", "{B40BA673-4E56-467E-B5D2-0D0D5C1F7EF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfBuiltinScaling", "WpfBuiltinScaling\WpfBuiltinScaling.csproj", "{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareTest", "WpfMonitorAwareTest\WpfMonitorAwareTest.csproj", "{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

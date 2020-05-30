@@ -9,13 +9,12 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace WpfBuiltinScaling.Views
+namespace WpfMonitorAwareTest.Views
 {
 	public class DpiAwareImage : Image
 	{
 		public DpiAwareImage() : base()
-		{
-		}
+		{ }
 
 		private ImageItem[] _imageItems;
 
@@ -35,8 +34,6 @@ namespace WpfBuiltinScaling.Views
 		{
 			base.OnDpiChanged(oldDpi, newDpi);
 
-			Debug.WriteLine($"Image DpiChanged: {newDpi.PixelsPerDip}");
-
 			SetSource(newDpi.PixelsPerDip);
 		}
 
@@ -46,11 +43,10 @@ namespace WpfBuiltinScaling.Views
 				return;
 
 			var item = _imageItems.FirstOrDefault(x => pixelsPerDip <= x.PixelsPerDip);
-			if (item == null)
+			if (item is null)
 				item = _imageItems.Last(); // The item of the highest PixelsPerDip will be used as fallback.
 
-			Uri uri;
-			if (!Uri.TryCreate(item.ImagePath, UriKind.RelativeOrAbsolute, out uri))
+			if (!Uri.TryCreate(item.ImagePath, UriKind.RelativeOrAbsolute, out Uri uri))
 				return;
 
 			this.Source = new BitmapImage(uri);
