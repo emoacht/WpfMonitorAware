@@ -307,9 +307,9 @@ namespace MonitorAware.Models
 		private bool _isDpiChanged;
 
 		/// <summary>
-		/// Target Window's size suggested by WM_DPICHANGED message
+		/// Target Window's size to be the base for calculating due size when DPI changed
 		/// </summary>
-		private Size _suggestedSize = Size.Empty;
+		private Size _baseSize = Size.Empty;
 
 		/// <summary>
 		/// Count of WM_MOVE messages
@@ -343,23 +343,29 @@ namespace MonitorAware.Models
 					if (MonitorDpi.Equals(newDpi))
 						break;
 
+					var oldDpi = MonitorDpi;
 					MonitorDpi = newDpi;
 
 					if (ScaleMode == ScaleMode.Forbear)
 					{
-						WindowDpi = MonitorDpi;
+						WindowDpi = newDpi;
 						break;
 					}
 
 					_isDpiChanged = true;
 
-					var newInfo = new WindowInfo { Dpi = MonitorDpi };
+					var newInfo = new WindowInfo { Dpi = newDpi };
 
 					switch (_currentStatus)
 					{
 						case WindowStatus.None:
 						case WindowStatus.LocationChanged:
-							newInfo.Size = _suggestedSize = DpiChangedEventHelper.ConvertPointerToRect(lParam).Size;
+							newInfo.Size = _baseSize = (_baseSize != Size.Empty)
+								? new Size(
+									_baseSize.Width * newDpi.DpiScaleX / oldDpi.DpiScaleX,
+									_baseSize.Height * newDpi.DpiScaleY / oldDpi.DpiScaleY)
+								: DpiChangedEventHelper.ConvertPointerToRect(lParam).Size;
+
 							break;
 
 						case WindowStatus.SizeChanged:
@@ -395,7 +401,11 @@ namespace MonitorAware.Models
 
 					_isEnteredSizeMove = true;
 					_isDpiChanged = false;
-					_suggestedSize = Size.Empty;
+
+					_baseSize = WindowHelper.TryGetWindowRect(_targetSource.Handle, out Rect baseRect)
+						? baseRect.Size
+						: Size.Empty;
+
 					_countLocationChanged = 0;
 					_countSizeChanged = 0;
 					break;
@@ -408,12 +418,12 @@ namespace MonitorAware.Models
 						_isEnteredSizeMove = false;
 
 						// Last stand!!!
-						if (_isDpiChanged && (_suggestedSize != Size.Empty) && (_currentStatus == WindowStatus.LocationChanged))
+						if (_isDpiChanged && (_baseSize != Size.Empty) && (_currentStatus == WindowStatus.LocationChanged))
 						{
 							var lastInfo = new WindowInfo
 							{
 								Dpi = MonitorDpi,
-								Size = _suggestedSize,
+								Size = _baseSize,
 							};
 
 							Interlocked.Exchange(ref _dueInfo, lastInfo);
