@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareProperty", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMonitorAwareTest", "WpfMonitorAwareTest\WpfMonitorAwareTest.csproj", "{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlateElement", "SlateElement\SlateElement.csproj", "{457EE753-AB1B-46D1-A51A-15459EA5DEAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfSlateWindow", "WpfSlateWindow\WpfSlateWindow.csproj", "{55BE352E-1B10-4B87-9C59-B7A7A6B88E08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CBA12F4-C192-4706-AE4A-AEE3FF6CD5E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{457EE753-AB1B-46D1-A51A-15459EA5DEAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{457EE753-AB1B-46D1-A51A-15459EA5DEAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{457EE753-AB1B-46D1-A51A-15459EA5DEAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{457EE753-AB1B-46D1-A51A-15459EA5DEAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55BE352E-1B10-4B87-9C59-B7A7A6B88E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BE352E-1B10-4B87-9C59-B7A7A6B88E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55BE352E-1B10-4B87-9C59-B7A7A6B88E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55BE352E-1B10-4B87-9C59-B7A7A6B88E08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

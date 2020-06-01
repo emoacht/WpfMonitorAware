@@ -1,0 +1,80 @@
+﻿<se:SlateWindow x:Class="WpfSlateWindow.Views.MainWindow"
+				xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"				
+				xmlns:ma="clr-namespace:MonitorAware;assembly=MonitorAware"
+				xmlns:se="clr-namespace:SlateElement;assembly=SlateElement"
+				x:Name="WindowRoot"
+				Icon="/Resources/fourcolors.png"
+				Title="WPF Slate Window"				
+				FontFamily="Segoe UI"
+				Width="500" Height="300"
+				ChromeBackground="{Binding RelativeSource={RelativeSource Self}, Path=DefaultChromeBackground, Mode=OneWay}">
+	<ma:MonitorAwareProperty.Instance>
+		<ma:MonitorAwareProperty x:Name="MonitorProperty"
+								 ScaleMode="InvokeWhileMoving"/>
+	</ma:MonitorAwareProperty.Instance>
+
+	<Grid x:Name="ContentRoot"
+		  Background="#99FFFFFF">
+		<Grid x:Name="ContentGrid"
+			  Margin="3,4,5,4"
+			  UseLayoutRounding ="True">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<Label VerticalAlignment="Center"
+				   Content="System DPI"/>
+			<TextBox Grid.Column="1" Grid.Row="0"
+					 Width="80" Height="22" Margin="6,4" HorizontalAlignment="Left"
+					 IsReadOnly="True"
+					 Text="{Binding ElementName=MonitorProperty, Path=WindowHandler.SystemDpi.PixelsPerInchX, Mode=OneWay}"/>
+
+			<Label Grid.Column="0" Grid.Row="1"
+				   VerticalAlignment="Center"
+				   Content="Per-Monitor DPI (Monitor DPI)"/>
+			<TextBox Grid.Column="1" Grid.Row="1"
+					 Width="80" Height="22" Margin="6,4" HorizontalAlignment="Left"
+					 IsReadOnly="True"
+					 Text="{Binding ElementName=MonitorProperty, Path=WindowHandler.MonitorDpi.PixelsPerInchX, Mode=OneWay}"/>
+
+			<Label Grid.Column="0" Grid.Row="2"
+				   VerticalAlignment="Center"
+				   Content="Per-Monitor DPI (Window DPI)"/>
+			<TextBox Grid.Column="1" Grid.Row="2"
+					 Width="80" Height="22" Margin="6,4" HorizontalAlignment="Left"
+					 IsReadOnly="True"
+					 Text="{Binding ElementName=MonitorProperty, Path=WindowHandler.WindowDpi.PixelsPerInchX, Mode=OneWay}"/>
+
+			<Label Grid.Column="0" Grid.Row="3"
+				   VerticalAlignment="Center"
+				   Content="Scale Factor"/>
+			<TextBox Grid.Column="1" Grid.Row="3"
+					 Width="80" Height="22" Margin="6,4" HorizontalAlignment="Left"
+					 IsReadOnly="True"
+					 Text="{Binding ElementName=MonitorProperty, Path=WindowHandler.ScaleFactor.X, Mode=OneWay}"/>
+
+			<Label Grid.Column="0" Grid.Row="4"
+				   VerticalAlignment="Center"
+				   Content="Color Profile Path"/>
+			<TextBox Grid.Column="1" Grid.Row="4"
+					 Height="22" Margin="6,4"
+					 IsReadOnly="True"
+					 Text="{Binding ElementName=MonitorProperty, Path=WindowHandler.ColorProfilePath, Mode=OneWay}"/>			
+		</Grid>
+
+		<Grid VerticalAlignment="Bottom">
+			<TextBlock Text="&lt;--" HorizontalAlignment="Left"/>
+			<TextBlock Text="--&gt;" HorizontalAlignment="Right"/>
+		</Grid>
+	</Grid>
+</se:SlateWindow>
