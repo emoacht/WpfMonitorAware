@@ -18,7 +18,7 @@ namespace SlateElement
 	[TemplatePart(Name = "PART_ChromeBorder", Type = typeof(Border))]
 	[TemplatePart(Name = "PART_ChromeGrid", Type = typeof(Grid))]
 	[TemplatePart(Name = "PART_TitleBarGrid", Type = typeof(Grid))]
-	[TemplatePart(Name = "PART_TitleBarIcon", Type = typeof(Image))]
+	[TemplatePart(Name = "PART_TitleBarContentGrid", Type = typeof(Grid))]
 	public class SlateWindow : Window
 	{
 		/// <summary>
@@ -59,7 +59,7 @@ namespace SlateElement
 			ChromeBorder = this.GetTemplateChild("PART_ChromeBorder") as Border;
 			ChromeGrid = this.GetTemplateChild("PART_ChromeGrid") as Grid;
 			TitleBarGrid = this.GetTemplateChild("PART_TitleBarGrid") as Grid;
-			TitleBarIcon = this.GetTemplateChild("PART_TitleBarIcon") as Image;
+			TitleBarContentGrid = this.GetTemplateChild("PART_TitleBarContentGrid") as Grid;
 		}
 
 		private HwndSource _targetSource;
@@ -71,12 +71,10 @@ namespace SlateElement
 		{
 			base.OnSourceInitialized(e);
 
-			ManageLayout();
+			ManageChromeBorder();
 			ManageTitleBarBackground();
-			ManageCaptionButtons();
-
-			if (TitleBarIcon != null)
-				TitleBarIcon.MouseDown += OnTitleBarIconMouseDown;
+			ManageTitleBarContent();
+			ManageTitleBarCaptionButtons();
 
 			_targetSource = PresentationSource.FromVisual(this) as HwndSource;
 			_targetSource?.AddHook(WndProc);
@@ -88,11 +86,6 @@ namespace SlateElement
 		protected override void OnClosed(EventArgs e)
 		{
 			base.OnClosed(e);
-
-			RemoveDragHandler();
-
-			if (TitleBarIcon != null)
-				TitleBarIcon.MouseDown -= OnTitleBarIconMouseDown;
 
 			_targetSource?.RemoveHook(WndProc);
 		}
@@ -143,7 +136,7 @@ namespace SlateElement
 		{
 			base.OnDpiChanged(oldDpi, newDpi);
 
-			ManageLayout(newDpi);
+			ManageChromeBorder(newDpi);
 		}
 
 		/// <summary>
@@ -153,8 +146,8 @@ namespace SlateElement
 		{
 			base.OnStateChanged(e);
 
-			ManageLayout();
-			ManageCaptionButtons();
+			ManageChromeBorder();
+			ManageTitleBarCaptionButtons();
 		}
 
 		/// <summary>
@@ -180,9 +173,9 @@ namespace SlateElement
 		protected Grid TitleBarGrid { get; private set; }
 
 		/// <summary>
-		/// Title bar icon
+		/// Title bar content grid
 		/// </summary>
-		protected Image TitleBarIcon { get; private set; }
+		protected Grid TitleBarContentGrid { get; private set; }
 
 		#endregion
 
@@ -299,7 +292,7 @@ namespace SlateElement
 			}
 		}
 
-		private void ManageCaptionButtons()
+		private void ManageTitleBarCaptionButtons()
 		{
 			static void SetVisible(Button button, bool isVisible) =>
 				button?.SetValue(VisibilityProperty, (isVisible ? Visibility.Visible : Visibility.Collapsed));
@@ -442,6 +435,52 @@ namespace SlateElement
 				typeof(SlateWindow),
 				new PropertyMetadata(_chromeBorderBrush));
 
+		/// <summary>
+		/// Title bar icon
+		/// </summary>
+		public Image TitleBarIcon
+		{
+			get { return (Image)GetValue(TitleBarIconProperty); }
+			set { SetValue(TitleBarIconProperty, value); }
+		}
+		/// <summary>
+		/// Dependency property for <see cref="TitleBarIcon"/>
+		/// </summary>
+		public static readonly DependencyProperty TitleBarIconProperty =
+			DependencyProperty.Register(
+				"TitleBarIcon",
+				typeof(Image),
+				typeof(SlateWindow),
+				new PropertyMetadata(
+					null,
+					(d, e) =>
+					{
+						var window = (SlateWindow)d;
+						window.RemoveTitleBarIconHandler(e.OldValue as Image);
+						window.AddTitleBarIconHandler(e.NewValue as Image);
+						window.ManageTitleBarContent();
+					}));
+
+		/// <summary>
+		/// Title bar content
+		/// </summary>
+		public FrameworkElement TitleBarContent
+		{
+			get { return (FrameworkElement)GetValue(TitleBarContentProperty); }
+			set { SetValue(TitleBarContentProperty, value); }
+		}
+		/// <summary>
+		/// Dependency property for <see cref="TitleBarContent"/>
+		/// </summary>
+		public static readonly DependencyProperty TitleBarContentProperty =
+			DependencyProperty.Register(
+				"TitleBarContent",
+				typeof(FrameworkElement),
+				typeof(SlateWindow),
+				new PropertyMetadata(
+					null,
+					(d, e) => ((SlateWindow)d).ManageTitleBarContent()));
+
 		#endregion
 
 		#region Layout (Method)
@@ -452,9 +491,9 @@ namespace SlateElement
 		protected DpiScale WindowDpi { get; set; }
 
 		/// <summary>
-		/// Manages layout of components.
+		/// Manages chrome outer border.
 		/// </summary>
-		protected virtual void ManageLayout(DpiScale dpi = default)
+		protected virtual void ManageChromeBorder(DpiScale dpi = default)
 		{
 			if (!dpi.Equals(default(DpiScale)))
 			{
@@ -465,7 +504,6 @@ namespace SlateElement
 				WindowDpi = VisualTreeHelper.GetDpi(this);
 			}
 
-			// Manage chrome border.
 			if (ChromeBorder != null)
 			{
 				ChromeBorder.BorderThickness = IsMaximized
@@ -486,12 +524,12 @@ namespace SlateElement
 			if (TitleBarGrid != null)
 				TitleBarGrid.Background = ChromeBackground;
 
-			AddDragHandler();
+			AddTitleBarHandler();
 		}
 
-		private void AddDragHandler()
+		private void AddTitleBarHandler()
 		{
-			RemoveDragHandler();
+			RemoveTitleBarHandler();
 
 			if ((TitleBarGrid?.Background != null) && !TitleBarGrid.Background.IsTransparent())
 			{
@@ -504,7 +542,7 @@ namespace SlateElement
 			}
 		}
 
-		private void RemoveDragHandler()
+		private void RemoveTitleBarHandler()
 		{
 			if (TitleBarGrid != null)
 			{
@@ -515,6 +553,52 @@ namespace SlateElement
 			{
 				this.MouseLeftButtonDown -= OnTitleBarMouseLeftButtonDown;
 			}
+		}
+
+		/// <summary>
+		/// Manages title bar content.
+		/// </summary>
+		protected virtual void ManageTitleBarContent()
+		{
+			if (TitleBarContentGrid is null)
+				return;
+
+			TitleBarContentGrid.ColumnDefinitions.Clear();
+			TitleBarContentGrid.Children.Clear();
+
+			if (TitleBarIcon != null)
+			{
+				TitleBarContentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+				TitleBarContentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1D, GridUnitType.Star) });
+
+				Grid.SetColumn(TitleBarIcon, 0);
+				TitleBarContentGrid.Children.Add(TitleBarIcon);
+
+				if (TitleBarContent != null)
+				{
+					Grid.SetColumn(TitleBarContent, 1);
+					TitleBarContentGrid.Children.Add(TitleBarContent);
+				}
+			}
+			else
+			{
+				if (TitleBarContent != null)
+				{
+					TitleBarContentGrid.Children.Add(TitleBarContent);
+				}
+			}
+		}
+
+		private void AddTitleBarIconHandler(Image titleBarIcon)
+		{
+			if (titleBarIcon != null)
+				titleBarIcon.MouseDown += OnTitleBarIconMouseDown;
+		}
+
+		private void RemoveTitleBarIconHandler(Image titleBarIcon)
+		{
+			if (titleBarIcon != null)
+				titleBarIcon.MouseDown -= OnTitleBarIconMouseDown;
 		}
 
 		private bool _isTransitionFromMaximizedToDragged;

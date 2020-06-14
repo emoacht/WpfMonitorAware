@@ -278,6 +278,20 @@
 		<Setter Property="ChromeBackground" Value="{DynamicResource SlateWindow.Chrome.Background}"/>
 		<Setter Property="ChromeForeground" Value="{DynamicResource SlateWindow.Chrome.Normal.Foreground}"/>
 
+		<Setter Property="TitleBarIcon">
+			<Setter.Value>
+				<Image Width="16" Height="16" Margin="8,7,0,7" VerticalAlignment="Center"
+					   Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=Icon, Mode=OneWay}"/>
+			</Setter.Value>
+		</Setter>
+
+		<Setter Property="TitleBarContent">
+			<Setter.Value>
+				<TextBlock Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
+						   Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=Title, Mode=OneWay}"/>
+			</Setter.Value>
+		</Setter>
+
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type se:SlateWindow}">
@@ -300,20 +314,8 @@
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 
-								<Grid Grid.Column="0">
-									<StackPanel VerticalAlignment="Top"
-												Orientation="Horizontal">
-										<!-- Window icon (optional) -->
-										<Image x:Name="PART_TitleBarIcon"
-											   Width="16" Height="16" Margin="8,7" VerticalAlignment="Center"
-											   WindowChrome.IsHitTestVisibleInChrome="True"
-											   Source="{TemplateBinding Icon}"/>
-
-										<TextBlock VerticalAlignment="Center"
-												   Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type se:SlateWindow}}, Path=ChromeForeground}"
-												   Text="{TemplateBinding Title}"/>
-									</StackPanel>
-								</Grid>
+								<Grid Grid.Column="0"
+									  x:Name="PART_TitleBarContentGrid"/>
 
 								<!-- Caption buttons -->
 								<StackPanel Grid.Column="1"
@@ -327,7 +329,6 @@
 							</Grid>
 
 							<ContentPresenter Grid.Row="1"
-											  x:Name="Content"
 											  Content="{TemplateBinding Content}"/>
 						</Grid>
 					</Border>
