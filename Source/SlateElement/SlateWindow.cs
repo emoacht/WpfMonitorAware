@@ -276,6 +276,33 @@ namespace SlateElement
 
 		private bool CanResize => (this.ResizeMode == ResizeMode.CanResize) || (this.ResizeMode == ResizeMode.CanResizeWithGrip);
 
+		/// <summary>
+		/// Whether a window can be maximized
+		/// </summary>
+		/// <remarks>
+		/// This property is useful to prevent a window from being maximized even if ResizeMode property
+		/// is CanResize or CanResizeWithGrip.
+		/// If ResizeMode property is such values and this property is false, maximize/restore buttons
+		/// will not be visible (Not OS's default). If ResizeMode property is CanMinimize, maximize button
+		/// will be visible but never be enabled (OS's default).
+		/// </remarks>
+		public bool CanMaximize
+		{
+			get { return (bool)GetValue(CanMaximizeProperty); }
+			set { SetValue(CanMaximizeProperty, value); }
+		}
+		/// <summary>
+		/// Dependency property for <see cref="CanMaximize"/>
+		/// </summary>
+		public static readonly DependencyProperty CanMaximizeProperty =
+			DependencyProperty.Register(
+				"CanMaximize",
+				typeof(bool),
+				typeof(SlateWindow),
+				new PropertyMetadata(
+					true,
+					(d, e) => ((SlateWindow)d).ManageTitleBarCaptionButtons()));
+
 		private void ManageTitleBarCaptionButtons()
 		{
 			static void SetVisible(Button button, bool isVisible) =>
@@ -297,8 +324,8 @@ namespace SlateElement
 
 				default: // ResizeMode.CanResize, ResizeMode.CanResizeWithGrip
 					SetVisible(_minimizeButton, true);
-					SetVisible(_maximizeButton, !IsMaximized);
-					SetVisible(_restoreButton, IsMaximized);
+					SetVisible(_maximizeButton, CanMaximize && !IsMaximized);
+					SetVisible(_restoreButton, CanMaximize && IsMaximized);
 					break;
 			}
 
@@ -598,7 +625,7 @@ namespace SlateElement
 					this.DragMove();
 					break;
 
-				case 2 when CanResize: // Double Click
+				case 2 when CanResize && CanMaximize: // Double Click
 					e.Handled = true;
 
 					if (IsMaximized)
