@@ -515,7 +515,7 @@ namespace SlateElement
 		{
 			RemoveTitleBarHandler();
 
-			if ((TitleBarGrid?.Background != null) && !TitleBarGrid.Background.IsTransparent())
+			if (TitleBarGrid?.Background != null)
 			{
 				TitleBarGrid.MouseLeftButtonDown += OnTitleBarMouseLeftButtonDown;
 				TitleBarGrid.MouseRightButtonDown += OnTitleBarMouseRightButtonDown;
@@ -533,10 +533,10 @@ namespace SlateElement
 				TitleBarGrid.MouseLeftButtonDown -= OnTitleBarMouseLeftButtonDown;
 				TitleBarGrid.MouseRightButtonDown -= OnTitleBarMouseRightButtonDown;
 			}
-			else
-			{
-				this.MouseLeftButtonDown -= OnTitleBarMouseLeftButtonDown;
-			}
+
+			// It is always necessary to remove this event handler. Othewise, an event handler which
+			// was added when TitleBarGrid was null will not be removed after TitleBarGrid is assigned.
+			this.MouseLeftButtonDown -= OnTitleBarMouseLeftButtonDown;
 		}
 
 		/// <summary>
@@ -591,14 +591,14 @@ namespace SlateElement
 		{
 			switch (e.ClickCount)
 			{
-				case 1: // Single click
+				case 1 when (e.ButtonState == MouseButtonState.Pressed): // Single click
 					e.Handled = true;
 
 					_isTransitionFromMaximizedToDragged = IsMaximized;
 					this.DragMove();
 					break;
 
-				case 2: // Double Click
+				case 2 when CanResize: // Double Click
 					e.Handled = true;
 
 					if (IsMaximized)
