@@ -183,45 +183,27 @@ namespace SlateElement
 
 		#region SystemCommands.MinimizeWindow
 
-		private void MinimizeExecuted(object sender, ExecutedRoutedEventArgs e) =>
-			SystemCommands.MinimizeWindow(this);
+		private void MinimizeExecuted(object sender, ExecutedRoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
 
 		#endregion
 
 		#region SystemCommands.MaximizeWindow
 
-		private void MaximizeExecuted(object sender, ExecutedRoutedEventArgs e) =>
-			SystemCommands.MaximizeWindow(this);
-
-		private void CanMaximizeExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			if ((this.ResizeMode == ResizeMode.NoResize) || (this.ResizeMode == ResizeMode.CanMinimize))
-				e.CanExecute = false;
-			else
-				e.CanExecute = !IsMaximized;
-		}
+		private void MaximizeExecuted(object sender, ExecutedRoutedEventArgs e) => SystemCommands.MaximizeWindow(this);
+		private void CanMaximizeExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = CanResize && !IsMaximized;
 
 		#endregion
 
 		#region SystemCommands.RestoreWindow
 
-		private void RestoreExecuted(object sender, ExecutedRoutedEventArgs e) =>
-			SystemCommands.RestoreWindow(this);
-
-		private void CanRestoreExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			if ((this.ResizeMode == ResizeMode.NoResize) || (this.ResizeMode == ResizeMode.CanMinimize))
-				e.CanExecute = false;
-			else
-				e.CanExecute = IsMaximized;
-		}
+		private void RestoreExecuted(object sender, ExecutedRoutedEventArgs e) => SystemCommands.RestoreWindow(this);
+		private void CanRestoreExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = CanResize && IsMaximized;
 
 		#endregion
 
 		#region SystemCommands.CloseWindow
 
-		private void CloseExecuted(object target, ExecutedRoutedEventArgs e) =>
-			SystemCommands.CloseWindow(this);
+		private void CloseExecuted(object target, ExecutedRoutedEventArgs e) => SystemCommands.CloseWindow(this);
 
 		#endregion
 
@@ -291,6 +273,8 @@ namespace SlateElement
 					break;
 			}
 		}
+
+		private bool CanResize => (this.ResizeMode == ResizeMode.CanResize) || (this.ResizeMode == ResizeMode.CanResizeWithGrip);
 
 		private void ManageTitleBarCaptionButtons()
 		{
