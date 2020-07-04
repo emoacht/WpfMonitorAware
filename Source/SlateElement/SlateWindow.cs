@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -466,6 +467,9 @@ namespace SlateElement
 					null,
 					(d, e) =>
 					{
+						if (e.OldValue != null)
+							BindingOperations.ClearAllBindings((DependencyObject)e.OldValue);
+
 						var window = (SlateWindow)d;
 						window.RemoveTitleBarIconHandler(e.OldValue as Image);
 						window.AddTitleBarIconHandler(e.NewValue as Image);
@@ -490,7 +494,13 @@ namespace SlateElement
 				typeof(SlateWindow),
 				new PropertyMetadata(
 					null,
-					(d, e) => ((SlateWindow)d).ManageTitleBarContent()));
+					(d, e) =>
+					{
+						if (e.OldValue != null)
+							BindingOperations.ClearAllBindings((DependencyObject)e.OldValue);
+
+						((SlateWindow)d).ManageTitleBarContent();
+					}));
 
 		#endregion
 
