@@ -266,8 +266,7 @@
 		<Setter Property="WindowStyle" Value="None"/>
 		<Setter Property="WindowChrome.WindowChrome">
 			<Setter.Value>
-				<WindowChrome ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
-							  CaptionHeight="1"
+				<WindowChrome CaptionHeight="1"
 							  GlassFrameThickness="-1"
 							  CornerRadius="0"/>
 			</Setter.Value>
@@ -296,7 +295,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type se:SlateWindow}">
 					<Border x:Name="PART_ChromeBorder"
-							BorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
+							BorderThickness="1"
 							BorderBrush="{TemplateBinding ChromeBorderBrush}">
 
 						<Grid x:Name="PART_ChromeGrid"
