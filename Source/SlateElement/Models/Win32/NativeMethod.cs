@@ -8,6 +8,11 @@ namespace SlateElement.Models.Win32
 		#region Common
 
 		[DllImport("User32.dll")]
+		public static extern IntPtr MonitorFromPoint(
+			POINT pt,
+			MONITOR_DEFAULTTO dwFlags);
+
+		[DllImport("User32.dll")]
 		public static extern IntPtr MonitorFromWindow(
 			IntPtr hwnd,
 			MONITOR_DEFAULTTO dwFlags);

@@ -96,7 +96,7 @@ namespace SlateElement.Models
 		/// </summary>
 		/// <param name="windowHandle">Window's handle</param>
 		/// <param name="monitorRect">Monitor's (full) rectangle</param>
-		/// <param name="workRect">Work area's rectangle</param>
+		/// <param name="workRect">Work area's rectangle inside monitor's rectangle</param>
 		/// <param name="isPrimary">Whether the monitor is the primary monitor</param>
 		/// <returns>True if successfully gets. False otherwise.</returns>
 		public static bool TryGetMonitorRect(IntPtr windowHandle, out Rect monitorRect, out Rect workRect, out bool isPrimary)
@@ -108,6 +108,28 @@ namespace SlateElement.Models
 				windowHandle,
 				MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST);
 
+			return TryGetMonitorRectBase(monitorHandle, out monitorRect, out workRect, out isPrimary);
+		}
+
+		/// <summary>
+		/// Attemps to get the monitor's rectangles to which a specified point belongs.
+		/// </summary>
+		/// <param name="point">Point</param>
+		/// <param name="monitorRect">Monitor's (full) rectangle</param>
+		/// <param name="workRect">Work area's rectangle inside monitor's rectangle</param>
+		/// <param name="isPrimary">Whether the monitor is the primary monitor</param>
+		/// <returns>True if successfully gets. False otherwise.</returns>
+		public static bool TryGetMonitorRect(Point point, out Rect monitorRect, out Rect workRect, out bool isPrimary)
+		{
+			var monitorHandle = MonitorFromPoint(
+				point,
+				MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST);
+
+			return TryGetMonitorRectBase(monitorHandle, out monitorRect, out workRect, out isPrimary);
+		}
+
+		private static bool TryGetMonitorRectBase(IntPtr monitorHandle, out Rect monitorRect, out Rect workRect, out bool isPrimary)
+		{
 			var monitorInfo = new MONITORINFO { cbSize = (uint)Marshal.SizeOf<MONITORINFO>() };
 			if (GetMonitorInfo(monitorHandle, ref monitorInfo))
 			{
