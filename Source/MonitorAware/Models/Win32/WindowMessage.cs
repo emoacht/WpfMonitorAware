@@ -8,6 +8,7 @@ namespace MonitorAware.Models.Win32
 		public const int WM_EXITSIZEMOVE = 0x0232;
 		public const int WM_MOVE = 0x0003;
 		public const int WM_SIZE = 0x0005;
+		public const int WM_GETMINMAXINFO = 0x0024;
 
 		#region Constants for WM_SIZE
 

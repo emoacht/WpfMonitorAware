@@ -444,10 +444,10 @@ namespace MonitorAware.Models
 					break;
 
 				case WindowMessage.WM_MOVE:
-					Debug.WriteLine("MOVE");
-
 					if (_isEnteredSizeMove)
 					{
+						Debug.WriteLine("MOVE");
+
 						_countLocationChanged++;
 						if (_countLocationChanged > _countSizeChanged)
 							_currentStatus = WindowStatus.LocationChanged;
@@ -458,15 +458,25 @@ namespace MonitorAware.Models
 					break;
 
 				case WindowMessage.WM_SIZE when ((uint)wParam == WindowMessage.SIZE_RESTORED):
-					Debug.WriteLine("SIZE");
-
 					if (_isEnteredSizeMove)
 					{
+						Debug.WriteLine("SIZE");
+
 						_countSizeChanged++;
 						if (_countLocationChanged < _countSizeChanged)
 							_currentStatus = WindowStatus.SizeChanged;
 
 						// DPI change by resize will be managed when WM_DPICHANGED comes.
+					}
+					break;
+
+				case WindowMessage.WM_GETMINMAXINFO:
+					if (_isSizeChanging)
+					{
+						Debug.WriteLine("GETMINMAXINFO");
+
+						// Nullify minimum and maximum width and height limits of target Window.
+						handled = true;
 					}
 					break;
 			}
@@ -481,6 +491,8 @@ namespace MonitorAware.Models
 		/// Object: Block.
 		/// </remarks>
 		private object _blocker = null;
+
+		private bool _isSizeChanging;
 
 		private void ChangeDpi(WindowStatus status = WindowStatus.None)
 		{
@@ -527,12 +539,20 @@ namespace MonitorAware.Models
 						{
 							case WindowStatus.None:
 							case WindowStatus.LocationChanged:
-								// Change location and size of target Window. Calling virtually identical functions
-								// in a row is to ensure that the change of both width and height are duly reflected.
-								if (!WindowHelper.SetWindowLocation(_targetSource.Handle, testRect.X, testRect.Y) ||
-									!WindowHelper.SetWindowSize(_targetSource.Handle, testRect.Size))
-									continue;
+								try
+								{
+									_isSizeChanging = true;
 
+									// Change location and size of target Window. Calling virtually identical functions
+									// in a row is to ensure that the change of both width and height are duly reflected.
+									if (!WindowHelper.SetWindowLocation(_targetSource.Handle, testRect.X, testRect.Y) ||
+										!WindowHelper.SetWindowSize(_targetSource.Handle, testRect.Size))
+										continue;
+								}
+								finally
+								{
+									_isSizeChanging = false;
+								}
 								break;
 
 							case WindowStatus.SizeChanged:
