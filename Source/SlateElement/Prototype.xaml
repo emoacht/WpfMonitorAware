@@ -13,7 +13,7 @@
 
 	<SolidColorBrush x:Key="SlateWindow.Chrome.Background" Color="SkyBlue"/>
 	<SolidColorBrush x:Key="SlateWindow.Chrome.Normal.Foreground" Color="Black"/>
-	<SolidColorBrush x:Key="SlateWindow.Chrome.Deactivated.Foreground" Color="Black" Opacity="0.5"/>
+	<SolidColorBrush x:Key="SlateWindow.Chrome.Deactivated.Foreground" Color="Black" Opacity="0.6"/>
 
 	<sys:Double x:Key="SlateCaptionButton.Width">46</sys:Double>
 	<sys:Double x:Key="SlateCaptionButton.Height">30</sys:Double>
