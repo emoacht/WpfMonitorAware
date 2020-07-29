@@ -205,25 +205,6 @@ namespace MonitorAware.Models.Win32
 
 		#endregion
 
-		#region Constants for WM_ACTIVATE
-
-		/// <summary>
-		/// Activated by some method other than a mouse click.
-		/// </summary>
-		public const int WA_ACTIVE = 1;
-
-		/// <summary>
-		/// Activated by a mouse click.
-		/// </summary>
-		public const int WA_CLICKACTIVE = 2;
-
-		/// <summary>
-		/// Deactivated.
-		/// </summary>
-		public const int WA_INACTIVE = 0;
-
-		#endregion
-
 		#region Constants for WM_SIZE
 
 		/// <summary>
