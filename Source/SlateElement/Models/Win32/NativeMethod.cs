@@ -35,7 +35,7 @@ namespace SlateElement.Models.Win32
 			MONITOR_DEFAULTTONEAREST = 0x00000002,
 		}
 
-		[DllImport("User32.dll", SetLastError = true)]
+		[DllImport("User32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetMonitorInfo(
 			IntPtr hMonitor,

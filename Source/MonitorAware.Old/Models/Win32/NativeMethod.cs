@@ -8,12 +8,12 @@ namespace MonitorAware.Models.Win32
 	{
 		#region Common
 
-		[DllImport("User32.dll", SetLastError = true)]
+		[DllImport("User32.dll")]
 		public static extern IntPtr MonitorFromRect(
 			ref RECT lprc,
 			MONITOR_DEFAULTTO dwFlags);
 
-		[DllImport("User32.dll", SetLastError = true)]
+		[DllImport("User32.dll")]
 		public static extern IntPtr MonitorFromWindow(
 			IntPtr hwnd,
 			MONITOR_DEFAULTTO dwFlags);
@@ -36,7 +36,7 @@ namespace MonitorAware.Models.Win32
 			MONITOR_DEFAULTTONEAREST = 0x00000002,
 		}
 
-		[DllImport("User32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		[DllImport("User32.dll", CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetMonitorInfo(
 			IntPtr hMonitor,
@@ -107,14 +107,6 @@ namespace MonitorAware.Models.Win32
 
 		#region DPI
 
-		[DllImport("Gdi32.dll", SetLastError = true)]
-		public static extern int GetDeviceCaps(
-			IntPtr hdc,
-			int nIndex);
-
-		public const int LOGPIXELSX = 88;
-		public const int LOGPIXELSY = 90;
-
 		[DllImport("User32.dll", SetLastError = true)]
 		public static extern IntPtr GetDC(IntPtr hWnd);
 
@@ -124,12 +116,20 @@ namespace MonitorAware.Models.Win32
 			IntPtr hWnd,
 			IntPtr hDC);
 
-		[DllImport("Shcore.dll", SetLastError = true)]
+		[DllImport("Gdi32.dll", SetLastError = true)]
+		public static extern int GetDeviceCaps(
+			IntPtr hdc,
+			int nIndex);
+
+		public const int LOGPIXELSX = 88;
+		public const int LOGPIXELSY = 90;
+
+		[DllImport("Shcore.dll")]
 		public static extern int GetProcessDpiAwareness(
 			IntPtr hprocess,
 			out PROCESS_DPI_AWARENESS value);
 
-		[DllImport("Shcore.dll", SetLastError = true)]
+		[DllImport("Shcore.dll")]
 		public static extern int SetProcessDpiAwareness(
 			PROCESS_DPI_AWARENESS value);
 
@@ -151,7 +151,7 @@ namespace MonitorAware.Models.Win32
 			Process_Per_Monitor_DPI_Aware = 2
 		}
 
-		[DllImport("Shcore.dll", SetLastError = true)]
+		[DllImport("Shcore.dll")]
 		public static extern int GetDpiForMonitor(
 			IntPtr hmonitor,
 			MONITOR_DPI_TYPE dpiType,
