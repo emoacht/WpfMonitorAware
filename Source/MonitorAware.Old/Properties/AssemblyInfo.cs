@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MonitorAware")]
-[assembly: AssemblyCopyright("Copyright © 2014-2020 emoacht")]
+[assembly: AssemblyCopyright("Copyright © 2014 emoacht")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
