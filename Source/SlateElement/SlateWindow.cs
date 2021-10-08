@@ -623,6 +623,26 @@ namespace SlateElement
 		}
 
 		private bool _isTransitionFromMaximizedToDragged;
+		private ResizeMode? _resizeMode;
+
+		private void OnDragMoveStart()
+		{
+			if (!CanMaximize)
+			{
+				// Prevent Aero Snap.
+				_resizeMode ??= this.ResizeMode;
+				this.ResizeMode = ResizeMode.NoResize;
+			}
+		}
+
+		private void OnDragMoveEnd()
+		{
+			if (_resizeMode.HasValue)
+			{
+				this.ResizeMode = _resizeMode.Value;
+				_resizeMode = null;
+			}
+		}
 
 		private void OnTitleBarMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
@@ -632,6 +652,7 @@ namespace SlateElement
 					e.Handled = true;
 
 					_isTransitionFromMaximizedToDragged = IsMaximized;
+					OnDragMoveStart();
 					this.DragMove();
 					break;
 
@@ -659,7 +680,10 @@ namespace SlateElement
 				_isTransitionFromMaximizedToDragged = false;
 
 				if (RestoreWindow())
+				{
+					OnDragMoveStart();
 					this.DragMove();
+				}
 				else
 					SystemCommands.RestoreWindow(this); // Fallback
 			}
@@ -690,6 +714,7 @@ namespace SlateElement
 			base.OnMouseLeftButtonUp(e);
 
 			_isTransitionFromMaximizedToDragged = false;
+			OnDragMoveEnd();
 		}
 
 		private void OnTitleBarMouseRightButtonDown(object sender, MouseButtonEventArgs e)
