@@ -23,7 +23,7 @@ namespace MonitorAware.Models
 		public static bool TryGetColorProfilePath(Visual window, out string profilePath)
 		{
 			profilePath = GetColorProfilePath(window);
-			return (profilePath != null);
+			return (profilePath is not null);
 		}
 
 		/// <summary>

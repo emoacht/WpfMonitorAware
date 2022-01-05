@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-
 using Microsoft.Xaml.Behaviors;
 
 using MonitorAware.Models;

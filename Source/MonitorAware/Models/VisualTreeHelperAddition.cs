@@ -32,7 +32,7 @@ namespace MonitorAware.Models
 			var queue = new Queue<DependencyObject>();
 			var parent = reference;
 
-			while (parent != null)
+			while (parent is not null)
 			{
 				var count = VisualTreeHelper.GetChildrenCount(parent);
 				for (int i = 0; i < count; i++)

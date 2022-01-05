@@ -50,8 +50,7 @@ namespace MonitorAware
 					null,
 					(d, e) =>
 					{
-						var window = d as Window;
-						if (window is null)
+						if (d is not Window window)
 							return;
 
 						((MonitorAwareProperty)e.NewValue).OwnerWindow = window;

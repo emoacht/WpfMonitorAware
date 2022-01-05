@@ -467,7 +467,7 @@ namespace SlateElement
 					null,
 					(d, e) =>
 					{
-						if (e.OldValue != null)
+						if (e.OldValue is not null)
 							BindingOperations.ClearAllBindings((DependencyObject)e.OldValue);
 
 						var window = (SlateWindow)d;
@@ -496,7 +496,7 @@ namespace SlateElement
 					null,
 					(d, e) =>
 					{
-						if (e.OldValue != null)
+						if (e.OldValue is not null)
 							BindingOperations.ClearAllBindings((DependencyObject)e.OldValue);
 
 						((SlateWindow)d).ManageTitleBarContent();
@@ -525,7 +525,7 @@ namespace SlateElement
 				WindowDpi = VisualTreeHelper.GetDpi(this);
 			}
 
-			if (ChromeBorder != null)
+			if (ChromeBorder is not null)
 			{
 				ChromeBorder.BorderThickness = IsMaximized
 					? new Thickness(0)
@@ -542,7 +542,7 @@ namespace SlateElement
 		/// </summary>
 		protected virtual void ManageTitleBarBackground()
 		{
-			if (TitleBarGrid != null)
+			if (TitleBarGrid is not null)
 				TitleBarGrid.Background = ChromeBackground;
 
 			AddTitleBarHandler();
@@ -552,7 +552,7 @@ namespace SlateElement
 		{
 			RemoveTitleBarHandler();
 
-			if (TitleBarGrid?.Background != null)
+			if (TitleBarGrid?.Background is not null)
 			{
 				TitleBarGrid.MouseLeftButtonDown += OnTitleBarMouseLeftButtonDown;
 				TitleBarGrid.MouseRightButtonDown += OnTitleBarMouseRightButtonDown;
@@ -565,7 +565,7 @@ namespace SlateElement
 
 		private void RemoveTitleBarHandler()
 		{
-			if (TitleBarGrid != null)
+			if (TitleBarGrid is not null)
 			{
 				TitleBarGrid.MouseLeftButtonDown -= OnTitleBarMouseLeftButtonDown;
 				TitleBarGrid.MouseRightButtonDown -= OnTitleBarMouseRightButtonDown;
@@ -587,7 +587,7 @@ namespace SlateElement
 			TitleBarContentGrid.ColumnDefinitions.Clear();
 			TitleBarContentGrid.Children.Clear();
 
-			if (TitleBarIcon != null)
+			if (TitleBarIcon is not null)
 			{
 				TitleBarContentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 				TitleBarContentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1D, GridUnitType.Star) });
@@ -595,7 +595,7 @@ namespace SlateElement
 				Grid.SetColumn(TitleBarIcon, 0);
 				TitleBarContentGrid.Children.Add(TitleBarIcon);
 
-				if (TitleBarContent != null)
+				if (TitleBarContent is not null)
 				{
 					Grid.SetColumn(TitleBarContent, 1);
 					TitleBarContentGrid.Children.Add(TitleBarContent);
@@ -603,7 +603,7 @@ namespace SlateElement
 			}
 			else
 			{
-				if (TitleBarContent != null)
+				if (TitleBarContent is not null)
 				{
 					TitleBarContentGrid.Children.Add(TitleBarContent);
 				}
@@ -612,13 +612,13 @@ namespace SlateElement
 
 		private void AddTitleBarIconHandler(Image titleBarIcon)
 		{
-			if (titleBarIcon != null)
+			if (titleBarIcon is not null)
 				titleBarIcon.MouseDown += OnTitleBarIconMouseDown;
 		}
 
 		private void RemoveTitleBarIconHandler(Image titleBarIcon)
 		{
-			if (titleBarIcon != null)
+			if (titleBarIcon is not null)
 				titleBarIcon.MouseDown -= OnTitleBarIconMouseDown;
 		}
 
