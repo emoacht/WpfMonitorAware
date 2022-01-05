@@ -496,7 +496,7 @@ namespace MonitorAware.Models
 
 		private void ChangeDpi(WindowStatus status = WindowStatus.None)
 		{
-			if (Interlocked.CompareExchange(ref _blocker, new object(), null) != null)
+			if (Interlocked.CompareExchange(ref _blocker, new object(), null) is not null)
 				return;
 
 			try
@@ -504,7 +504,7 @@ namespace MonitorAware.Models
 				// Take information which is to be tested from _dueInfo and set null in return.
 				var testInfo = Interlocked.Exchange(ref _dueInfo, null);
 
-				while (testInfo != null)
+				while (testInfo is not null)
 				{
 					if (!WindowHelper.TryGetWindowRect(_targetSource.Handle, out Rect windowRect))
 						continue;
@@ -564,7 +564,7 @@ namespace MonitorAware.Models
 						var content = (_targetElement ??= VisualTreeHelperAddition.GetDescendant<FrameworkElement>(_targetWindow))
 							?? (_targetWindow.Content as FrameworkElement);
 
-						if (content != null)
+						if (content is not null)
 						{
 							if (WindowDpi.Equals(InitialDpi))
 							{

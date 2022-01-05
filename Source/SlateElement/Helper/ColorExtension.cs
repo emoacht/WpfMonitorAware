@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Media;
-
 using static System.Math;
 
 namespace SlateElement.Helper
@@ -50,7 +49,7 @@ namespace SlateElement.Helper
 		/// <remarks>Alpha channels of both Colors will be ignored.</remarks>
 		private static Color BlendColor(Color color1, Color color2, double color2Perc)
 		{
-			if ((color2Perc < 0) || (100 < color2Perc))
+			if (color2Perc is < 0 or > 100)
 				throw new ArgumentOutOfRangeException(nameof(color2Perc));
 
 			return Color.FromRgb(

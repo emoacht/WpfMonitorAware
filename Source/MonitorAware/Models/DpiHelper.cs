@@ -4,7 +4,6 @@ using System.Windows.Interop;
 using System.Windows.Media;
 
 using MonitorAware.Helper;
-
 using static MonitorAware.Models.Win32.NativeMethod;
 
 namespace MonitorAware.Models

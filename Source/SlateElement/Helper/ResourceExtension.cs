@@ -23,7 +23,7 @@ namespace SlateElement.Helper
 			if (!string.IsNullOrWhiteSpace(oldUriString))
 			{
 				var oldDictionary = app.Resources.MergedDictionaries.FirstOrDefault(x => x.Source.OriginalString == oldUriString);
-				if (oldDictionary != null)
+				if (oldDictionary is not null)
 					app.Resources.MergedDictionaries.Remove(oldDictionary);
 			}
 
@@ -56,7 +56,7 @@ namespace SlateElement.Helper
 			if (!string.IsNullOrWhiteSpace(oldUriString))
 			{
 				var oldDictionary = control.Resources.MergedDictionaries.FirstOrDefault(x => x.Source.OriginalString == oldUriString);
-				if (oldDictionary != null)
+				if (oldDictionary is not null)
 					control.Resources.MergedDictionaries.Remove(oldDictionary);
 			}
 
