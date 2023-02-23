@@ -80,6 +80,14 @@ namespace MonitorAware.Models
 		/// <returns>DPI scale information</returns>
 		internal static DpiScale GetSystemDpi()
 		{
+			if (OsVersion.IsRedstoneOneOrNewer)
+			{
+				double pixelsPerInch = GetDpiForSystem();
+				return new DpiScale(
+					pixelsPerInch / DefaultPixelsPerInch,
+					pixelsPerInch / DefaultPixelsPerInch);
+			}
+
 			var deviceHandle = IntPtr.Zero;
 			try
 			{
