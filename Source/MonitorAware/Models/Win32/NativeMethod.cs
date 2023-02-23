@@ -192,6 +192,12 @@ namespace MonitorAware.Models.Win32
 			Process_Per_Monitor_DPI_Aware = 2
 		}
 
+		[DllImport("User32.dll")]
+		public static extern uint GetDpiForSystem();
+
+		[DllImport("User32.dll")]
+		public static extern uint GetDpiForWindow(IntPtr hwnd);
+
 		[DllImport("Shcore.dll")]
 		public static extern int GetDpiForMonitor(
 			IntPtr hmonitor,
