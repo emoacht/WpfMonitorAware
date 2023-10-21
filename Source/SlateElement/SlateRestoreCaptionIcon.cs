@@ -27,7 +27,7 @@ namespace SlateElement
 		/// <remarks>This drawing assumes that its size is 10x10.</remarks>
 		protected override void Draw(DrawingContext drawingContext, double factor, Brush foreground)
 		{
-			var line = new Pen(foreground, Math.Round(1D * factor) / factor); // 1 is base path thickness.
+			var line = new Pen(foreground, Math.Round(1D * factor, MidpointRounding.AwayFromZero) / factor); // 1 is base path thickness.
 			var lineRadius = line.Thickness / 2;
 
 			var rect1Chrome = new Rect(0, 2, 8, 8);
@@ -37,38 +37,40 @@ namespace SlateElement
 			var rect1ChromeActual = new Rect(
 				rect1Chrome.X + lineRadius,
 				rect1Chrome.Y + lineRadius,
-				rect1Chrome.Width - lineRadius,
-				rect1Chrome.Height - lineRadius);
+				rect1Chrome.Width - lineRadius * 2,
+				rect1Chrome.Height - lineRadius * 2);
 
 			var rect2ChromeActual = new Rect(
 				rect2Chrome.X + lineRadius,
 				rect2Chrome.Y + lineRadius,
-				rect2Chrome.Width - lineRadius,
-				rect2Chrome.Height - lineRadius);
+				rect2Chrome.Width - lineRadius * 2,
+				rect2Chrome.Height - lineRadius * 2);
 
 			// Create a guidelines set.
-			var guidelines = new GuidelineSet();
-			guidelines.GuidelinesX.Add(rect1Chrome.Left);
-			guidelines.GuidelinesX.Add(rect1Chrome.Right);
-			guidelines.GuidelinesY.Add(rect1Chrome.Top);
-			guidelines.GuidelinesY.Add(rect1Chrome.Bottom);
+			var guidelines1 = new GuidelineSet();
+			guidelines1.GuidelinesX.Add(rect1Chrome.Left);
+			guidelines1.GuidelinesX.Add(rect1Chrome.Right);
+			guidelines1.GuidelinesY.Add(rect1Chrome.Top);
+			guidelines1.GuidelinesY.Add(rect1Chrome.Bottom);
 
-			guidelines.GuidelinesX.Add(rect2Chrome.Left);
-			guidelines.GuidelinesX.Add(rect2Chrome.Right);
-			guidelines.GuidelinesY.Add(rect2Chrome.Top);
-			guidelines.GuidelinesY.Add(rect2Chrome.Bottom);
+			var guidelines2 = new GuidelineSet();
+			guidelines2.GuidelinesX.Add(rect2Chrome.Left);
+			guidelines2.GuidelinesX.Add(rect2Chrome.Right);
+			guidelines2.GuidelinesY.Add(rect2Chrome.Top);
+			guidelines2.GuidelinesY.Add(rect2Chrome.Bottom);
 
-			drawingContext.PushGuidelineSet(guidelines);
+			drawingContext.PushGuidelineSet(guidelines1);
+			drawingContext.PushGuidelineSet(guidelines2);
 
 			// Draw rectangles.
 			drawingContext.DrawRectangle(null, line, rect1ChromeActual);
 
-			var combined = new CombinedGeometry(
+			var combinedActual = new CombinedGeometry(
 				GeometryCombineMode.Exclude,
 				new RectangleGeometry(rect2ChromeActual),
 				new RectangleGeometry(rect1ChromeActual));
 
-			drawingContext.DrawGeometry(null, line, combined);
+			drawingContext.DrawGeometry(null, line, combinedActual);
 
 			drawingContext.Pop();
 		}

@@ -27,7 +27,7 @@ namespace SlateElement
 		/// <remarks>This drawing assumes that its size is 10x10.</remarks>
 		protected override void Draw(DrawingContext drawingContext, double factor, Brush foreground)
 		{
-			var line = new Pen(foreground, Math.Round(1D * factor) / factor); // 1 is base path thickness.
+			var line = new Pen(foreground, Math.Round(1D * factor, MidpointRounding.AwayFromZero) / factor); // 1 is base path thickness.
 			var lineRadius = line.Thickness / 2;
 
 			var startPoint = new Point(0, 5 - lineRadius);

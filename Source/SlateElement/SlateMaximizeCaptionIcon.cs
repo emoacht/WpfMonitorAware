@@ -27,7 +27,7 @@ namespace SlateElement
 		/// <remarks>This drawing assumes that its size is 10x10.</remarks>
 		protected override void Draw(DrawingContext drawingContext, double factor, Brush foreground)
 		{
-			var line = new Pen(foreground, Math.Round(1D * factor) / factor); // 1 is base path thickness.
+			var line = new Pen(foreground, Math.Round(1D * factor, MidpointRounding.AwayFromZero) / factor); // 1 is base path thickness.
 			var lineRadius = line.Thickness / 2;
 
 			var rectChrome = new Rect(0, 0, 10, 10);
@@ -35,8 +35,8 @@ namespace SlateElement
 			var rectChromeActual = new Rect(
 				rectChrome.X + lineRadius,
 				rectChrome.Y + lineRadius,
-				rectChrome.Width - lineRadius,
-				rectChrome.Height - lineRadius);
+				rectChrome.Width - lineRadius * 2,
+				rectChrome.Height - lineRadius * 2);
 
 			// Create a guidelines set.
 			var guidelines = new GuidelineSet();
