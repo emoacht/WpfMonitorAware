@@ -12,7 +12,7 @@ namespace SlateElement.Models
 	public static class WindowHelper
 	{
 		/// <summary>
-		/// Attemps to get the mouse cursor point in screen.
+		/// Attempts to get the mouse cursor point in screen.
 		/// </summary>
 		/// <param name="point">Mouse cursor point</param>
 		/// <returns>True if successfully gets. False otherwise.</returns>
@@ -28,7 +28,7 @@ namespace SlateElement.Models
 		}
 
 		/// <summary>
-		/// Attemps to get a specified Window's current rectangle.
+		/// Attempts to get a specified Window's current rectangle.
 		/// </summary>
 		/// <param name="windowHandle">Window's handle</param>
 		/// <param name="rect">Window's rectangle</param>
@@ -48,7 +48,7 @@ namespace SlateElement.Models
 		}
 
 		/// <summary>
-		/// Attemps to get a specified Window's normal (restore) rectangle.
+		/// Attempts to get a specified Window's normal (restore) rectangle.
 		/// </summary>
 		/// <param name="windowHandle">Window's handle</param>
 		/// <param name="rect">Window's rectangle</param>
@@ -92,7 +92,7 @@ namespace SlateElement.Models
 		}
 
 		/// <summary>
-		/// Attemps to get the monitor's rectangles to which a specified Window belongs.
+		/// Attempts to get the monitor's rectangles to which a specified Window belongs.
 		/// </summary>
 		/// <param name="windowHandle">Window's handle</param>
 		/// <param name="monitorRect">Monitor's (full) rectangle</param>
@@ -112,7 +112,7 @@ namespace SlateElement.Models
 		}
 
 		/// <summary>
-		/// Attemps to get the monitor's rectangles to which a specified point belongs.
+		/// Attempts to get the monitor's rectangles to which a specified point belongs.
 		/// </summary>
 		/// <param name="point">Point</param>
 		/// <param name="monitorRect">Monitor's (full) rectangle</param>

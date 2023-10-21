@@ -15,7 +15,7 @@ namespace MonitorAware.Models
 	public static class ColorProfileHelper
 	{
 		/// <summary>
-		/// Attemps to get color profile file path used by the monitor to which a specified Window belongs.
+		/// Attempts to get color profile file path used by the monitor to which a specified Window belongs.
 		/// </summary>
 		/// <param name="window">Source Window</param>
 		/// <param name="profilePath">Color profile file path</param>

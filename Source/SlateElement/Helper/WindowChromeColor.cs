@@ -40,7 +40,7 @@ namespace SlateElement.Helper
 		#endregion
 
 		/// <summary>
-		/// Attemps to get OS's window chrome Color.
+		/// Attempts to get OS's window chrome Color.
 		/// </summary>
 		/// <param name="chromeColor">Window chrome Color</param>
 		/// <returns>True if successfully gets. False otherwise.</returns>		

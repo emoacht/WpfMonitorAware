@@ -11,7 +11,7 @@ namespace MonitorAware.Models
 	public static class WindowHelper
 	{
 		/// <summary>
-		/// Attemps to get a specified Window's rectangle.
+		/// Attempts to get a specified Window's rectangle.
 		/// </summary>
 		/// <param name="windowHandle">Window's handle</param>
 		/// <param name="windowRect">Window's rectangle</param>
