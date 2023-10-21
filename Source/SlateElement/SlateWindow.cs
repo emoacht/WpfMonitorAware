@@ -107,15 +107,33 @@ namespace SlateElement
 			{
 				case WindowMessage.WM_GETMINMAXINFO:
 					// Adjust this Window's location and size when it is maximized.
-					if (WindowHelper.TryGetMonitorRect(hwnd, out Rect monitorRect, out Rect workRect, out _))
+					if (WindowHelper.TryGetMonitorRect(hwnd, out Rect monitorRect, out Rect workRect, out bool isPrimary))
 					{
-						// The coordinates start in the left-top corner of current monitor.
-						var maximizeLocation = new Point(workRect.X - monitorRect.X, workRect.Y - monitorRect.Y);
-						var maximizeSize = new Point(workRect.Width, workRect.Height);
-
 						var info = Marshal.PtrToStructure<NativeMethod.MINMAXINFO>(lParam);
-						info.ptMaxPosition = maximizeLocation;
-						info.ptMaxSize = maximizeSize;
+
+						// The coordinates start in the left-top corner of current monitor.
+						info.ptMaxPosition = new Point(workRect.X - monitorRect.X, workRect.Y - monitorRect.Y);
+
+						if (isPrimary ||
+							(WindowHelper.TryGetPrimaryMonitorRect(out Rect primaryMonitorRect, out _) &&
+							 (monitorRect.Width <= primaryMonitorRect.Width) && (monitorRect.Height <= primaryMonitorRect.Height)))
+						{
+							info.ptMaxSize = new Point(workRect.Width, workRect.Height);
+						}
+						else
+						{
+							// "For systems with multiple monitors, the ptMaxSize and ptMaxPosition members describe
+							// the maximized size and position of the window on the primary monitor, even if the window
+							// ultimately maximizes onto a secondary monitor. In that case, the window manager adjusts
+							// these values to compensate for differences between the primary monitor and the monitor
+							// that displays the window. Thus, if the user leaves ptMaxSize untouched, a window on
+							// a monitor larger than the primary monitor maximizes to the size of the larger monitor."
+							// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-minmaxinfo
+
+							// The adjusted size in the above case seems not deliberately specifiable. Therefore,
+							// leave the size to the window manager even if the result is not ideal.
+						}
+
 						Marshal.StructureToPtr(info, lParam, true);
 					}
 					break;

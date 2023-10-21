@@ -128,6 +128,21 @@ namespace SlateElement.Models
 			return TryGetMonitorRectBase(monitorHandle, out monitorRect, out workRect, out isPrimary);
 		}
 
+		/// <summary>
+		/// Attempts to get the primary monitor's rectangles.
+		/// </summary>
+		/// <param name="monitorRect">Monitor's (full) rectangle</param>
+		/// <param name="workRect">Work area's rectangle inside monitor's rectangle</param>
+		/// <returns>True if successfully gets. False otherwise.</returns>
+		public static bool TryGetPrimaryMonitorRect(out Rect monitorRect, out Rect workRect)
+		{
+			var monitorHandle = MonitorFromWindow(
+				IntPtr.Zero,
+				MONITOR_DEFAULTTO.MONITOR_DEFAULTTOPRIMARY);
+
+			return TryGetMonitorRectBase(monitorHandle, out monitorRect, out workRect, out _);
+		}
+
 		private static bool TryGetMonitorRectBase(IntPtr monitorHandle, out Rect monitorRect, out Rect workRect, out bool isPrimary)
 		{
 			var monitorInfo = new MONITORINFO { cbSize = (uint)Marshal.SizeOf<MONITORINFO>() };
