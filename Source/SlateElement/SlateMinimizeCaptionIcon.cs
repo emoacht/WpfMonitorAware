@@ -33,7 +33,7 @@ namespace SlateElement
 			var startPoint = new Point(0, 5 - lineRadius);
 			var endPoint = new Point(10, 5 - lineRadius);
 
-			// Create a guidelines set.
+			// Set guidelines.
 			var guidelines = new GuidelineSet();
 			guidelines.GuidelinesY.Add(startPoint.Y);
 

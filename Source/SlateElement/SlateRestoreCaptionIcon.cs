@@ -46,7 +46,7 @@ namespace SlateElement
 				rect2Chrome.Width - lineRadius * 2,
 				rect2Chrome.Height - lineRadius * 2);
 
-			// Create a guidelines set.
+			// Set guidelines.
 			var guidelines1 = new GuidelineSet();
 			guidelines1.GuidelinesX.Add(rect1Chrome.Left);
 			guidelines1.GuidelinesX.Add(rect1Chrome.Right);
